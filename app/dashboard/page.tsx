@@ -117,9 +117,9 @@ export default function Dashboard() {
         <div className="px-12 h-20 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="relative w-16 h-16">
-              <Image src="/logo.png" alt="INARA" fill className="object-contain rounded-full" />
+              <Image src="/logo.png" alt="INNARA" fill className="object-contain rounded-full" />
             </div>
-            <span className="text-4xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INARA</span>
+            <span className="text-4xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INNARA</span>
           </div>
 
           <div className="flex items-center gap-8">

@@ -89,8 +89,8 @@ export default function GuestApp() {
         {/* Top Bar - Transparent & Blurred */}
         <div className="sticky top-0 z-20 h-[72px] backdrop-blur-2xl bg-white/20 border-b border-white/20 px-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Image src="/logo.png" alt="INARA" width={56} height={56} className="rounded-full" />
-            <span className="text-3xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INARA</span>
+            <Image src="/logo.png" alt="INNARA" width={56} height={56} className="rounded-full" />
+            <span className="text-3xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INNARA</span>
           </div>
           <span className="text-sm text-gold font-semibold tracking-wide">Room 1204</span>
           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gold-light to-gold flex items-center justify-center text-white text-sm font-semibold shadow-lg">

@@ -100,8 +100,8 @@ export default function LandingPage() {
         >
           <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Image src="/logo.png" alt="INARA" width={48} height={48} className="rounded-full" />
-              <span className="text-3xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INARA</span>
+              <Image src="/logo.png" alt="INNARA" width={48} height={48} className="rounded-full" />
+              <span className="text-3xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INNARA</span>
             </div>
 
             <div className="hidden md:flex items-center gap-8">
@@ -313,10 +313,10 @@ export default function LandingPage() {
             >
               <Sparkles className="w-16 h-16 text-white/80 mx-auto mb-6" />
               <h2 className="text-4xl md:text-5xl font-light text-white mb-6" style={{ fontFamily: 'Georgia, serif' }}>
-                Experience INARA <span className="italic">Live</span>
+                Experience INNARA <span className="italic">Live</span>
               </h2>
               <p className="text-xl text-white/70 mb-10 max-w-2xl mx-auto">
-                See how INARA transforms the guest experience in real-time
+                See how INNARA transforms the guest experience in real-time
               </p>
 
               <div className="grid md:grid-cols-2 gap-6">
@@ -461,7 +461,7 @@ export default function LandingPage() {
 
                     <p className="text-center text-sm text-navy/60">
                       {waitlistTab === 'guest'
-                        ? 'Be the first to know when INARA launches at your favorite hotels'
+                        ? 'Be the first to know when INNARA launches at your favorite hotels'
                         : 'Join 50+ hotels already on the waitlist'
                       }
                     </p>
@@ -477,7 +477,7 @@ export default function LandingPage() {
                     <div className="w-20 h-20 bg-navy rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
                       <Check className="w-10 h-10 text-white" />
                     </div>
-                    <h3 className="text-3xl font-semibold text-navy mb-3">Welcome to INARA!</h3>
+                    <h3 className="text-3xl font-semibold text-navy mb-3">Welcome to INNARA!</h3>
                     <p className="text-lg text-navy/70">
                       {waitlistTab === 'guest'
                         ? "You're on the list. We'll notify you when we launch."
@@ -496,8 +496,8 @@ export default function LandingPage() {
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
               <div className="flex items-center gap-3">
-                <Image src="/logo.png" alt="INARA" width={40} height={40} className="rounded-full" />
-                <span className="text-2xl font-light tracking-wider text-white" style={{ fontFamily: 'Georgia, serif' }}>INARA</span>
+                <Image src="/logo.png" alt="INNARA" width={40} height={40} className="rounded-full" />
+                <span className="text-2xl font-light tracking-wider text-white" style={{ fontFamily: 'Georgia, serif' }}>INNARA</span>
               </div>
 
               <div className="flex items-center gap-8 text-sm text-white/70">
@@ -507,7 +507,7 @@ export default function LandingPage() {
               </div>
 
               <div className="text-sm text-white/50">
-                © 2025 INARA. Illuminating hospitality.
+                © 2025 INNARA. Illuminating hospitality.
               </div>
             </div>
           </div>
