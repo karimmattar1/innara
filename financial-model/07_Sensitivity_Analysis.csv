@@ -1,0 +1,161 @@
+SENSITIVITY ANALYSIS & SCENARIO PLANNING
+
+SCENARIO OVERVIEW
+Scenario,Description,Probability,Use Case
+Conservative,Slower growth lower adoption,30%,Downside planning / worst case
+Base Case,Current deck projections,50%,Primary forecast (what we expect)
+Optimistic,Faster growth higher adoption,20%,Upside potential / best case
+
+HOTEL ACQUISITION SCENARIOS
+Metric,Conservative,Base (Deck),Optimistic,Impact
+2026 Hotels,10,15,20,±33%
+2027 Hotels,35,50,70,±30%
+2028 Hotels,100,150,200,±33%
+2028 Revenue Impact,$1974000,$2961000,$3948000,±33%
+Variance from Base,-33%,0%,+33%,
+
+GUEST ADOPTION RATE SCENARIOS
+Year,Conservative,Base (Deck),Optimistic,Revenue Impact
+Year 1,25%,35%,50%,"±43% on transaction revenue"
+Year 2,35%,45%,60%,"±33% on transaction revenue"
+Year 3,40%,55%,70%,"±27% on transaction revenue"
+,,,,,
+Transaction Revenue Impact 2028,$756563,$1036350,$1316138,±27%
+
+AVERAGE GUEST SPEND SCENARIOS
+Scenario,Avg Spend,Rationale,Transaction Revenue 2028,Variance
+Conservative,$35,Quick-service items only,$647817,-37%
+Base Case (Deck),$45,Blended quick-service + meals,$1036350,0%
+Realistic,$60,Mix of full meals + services,$1381800,+33%
+Optimistic (Industry Avg),$100,Full room service average,$2302833,+122%
+,,,,,
+Note: Industry data shows $100+ avg (Peter Greenberg 2024),,,,
+Our $45 assumption is VERY conservative,,,,
+
+PREMIUM MODULE ATTACH RATE SCENARIOS
+Year,Conservative,Base (Deck),Optimistic,Premium Revenue Impact
+Attach Rate,25%,35%,50%,±43%
+Avg Module Price,$225,$300,$375,±25%
+2028 Premium Revenue,$337500,$444150,$562500,±27%
+
+COMPLETE SCENARIO ANALYSIS - 2028 REVENUE
+Revenue Stream,Conservative,Base (Deck),Optimistic,Driver
+Hotel Subscriptions,$960000,$1332450,$1920000,# of hotels
+Transaction Fees,$647817,$1036350,$1316138,Adoption rate + spend
+Premium Modules,$337500,$444150,$562500,Attach rate
+Data & Insights,$111038,$148050,$185063,# of enterprise clients
+TOTAL 2028 REVENUE,$2056355,$2961000,$3983701,
+Variance from Base,-31%,0%,+35%,
+
+CHURN RATE SENSITIVITY
+Annual Churn,LTV (5yr),LTV:CAC,Impact on Valuation,Notes
+5%,$95680,31.9x,Best case,Enterprise-level retention
+10% (Base),$95680,31.9x,Base case,Our conservative assumption
+15%,$81173,27.1x,Concerning,Still acceptable but needs improvement
+20%,$70980,23.7x,Poor,Would need to improve retention
+,,,,,
+Note: LTV calculated as Annual GP × 5 years,,,,,
+Higher churn significantly impacts long-term value,,,,,
+
+CAC SENSITIVITY
+Scenario,CAC,LTV:CAC,Payback (months),Status
+Efficient GTM,$2000,47.8x,1.3,Excellent
+Base Case,$3000,31.9x,1.9,Excellent
+Higher CAC,$4500,21.3x,2.8,Good
+Inefficient GTM,$6000,15.9x,3.8,Acceptable but concerning
+
+BREAK-EVEN ANALYSIS
+Variable,Conservative,Base,Optimistic,Notes
+Monthly burn rate,$42500,$42500,$42500,Constant in Year 1
+Revenue per hotel (monthly),$1300,$1645,$2100,Varies by adoption
+Hotels to break even,33,26,20,Burn / Revenue per hotel
+Months to break even,N/A (15 hotels),18 months (Q3 2027),12 months (Q4 2026),
+
+OPERATING EXPENSE SENSITIVITY
+OpEx Scenario,2026,2027,2028,Impact on Profitability 2028
+-20% (Lean),$408000,$720000,$1200000,$1761000 profit (+21%)
+Base (Deck),$510000,$900000,$1500000,$1461000 profit (0%)
++20% (Scale faster),$612000,$1080000,$1800000,$1161000 profit (-21%)
++50% (Aggressive growth),$765000,$1350000,$2250000,$711000 profit (-51%)
+
+MARKET PENETRATION SCENARIOS
+Scenario,TAM (Hotels),2028 Penetration,2028 Hotels,Revenue,Notes
+Conservative,15000,0.67%,100,$1974000,Slow adoption
+Base,15000,1.0%,150,$2961000,Steady growth
+Optimistic,15000,1.33%,200,$3948000,Strong product-market fit
+Aggressive,15000,2.0%,300,$5922000,Exceptional execution
+
+PRICING SENSITIVITY
+Scenario,Subscription,Impact on 2028 Revenue,Trade-off
+-20% (Competitive),$640/mo,$2694690 (-9%),Higher volume potential
+Base (Deck),$800/mo,$2961000 (0%),Balanced approach
++20% (Premium),$960/mo,$3227310 (+9%),May reduce acquisition
++50% (Luxury),$1200/mo,$3893775 (+32%),Limited to high-end only
+
+COMBINED WORST CASE SCENARIO
+Variable,Worst Case,Impact
+Hotels 2028,75 (-50%),
+Adoption Rate,40% (-27%),
+Avg Guest Spend,$35 (-22%),
+Premium Attach,20% (-43%),
+Annual Churn,20% (+100%),
+,,,
+RESULTS:,,,
+2028 Revenue,$1144500,,-61%
+2028 EBITDA,-$355500,,Unprofitable
+LTV:CAC,14.6x,,Still acceptable
+Runway,Need additional funding,,
+
+COMBINED BEST CASE SCENARIO
+Variable,Best Case,Impact
+Hotels 2028,200 (+33%),
+Adoption Rate,70% (+27%),
+Avg Guest Spend,$60 (+33%),
+Premium Attach,50% (+43%),
+Annual Churn,5% (-50%),
+,,,
+RESULTS:,,,
+2028 Revenue,$5173875,,+75%
+2028 EBITDA,$3673875,,+151%
+LTV:CAC,47.8x,,Exceptional
+Outcome,Series A at premium valuation,,
+
+MONTE CARLO SUMMARY (Based on probability-weighted scenarios)
+Metric,P10 (Worst),P50 (Median),P90 (Best),Expected Value
+2028 Revenue,$1500000,$2961000,$4500000,$2961000
+2028 Hotels,90,150,210,150
+2028 EBITDA,$0,$1461000,$3000000,$1461000
+Months to Profitability,24,18,12,18
+
+KEY RISK FACTORS (Ranked by Impact)
+Risk,Impact,Probability,Mitigation
+Slower hotel acquisition,High,Medium,Focus on product-market fit early
+Lower guest adoption than expected,High,Low,Pilot thoroughly validate adoption
+Higher CAC than modeled,Medium,Medium,Optimize GTM partnerships
+Pricing resistance,Medium,Low,Competitive analysis validates pricing
+Higher churn than 10%,High,Low,Strong customer success focus
+Increased competition,Medium,Medium,First-mover advantage in AI features
+
+KEY UPSIDE DRIVERS (Ranked by Impact)
+Driver,Impact,Probability,Acceleration Strategy
+Guest spend higher than $45,High,High,Industry avg is $100+ (very conservative)
+Faster hotel acquisition,High,Medium,Partnership with hotel management groups
+Premium attach >35%,Medium,Medium,Strong feature development roadmap
+International expansion,High,Low,After proving UAE/GCC market
+Enterprise data revenue,Medium,Medium,Build valuable dataset early
+
+RECOMMENDED ACTIONS BASED ON SENSITIVITY
+Finding,Recommendation
+Conservative guest spend ($45) vs industry ($100+),Consider raising transaction fee or highlighting conservative forecast
+LTV:CAC ratio extremely strong (31.9x),Invest more in sales & marketing to accelerate growth
+Break-even at 46 hotels achievable in 2027,Focus on reaching 50 hotels by EOY 2027 to ensure profitability
+Churn >15% would significantly impact LTV,Invest heavily in customer success and product stickiness
+OpEx can scale ±20% without breaking model,Maintain flexibility in hiring plans based on revenue
+
+DASHBOARD METRICS TO TRACK
+Metric,Target,Red Flag,Action if Red Flag
+Monthly hotel acquisition,2-3 per month in 2027,<1 per month,Revisit GTM strategy
+Guest adoption rate,45% by end 2027,<30%,Improve onboarding and UX
+CAC,$3000 or less,>$5000,Optimize sales process
+Churn,<10% annual,>15% annual,Strengthen customer success
+Monthly burn,Per plan,>20% over plan,Cost controls or raise emergency funding

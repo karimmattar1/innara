@@ -1,0 +1,89 @@
+UNIT ECONOMICS - PER HOTEL (Fully Ramped - Year 3)
+
+REVENUE (Annual per hotel)
+Component,Monthly,Annual,Notes
+Hotel Subscription,$800,$9600,$800 × 12
+Transaction Fees,$867,$10404,$867 × 12 (at 55% adoption)
+Premium Modules (35% attach),$105,$1260,35% × $300 × 12
+Data allocation (indirect),$0,$0,Enterprise deals not allocated per hotel
+TOTAL REVENUE PER HOTEL,$1772,$21264,
+
+COST OF SERVICE (Annual per hotel)
+Component,Monthly,Annual,Notes
+Hosting & Infrastructure,$50,$600,AWS/cloud costs per hotel
+Customer Success / Support,$100,$1200,CS team allocation
+Transaction Processing (2%),$17,$208,2% of transaction volume for payment processing
+Platform maintenance,$10,$120,General platform costs allocation
+TOTAL COGS PER HOTEL,$177,$2128,
+
+PROFITABILITY
+Metric,Value,Calculation
+Gross Profit per Hotel (Annual),$19136,$21264 - $2128
+Gross Margin,90.0%,$19136 / $21264
+
+CUSTOMER ACQUISITION
+Metric,Value,Notes
+Customer Acquisition Cost (CAC),$3000,Blended across all channels
+CAC Breakdown - Sales salary,$2000,Sales rep allocation per hotel acquired
+CAC Breakdown - Marketing,$800,Events + digital + content per acquisition
+CAC Breakdown - Onboarding,$200,Training + implementation per hotel
+
+CUSTOMER LIFETIME VALUE
+Parameter,Value,Calculation
+Annual gross profit per hotel,$19136,From above
+Expected customer lifetime,5 years,Conservative estimate
+Annual churn rate,10%,Conservative
+Customer Lifetime Value (LTV),$95680,$19136 × 5 years
+Alternative LTV calculation,$191360,"$19136 / 10% churn (1/churn method, more aggressive)"
+
+KEY METRICS
+Metric,Value,Benchmark,Status
+LTV:CAC Ratio,31.9x,">3x = Good, >5x = Excellent",✓ Exceptional
+Payback Period,1.9 months,$3000 CAC / ($19136/12),✓ Excellent (<12mo)
+Gross Margin,90.0%,70-85% for SaaS,✓ Outstanding
+Monthly Gross Profit,$1595,$19136 / 12,
+
+COHORT ECONOMICS (By Year Acquired)
+Cohort,Hotels,Year 1 Revenue,Year 2 Revenue,Year 3 Revenue,Cumulative Revenue,Notes
+2026 Cohort,15,"$15k avg",$18k,$21k,$54k,Growing as adoption matures
+2027 Cohort,35,N/A,"$16k avg",$20k,$36k,
+2028 Cohort,100,N/A,N/A,"$18k avg",$18k,Ramping up
+
+SENSITIVITY ANALYSIS - UNIT ECONOMICS
+Variable,Base Case,Downside (-20%),Upside (+20%),Impact on LTV
+Guest Adoption Rate,55%,44%,66%,±20% on transaction revenue
+Average Guest Spend,$45,$36,$54,±20% on transaction revenue
+Premium Attach Rate,35%,28%,42%,±20% on premium revenue
+Annual Churn,10%,12%,8%,±40% on LTV (highly sensitive)
+
+PAYBACK PERIOD SCENARIOS
+Scenario,CAC,Monthly GP,Payback (months),Status
+Base Case,$3000,$1595,1.9 months,Excellent
+High CAC,$4500,$1595,2.8 months,Still very good
+Low Adoption,$3000,$1200,2.5 months,Good
+Worst Case,$4500,$1200,3.8 months,Acceptable
+
+BENCHMARKING
+Company/Metric,INNARA,Industry Benchmark,Source
+LTV:CAC,31.9x,3-5x,"OpenView SaaS Benchmarks, SaaS Capital"
+Payback Period,1.9 months,6-18 months,ChartMogul SaaS Metrics
+Gross Margin,90%,70-85%,SaaS Capital Survey
+Annual Churn,10%,<5% is good,Recurly Churn Report 2025
+CAC Efficiency,$3000,"Varies widely, $1k-10k+",Industry data
+
+MAGIC NUMBER (Sales Efficiency)
+Period,New ARR Added,S&M Spend (Prior Quarter),Magic Number,Interpretation
+Q1 2027,$50000,$25000,2.0,Excellent (>0.75 is good)
+Q2 2027,$75000,$30000,2.5,Excellent
+Q3 2027,$100000,$35000,2.9,Exceptional
+Q4 2027,$120000,$40000,3.0,Exceptional
+
+Notes: Magic Number = (Net New ARR × 4) / Prior Quarter S&M Spend
+Target: >0.75 is efficient, >1.0 is very efficient
+
+RULE OF 40
+Metric,Year 2027,Year 2028,Calculation
+Revenue Growth Rate,233%,200%,YoY growth
+EBITDA Margin,8.8%,49.3%,EBITDA / Revenue
+Rule of 40 Score,241.8%,249.3%,Growth + Margin
+Benchmark,>40% is healthy,>40% is healthy,✓ Far exceeds benchmark

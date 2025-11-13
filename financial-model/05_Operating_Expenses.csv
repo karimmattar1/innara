@@ -1,0 +1,137 @@
+OPERATING EXPENSES - 3 YEAR DETAILED BREAKDOWN
+
+YEAR 1 (2026) - $510000 TOTAL
+Category,Annual Amount,Monthly,FTE Count,Details
+PERSONNEL,$360000,$30000,6,
+Engineering (2 FTE),$180000,$15000,2,Full-stack developers @ $90k each
+Sales (1 FTE),$70000,$5833,1,Account executive @ $70k base
+Marketing (0.5 FTE),$40000,$3333,0.5,Part-time/contractor
+Operations/CS (0.5 FTE),$35000,$2917,0.5,Part-time customer success
+Founders (2),$35000,$2917,2,Minimal salary ($0-20k each)
+,,,,,
+TECHNOLOGY & INFRASTRUCTURE,$45000,$3750,,
+Cloud hosting (AWS/GCP),$18000,$1500,,$50/hotel × avg 25 hotels mid-year
+Software & tools,$12000,$1000,,Framer Motion APIs analytics
+Development tools,$15000,$1250,,"Licenses, testing, QA"
+,,,,,
+SALES & MARKETING,$75000,$6250,,
+Marketing campaigns,$30000,$2500,,"Digital ads, content, SEO"
+Industry events & conferences,$20000,$1667,,Trade shows (2-3/year)
+Sales tools (CRM etc.),$10000,$833,,"Salesforce, HubSpot"
+Travel & client meetings,$15000,$1250,,UAE/GCC outreach
+,,,,,
+LEGAL & OPERATIONS,$20000,$1667,,
+Legal & incorporation,$8000,$667,,"UAE company setup, contracts"
+Accounting & bookkeeping,$6000,$500,,Monthly accounting services
+Insurance,$4000,$333,,"Liability, E&O insurance"
+Office & admin,$2000,$167,,"Coworking, utilities"
+,,,,,
+CONTINGENCY,$10000,$833,,
+Buffer for unforeseen costs,$10000,$833,,2% of total budget
+,,,,,
+TOTAL 2026 OPEX,$510000,$42500,,✓ Matches deck
+
+YEAR 2 (2027) - $900000 TOTAL
+Category,Annual Amount,Change vs Y1,FTE Count,Details
+PERSONNEL,$660000,+$300000,10,Scale to 10 FTE
+Engineering (4 FTE),$360000,+$180000,4,Add 2 engineers for product development
+Sales (2 FTE),$140000,+$70000,2,Add 1 sales rep (target: 50 hotels)
+Marketing (1 FTE),$80000,+$40000,1,Full-time marketing manager
+Customer Success (1 FTE),$60000,+$25000,1,Dedicated CS for 50 hotels
+Operations (1 FTE),$65000,+$30000,1,"Finance, HR, ops manager"
+Founders (2),$55000,+$20000,2,Modest salary increase
+,,,,,
+TECHNOLOGY & INFRASTRUCTURE,$90000,+$45000,,Scale for 50 hotels
+Cloud hosting,$36000,+$18000,,$50/hotel × 60 avg hotels
+Software & tools,$24000,+$12000,,"More robust tools, APIs"
+Security & compliance,$30000,+$15000,,"PCI compliance, pen testing"
+,,,,,
+SALES & MARKETING,$120000,+$45000,,
+Marketing campaigns,$55000,+$25000,,Increased digital spend
+Events & conferences,$30000,+$10000,,More industry presence
+Sales tools & enablement,$20000,+$10000,,"Better CRM, proposal software"
+Travel,$15000,$0,,Regional expansion travel
+,,,,,
+LEGAL & OPERATIONS,$25000,+$5000,,
+Legal & compliance,$12000,+$4000,,"Contracts, regulatory"
+Accounting,$8000,+$2000,,More complex accounting
+Insurance,$5000,+$1000,,Higher coverage
+,,,,,
+CONTINGENCY,$5000,-$5000,,
+,,,,,
+TOTAL 2027 OPEX,$900000,+$390000,,✓ Matches deck
+
+YEAR 3 (2028) - $1500000 TOTAL
+Category,Annual Amount,Change vs Y2,FTE Count,Details
+PERSONNEL,$1100000,+$440000,18,Scale to 18 FTE
+Engineering (7 FTE),$630000,+$270000,7,"AI features, integrations"
+Sales (4 FTE),$280000,+$140000,4,Double sales team
+Marketing (2 FTE),$160000,+$80000,2,"Content, demand gen, partnerships"
+Customer Success (2 FTE),$120000,+$60000,2,Support 150 hotels
+Operations (2 FTE),$130000,+$65000,2,"Finance, HR, ops"
+Product Manager (1 FTE),$120000,+$120000,1,Dedicated PM
+Founders (2),$60000,+$5000,2,
+,,,,,
+TECHNOLOGY & INFRASTRUCTURE,$180000,+$90000,,
+Cloud hosting,$90000,+$54000,,$50/hotel × 150
+Software & tools,$45000,+$21000,,
+Security & compliance,$45000,+$15000,,
+,,,,,
+SALES & MARKETING,$180000,+$60000,,
+Marketing campaigns,$90000,+$35000,,
+Events & partnerships,$50000,+$20000,,
+Sales tools,$25000,+$5000,,
+Travel,$15000,$0,,
+,,,,,
+LEGAL & OPERATIONS,$35000,+$10000,,
+Legal & compliance,$17000,+$5000,,
+Accounting,$10000,+$2000,,
+Insurance,$6000,+$1000,,
+Office,$2000,$0,,
+,,,,,
+CONTINGENCY,$5000,$0,,
+,,,,,
+TOTAL 2028 OPEX,$1500000,+$600000,,✓ Matches deck
+
+3-YEAR SUMMARY
+Category,2026,2027,2028,Total 3-Year
+Personnel,$360000,$660000,$1100000,$2120000
+Technology,$45000,$90000,$180000,$315000
+Sales & Marketing,$75000,$120000,$180000,$375000
+Legal & Operations,$20000,$25000,$35000,$80000
+Contingency,$10000,$5000,$5000,$20000
+TOTAL OPEX,$510000,$900000,$1500000,$2910000
+
+HEADCOUNT GROWTH
+Role,2026,2027,2028,Growth Rate
+Engineering,2,4,7,250%
+Sales,1,2,4,300%
+Marketing,0.5,1,2,300%
+Customer Success,0.5,1,2,300%
+Operations,0.5,1,2,300%
+Product,0,0,1,New
+Founders,2,2,2,Stable
+TOTAL FTE,6,10,18,200%
+
+COST PER HOTEL
+Metric,2026,2027,2028,Trend
+Total OpEx,$510000,$900000,$1500000,
+Hotels (EOY),15,50,150,
+OpEx per Hotel (Annual),$34000,$18000,$10000,Improving efficiency
+Monthly Burn Rate,$42500,$75000,$125000,
+Revenue per Hotel (Annual),$19740,$19740,$19740,
+Break-even Hotels,26,46,76,"Based on revenue/hotel vs opex/hotel"
+
+PERSONNEL COSTS AS % OF REVENUE
+Year,Personnel Costs,Revenue,% of Revenue,Benchmark
+2026,$360000,$296100,121.6%,High (pre-revenue stage)
+2027,$660000,$987000,66.9%,Improving
+2028,$1100000,$2961000,37.1%,"Healthy (SaaS benchmark: 30-50%)"
+
+SALES & MARKETING EFFICIENCY
+Year,S&M Spend,New ARR,S&M as % Revenue,CAC Payback (months)
+2026,$75000,$296100,25.3%,N/A (first year)
+2027,$120000,$690900,12.2%,1.7
+2028,$180000,$1974000,6.1%,1.1
+
+Notes: S&M efficiency improving as revenue scales. Target <20% for healthy SaaS.
