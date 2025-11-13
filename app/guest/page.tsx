@@ -117,7 +117,7 @@ export default function GuestApp() {
           {view === 'room-service' && (
             <RoomServiceView
               onBack={() => setView('chat')}
-              onAddToCart={(item) => {
+              onAddToCart={(item: any) => {
                 setCartItems([item])
                 setTimeout(() => setView('checkout'), 800)
               }}
