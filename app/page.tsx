@@ -135,7 +135,7 @@ export default function LandingPage() {
                 transition={{ delay: 0.2 }}
                 className="inline-flex items-center gap-2 mb-8 px-6 py-3 backdrop-blur-xl bg-white/40 border border-white/40 rounded-full shadow-lg"
               >
-                <Sparkles className="w-5 h-5 text-navy/60" />
+                <Sparkles className="w-5 h-5 text-gold" />
                 <span className="text-navy font-semibold">Backed by AI • Trusted by 5-star hotels</span>
               </motion.div>
 
@@ -187,7 +187,7 @@ export default function LandingPage() {
                     transition={{ delay: 0.4 + i * 0.1 }}
                     className="backdrop-blur-xl bg-white/30 border border-white/40 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all"
                   >
-                    <metric.icon className="w-8 h-8 text-navy/60 mb-3 mx-auto" />
+                    <metric.icon className="w-8 h-8 text-gold mb-3 mx-auto" />
                     <div className="text-4xl font-bold text-navy mb-1">{metric.value}</div>
                     <div className="text-sm text-navy/70 font-medium">{metric.label}</div>
                   </motion.div>
@@ -249,7 +249,7 @@ export default function LandingPage() {
                       'Personalized recommendations'
                     ].map((feature, i) => (
                       <li key={i} className="flex items-center gap-3">
-                        <Check className="w-5 h-5 text-navy/60 flex-shrink-0" />
+                        <Check className="w-5 h-5 text-gold flex-shrink-0" />
                         <span className="text-navy/80">{feature}</span>
                       </li>
                     ))}
@@ -291,7 +291,7 @@ export default function LandingPage() {
                       'Revenue optimization'
                     ].map((feature, i) => (
                       <li key={i} className="flex items-center gap-3">
-                        <Check className="w-5 h-5 text-navy/60 flex-shrink-0" />
+                        <Check className="w-5 h-5 text-gold flex-shrink-0" />
                         <span className="text-navy/80">{feature}</span>
                       </li>
                     ))}
@@ -311,7 +311,7 @@ export default function LandingPage() {
               viewport={{ once: true }}
               className="backdrop-blur-xl bg-gradient-to-br from-navy/90 to-navy-dark/90 border border-white/20 rounded-3xl p-12 shadow-2xl text-center"
             >
-              <Sparkles className="w-16 h-16 text-white/80 mx-auto mb-6" />
+              <Sparkles className="w-16 h-16 text-gold mx-auto mb-6" />
               <h2 className="text-4xl md:text-5xl font-light text-white mb-6" style={{ fontFamily: 'Georgia, serif' }}>
                 Experience INNARA <span className="italic">Live</span>
               </h2>
@@ -321,7 +321,7 @@ export default function LandingPage() {
 
               <div className="grid md:grid-cols-2 gap-6">
                 <motion.div whileHover={{ scale: 1.05, y: -5 }} className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-8">
-                  <MessageSquare className="w-12 h-12 text-white/80 mb-4" />
+                  <MessageSquare className="w-12 h-12 text-gold mb-4" />
                   <h3 className="text-xl font-semibold text-white mb-3">Guest App</h3>
                   <p className="text-white/70 text-sm mb-6">Experience AI chat, room service, and more</p>
                   <Link
@@ -334,7 +334,7 @@ export default function LandingPage() {
                 </motion.div>
 
                 <motion.div whileHover={{ scale: 1.05, y: -5 }} className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-8">
-                  <BarChart3 className="w-12 h-12 text-white/80 mb-4" />
+                  <BarChart3 className="w-12 h-12 text-gold mb-4" />
                   <h3 className="text-xl font-semibold text-white mb-3">Staff Dashboard</h3>
                   <p className="text-white/70 text-sm mb-6">See real-time analytics and insights</p>
                   <Link
