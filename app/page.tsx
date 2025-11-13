@@ -112,7 +112,7 @@ export default function LandingPage() {
                 href="#waitlist"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-6 py-2.5 bg-gradient-to-r from-gold-light to-gold text-navy rounded-full font-semibold shadow-lg hover:shadow-glow-gold transition-all"
+                className="px-6 py-2.5 bg-navy text-white rounded-full font-semibold shadow-lg hover:bg-navy-hover transition-all"
               >
                 Join Waitlist
               </motion.a>
@@ -135,7 +135,7 @@ export default function LandingPage() {
                 transition={{ delay: 0.2 }}
                 className="inline-flex items-center gap-2 mb-8 px-6 py-3 backdrop-blur-xl bg-white/40 border border-white/40 rounded-full shadow-lg"
               >
-                <Sparkles className="w-5 h-5 text-gold" />
+                <Sparkles className="w-5 h-5 text-navy/60" />
                 <span className="text-navy font-semibold">Backed by AI • Trusted by 5-star hotels</span>
               </motion.div>
 
@@ -156,7 +156,7 @@ export default function LandingPage() {
                   href="#waitlist"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="group px-10 py-5 bg-gradient-to-r from-gold-light to-gold backdrop-blur-xl text-navy rounded-full font-semibold text-lg shadow-2xl hover:shadow-glow-gold-strong transition-all flex items-center justify-center gap-3"
+                  className="group px-10 py-5 bg-navy text-white rounded-full font-semibold text-lg shadow-2xl hover:bg-navy-hover transition-all flex items-center justify-center gap-3"
                 >
                   Join Waitlist
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -166,7 +166,7 @@ export default function LandingPage() {
                   href="#demo"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-10 py-5 backdrop-blur-xl bg-white/40 border-2 border-white/60 text-navy rounded-full font-semibold text-lg shadow-xl hover:bg-white/60 transition-all"
+                  className="px-10 py-5 backdrop-blur-xl bg-white/40 border-2 border-navy/30 text-navy rounded-full font-semibold text-lg shadow-xl hover:bg-white/60 hover:border-navy/50 transition-all"
                 >
                   View Live Demo
                 </motion.a>
@@ -187,7 +187,7 @@ export default function LandingPage() {
                     transition={{ delay: 0.4 + i * 0.1 }}
                     className="backdrop-blur-xl bg-white/30 border border-white/40 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all"
                   >
-                    <metric.icon className="w-8 h-8 text-gold mb-3 mx-auto" />
+                    <metric.icon className="w-8 h-8 text-navy/60 mb-3 mx-auto" />
                     <div className="text-4xl font-bold text-navy mb-1">{metric.value}</div>
                     <div className="text-sm text-navy/70 font-medium">{metric.label}</div>
                   </motion.div>
@@ -225,8 +225,8 @@ export default function LandingPage() {
                 <div className="absolute -inset-4 bg-gradient-to-r from-gold/20 to-gold/10 rounded-3xl opacity-0 group-hover:opacity-100 blur-2xl transition-all duration-500"></div>
                 <div className="relative backdrop-blur-xl bg-white/40 border border-white/40 rounded-3xl p-8 shadow-2xl hover:shadow-glow-gold transition-all">
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="w-14 h-14 bg-gradient-to-br from-gold-light to-gold rounded-2xl flex items-center justify-center shadow-lg">
-                      <MessageSquare className="w-7 h-7 text-navy" />
+                    <div className="w-14 h-14 bg-navy rounded-2xl flex items-center justify-center shadow-lg">
+                      <MessageSquare className="w-7 h-7 text-white" />
                     </div>
                     <div>
                       <h3 className="text-2xl font-semibold text-navy">For Guests</h3>
@@ -234,9 +234,9 @@ export default function LandingPage() {
                     </div>
                   </div>
 
-                  <div className="aspect-[9/16] bg-gradient-to-br from-navy/5 to-gold/5 rounded-2xl mb-6 flex items-center justify-center border border-white/40">
+                  <div className="aspect-[9/16] bg-gradient-to-br from-navy/5 to-navy/10 rounded-2xl mb-6 flex items-center justify-center border border-white/40">
                     <div className="text-center p-8">
-                      <Sparkles className="w-16 h-16 text-gold mx-auto mb-4 opacity-50" />
+                      <Sparkles className="w-16 h-16 text-navy/30 mx-auto mb-4 opacity-50" />
                       <p className="text-navy/50 text-sm italic">Screenshot preview</p>
                     </div>
                   </div>
@@ -249,7 +249,7 @@ export default function LandingPage() {
                       'Personalized recommendations'
                     ].map((feature, i) => (
                       <li key={i} className="flex items-center gap-3">
-                        <Check className="w-5 h-5 text-gold flex-shrink-0" />
+                        <Check className="w-5 h-5 text-navy/60 flex-shrink-0" />
                         <span className="text-navy/80">{feature}</span>
                       </li>
                     ))}
@@ -267,8 +267,8 @@ export default function LandingPage() {
                 <div className="absolute -inset-4 bg-gradient-to-r from-gold/10 to-gold/20 rounded-3xl opacity-0 group-hover:opacity-100 blur-2xl transition-all duration-500"></div>
                 <div className="relative backdrop-blur-xl bg-white/40 border border-white/40 rounded-3xl p-8 shadow-2xl hover:shadow-glow-gold transition-all">
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="w-14 h-14 bg-gradient-to-br from-gold-light to-gold rounded-2xl flex items-center justify-center shadow-lg">
-                      <BarChart3 className="w-7 h-7 text-navy" />
+                    <div className="w-14 h-14 bg-navy rounded-2xl flex items-center justify-center shadow-lg">
+                      <BarChart3 className="w-7 h-7 text-white" />
                     </div>
                     <div>
                       <h3 className="text-2xl font-semibold text-navy">For Hotels</h3>
@@ -276,9 +276,9 @@ export default function LandingPage() {
                     </div>
                   </div>
 
-                  <div className="aspect-video bg-gradient-to-br from-navy/5 to-gold/5 rounded-2xl mb-6 flex items-center justify-center border border-white/40">
+                  <div className="aspect-video bg-gradient-to-br from-navy/5 to-navy/10 rounded-2xl mb-6 flex items-center justify-center border border-white/40">
                     <div className="text-center p-8">
-                      <BarChart3 className="w-16 h-16 text-gold mx-auto mb-4 opacity-50" />
+                      <BarChart3 className="w-16 h-16 text-navy/30 mx-auto mb-4 opacity-50" />
                       <p className="text-navy/50 text-sm italic">Screenshot preview</p>
                     </div>
                   </div>
@@ -291,7 +291,7 @@ export default function LandingPage() {
                       'Revenue optimization'
                     ].map((feature, i) => (
                       <li key={i} className="flex items-center gap-3">
-                        <Check className="w-5 h-5 text-gold flex-shrink-0" />
+                        <Check className="w-5 h-5 text-navy/60 flex-shrink-0" />
                         <span className="text-navy/80">{feature}</span>
                       </li>
                     ))}
@@ -311,7 +311,7 @@ export default function LandingPage() {
               viewport={{ once: true }}
               className="backdrop-blur-xl bg-gradient-to-br from-navy/90 to-navy-dark/90 border border-white/20 rounded-3xl p-12 shadow-2xl text-center"
             >
-              <Sparkles className="w-16 h-16 text-gold mx-auto mb-6" />
+              <Sparkles className="w-16 h-16 text-white/80 mx-auto mb-6" />
               <h2 className="text-4xl md:text-5xl font-light text-white mb-6" style={{ fontFamily: 'Georgia, serif' }}>
                 Experience INARA <span className="italic">Live</span>
               </h2>
@@ -321,12 +321,12 @@ export default function LandingPage() {
 
               <div className="grid md:grid-cols-2 gap-6">
                 <motion.div whileHover={{ scale: 1.05, y: -5 }} className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-8">
-                  <MessageSquare className="w-12 h-12 text-gold mb-4" />
+                  <MessageSquare className="w-12 h-12 text-white/80 mb-4" />
                   <h3 className="text-xl font-semibold text-white mb-3">Guest App</h3>
                   <p className="text-white/70 text-sm mb-6">Experience AI chat, room service, and more</p>
                   <Link
                     href="/guest"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-gold-light to-gold text-navy rounded-full font-semibold hover:shadow-glow-gold transition-all"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-white text-navy rounded-full font-semibold hover:bg-white/90 transition-all"
                   >
                     Try Guest App
                     <ArrowRight className="w-4 h-4" />
@@ -334,12 +334,12 @@ export default function LandingPage() {
                 </motion.div>
 
                 <motion.div whileHover={{ scale: 1.05, y: -5 }} className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-8">
-                  <BarChart3 className="w-12 h-12 text-gold mb-4" />
+                  <BarChart3 className="w-12 h-12 text-white/80 mb-4" />
                   <h3 className="text-xl font-semibold text-white mb-3">Staff Dashboard</h3>
                   <p className="text-white/70 text-sm mb-6">See real-time analytics and insights</p>
                   <Link
                     href="/dashboard"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-gold-light to-gold text-navy rounded-full font-semibold hover:shadow-glow-gold transition-all"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-white text-navy rounded-full font-semibold hover:bg-white/90 transition-all"
                   >
                     Try Dashboard
                     <ArrowRight className="w-4 h-4" />
@@ -380,7 +380,7 @@ export default function LandingPage() {
                   onClick={() => setWaitlistTab('guest')}
                   className={`flex-1 py-3 rounded-full font-semibold transition-all ${
                     waitlistTab === 'guest'
-                      ? 'bg-gradient-to-r from-gold-light to-gold text-navy shadow-lg'
+                      ? 'bg-navy text-white shadow-lg'
                       : 'text-navy/60 hover:text-navy'
                   }`}
                 >
@@ -390,7 +390,7 @@ export default function LandingPage() {
                   onClick={() => setWaitlistTab('hotel')}
                   className={`flex-1 py-3 rounded-full font-semibold transition-all ${
                     waitlistTab === 'hotel'
-                      ? 'bg-gradient-to-r from-gold-light to-gold text-navy shadow-lg'
+                      ? 'bg-navy text-white shadow-lg'
                       : 'text-navy/60 hover:text-navy'
                   }`}
                 >
@@ -444,11 +444,11 @@ export default function LandingPage() {
                       disabled={isSubmitting}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="w-full py-5 bg-gradient-to-r from-gold-light to-gold text-navy rounded-full font-bold text-lg shadow-xl hover:shadow-glow-gold-strong transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                      className="w-full py-5 bg-navy text-white rounded-full font-bold text-lg shadow-xl hover:bg-navy-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
                     >
                       {isSubmitting ? (
                         <>
-                          <div className="w-5 h-5 border-2 border-navy/30 border-t-navy rounded-full animate-spin" />
+                          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                           Joining...
                         </>
                       ) : (
@@ -474,8 +474,8 @@ export default function LandingPage() {
                     exit={{ opacity: 0, scale: 0.9 }}
                     className="text-center py-12"
                   >
-                    <div className="w-20 h-20 bg-gradient-to-r from-gold-light to-gold rounded-full flex items-center justify-center mx-auto mb-6 shadow-glow-gold-strong">
-                      <Check className="w-10 h-10 text-navy" />
+                    <div className="w-20 h-20 bg-navy rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
+                      <Check className="w-10 h-10 text-white" />
                     </div>
                     <h3 className="text-3xl font-semibold text-navy mb-3">Welcome to INARA!</h3>
                     <p className="text-lg text-navy/70">
@@ -501,9 +501,9 @@ export default function LandingPage() {
               </div>
 
               <div className="flex items-center gap-8 text-sm text-white/70">
-                <a href="/guest" className="hover:text-gold transition-colors">Guest Demo</a>
-                <a href="/dashboard" className="hover:text-gold transition-colors">Dashboard Demo</a>
-                <a href="#waitlist" className="hover:text-gold transition-colors">Waitlist</a>
+                <a href="/guest" className="hover:text-white transition-colors">Guest Demo</a>
+                <a href="/dashboard" className="hover:text-white transition-colors">Dashboard Demo</a>
+                <a href="#waitlist" className="hover:text-white transition-colors">Waitlist</a>
               </div>
 
               <div className="text-sm text-white/50">
