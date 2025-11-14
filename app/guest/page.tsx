@@ -204,25 +204,22 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick }: any) {
         <p className="text-xs text-navy/60">How can we help you today?</p>
       </div>
 
-      {/* Service Tiles */}
-      <div className="px-4 py-3 grid grid-cols-3 gap-3">
+      {/* Service Tiles - 2x3 Grid with better spacing */}
+      <div className="flex-1 px-6 py-6 grid grid-cols-2 gap-4 content-start">
         {popularServices.map((service) => (
           <button
             key={service.value}
             onClick={() => onServiceClick(service.value)}
-            className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-3 flex flex-col items-center gap-2 hover:bg-white/20 hover:border-gold/50 hover:scale-105 transition-all shadow-lg"
+            className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 flex flex-col items-center gap-3 hover:bg-white/20 hover:border-gold/50 hover:scale-105 transition-all shadow-lg"
           >
-            <service.icon className="w-6 h-6 text-gold" />
-            <span className="text-[10px] text-navy text-center leading-tight font-medium">{service.label}</span>
+            <service.icon className="w-8 h-8 text-gold" />
+            <span className="text-xs text-navy text-center leading-tight font-medium">{service.label}</span>
           </button>
         ))}
       </div>
 
-      {/* Spacer to push chat input to bottom when no messages */}
-      {step === 0 && <div className="flex-1"></div>}
-
-      {/* Chat Messages - Scrollable */}
-      <div className={`overflow-y-auto px-4 py-3 space-y-3 ${step >= 1 ? 'flex-1' : ''} pb-28`}>
+      {/* Chat Messages - Only show when active */}
+      <div className={`overflow-y-auto px-4 space-y-3 ${step >= 1 ? 'max-h-48' : 'hidden'} pb-2`}>
         {step >= 1 && (
           <motion.div
             initial={{ y: 20, opacity: 0 }}
@@ -365,18 +362,18 @@ function ExploreView({ onServiceClick, onNavClick }: any) {
       </div>
 
       {/* Services Grid - Scrollable */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 pb-24">
-        <div className="grid grid-cols-3 gap-3 mb-6">
+      <div className="flex-1 overflow-y-auto px-4 py-4 pb-20">
+        <div className="grid grid-cols-2 gap-4 mb-6">
           {allServices.map((service) => (
             <button
               key={service.value}
               onClick={() => onServiceClick(service.value)}
-              className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-3 flex flex-col items-center gap-2 hover:bg-white/15 hover:border-gold hover:scale-105 transition-all shadow-lg"
+              className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-5 flex flex-col items-center gap-3 hover:bg-white/15 hover:border-gold hover:scale-105 transition-all shadow-lg"
             >
               <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${service.color} flex items-center justify-center shadow-lg`}>
                 <service.icon className="w-6 h-6 text-white" />
               </div>
-              <span className="text-[10px] text-navy text-center leading-tight font-medium">{service.label}</span>
+              <span className="text-xs text-navy text-center leading-tight font-medium">{service.label}</span>
             </button>
           ))}
         </div>
@@ -451,7 +448,7 @@ function RequestsView({ onNavClick }: any) {
       </div>
 
       {/* Requests List - Scrollable */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 pb-24 space-y-3">
+      <div className="flex-1 overflow-y-auto px-4 py-4 pb-20 space-y-3">
         {requests.map((request) => (
           <div key={request.id} className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-4 shadow-lg">
             <div className="flex items-start gap-3">
@@ -519,7 +516,7 @@ function ProfileView({ onNavClick }: any) {
       </div>
 
       {/* Settings List - Scrollable */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 pb-24 space-y-3">
+      <div className="flex-1 overflow-y-auto px-4 py-4 pb-20 space-y-3">
         <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-4 shadow-lg">
           <h3 className="text-sm font-semibold text-navy mb-1">Preferences</h3>
           <p className="text-xs text-navy/60">Manage your stay preferences</p>
@@ -587,7 +584,7 @@ function RoomServiceView({ onBack, onAddToCart }: any) {
       </div>
 
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto pb-32">
+      <div className="flex-1 overflow-y-auto pb-20">
         <div className="px-5 pt-4">
           <div className="bg-gold/10 border-l-4 border-gold p-3 rounded-lg mb-4 flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-gold flex-shrink-0" />
