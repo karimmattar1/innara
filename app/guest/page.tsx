@@ -197,29 +197,31 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick }: any) {
   ]
 
   return (
-    <div className="relative flex flex-col h-full">
+    <div className="flex flex-col h-full">
       {/* Welcome Section */}
       <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0">
         <h1 className="text-lg font-semibold text-navy mb-1">Welcome back, Ahmed</h1>
         <p className="text-xs text-navy/60">How can we help you today?</p>
       </div>
 
-      {/* Service Tiles - 2x3 Grid with better spacing */}
-      <div className="flex-1 px-6 py-6 grid grid-cols-2 gap-4 content-start">
-        {popularServices.map((service) => (
-          <button
-            key={service.value}
-            onClick={() => onServiceClick(service.value)}
-            className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 flex flex-col items-center gap-3 hover:bg-white/20 hover:border-gold/50 hover:scale-105 transition-all shadow-lg"
-          >
-            <service.icon className="w-8 h-8 text-gold" />
-            <span className="text-xs text-navy text-center leading-tight font-medium">{service.label}</span>
-          </button>
-        ))}
-      </div>
+      {/* Scrollable Content Area */}
+      <div className="flex-1 overflow-y-auto">
+        {/* Service Tiles - 2x3 Grid */}
+        <div className="px-6 py-6 grid grid-cols-2 gap-4">
+          {popularServices.map((service) => (
+            <button
+              key={service.value}
+              onClick={() => onServiceClick(service.value)}
+              className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 flex flex-col items-center gap-3 hover:bg-white/20 hover:border-gold/50 hover:scale-105 transition-all shadow-lg h-28"
+            >
+              <service.icon className="w-8 h-8 text-gold" />
+              <span className="text-xs text-navy text-center leading-tight font-medium">{service.label}</span>
+            </button>
+          ))}
+        </div>
 
-      {/* Chat Messages - Only show when active */}
-      <div className={`overflow-y-auto px-4 space-y-3 ${step >= 1 ? 'max-h-48' : 'hidden'} pb-2`}>
+        {/* Chat Messages - Only show when active */}
+        <div className={`px-4 space-y-3 ${step >= 1 ? 'block' : 'hidden'} pb-4`}>
         {step >= 1 && (
           <motion.div
             initial={{ y: 20, opacity: 0 }}
@@ -301,9 +303,10 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick }: any) {
           </motion.div>
         )}
       </div>
+      </div>
 
       {/* Bottom Fixed Chat Input */}
-      <div className="absolute bottom-16 left-0 right-0 px-4 py-2 backdrop-blur-xl bg-white/10 border-t border-white/20 z-10">
+      <div className="flex-shrink-0 px-4 py-2 backdrop-blur-xl bg-white/10 border-t border-white/20">
         <div className="relative">
           <input
             type="text"
@@ -318,7 +321,7 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick }: any) {
       </div>
 
       {/* Bottom Navigation - Glassy */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2 z-10">
+      <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2">
         <button className="flex flex-col items-center gap-0.5 py-2 text-gold">
           <Sparkles className="w-5 h-5" />
           <span className="text-[10px] font-medium">Concierge</span>
@@ -354,7 +357,7 @@ function ExploreView({ onServiceClick, onNavClick }: any) {
   ]
 
   return (
-    <div className="relative flex flex-col h-full">
+    <div className="flex flex-col h-full">
       {/* Header */}
       <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0">
         <h1 className="text-lg font-semibold text-navy mb-1">Explore Services</h1>
@@ -362,7 +365,7 @@ function ExploreView({ onServiceClick, onNavClick }: any) {
       </div>
 
       {/* Services Grid - Scrollable */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 pb-20">
+      <div className="flex-1 overflow-y-auto px-4 py-4">
         <div className="grid grid-cols-2 gap-4 mb-6">
           {allServices.map((service) => (
             <button
@@ -411,7 +414,7 @@ function ExploreView({ onServiceClick, onNavClick }: any) {
       </div>
 
       {/* Bottom Navigation - Glassy */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2 z-10">
+      <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2">
         <button onClick={() => onNavClick('concierge')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
           <Sparkles className="w-5 h-5" />
           <span className="text-[10px] font-medium">Concierge</span>
@@ -440,7 +443,7 @@ function RequestsView({ onNavClick }: any) {
   ]
 
   return (
-    <div className="relative flex flex-col h-full">
+    <div className="flex flex-col h-full">
       {/* Header */}
       <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0">
         <h1 className="text-lg font-semibold text-navy mb-1">Your Requests</h1>
@@ -448,7 +451,7 @@ function RequestsView({ onNavClick }: any) {
       </div>
 
       {/* Requests List - Scrollable */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 pb-20 space-y-3">
+      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
         {requests.map((request) => (
           <div key={request.id} className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-4 shadow-lg">
             <div className="flex items-start gap-3">
@@ -477,7 +480,7 @@ function RequestsView({ onNavClick }: any) {
       </div>
 
       {/* Bottom Navigation - Glassy */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2 z-10">
+      <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2">
         <button onClick={() => onNavClick('concierge')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
           <Sparkles className="w-5 h-5" />
           <span className="text-[10px] font-medium">Concierge</span>
@@ -501,7 +504,7 @@ function RequestsView({ onNavClick }: any) {
 
 function ProfileView({ onNavClick }: any) {
   return (
-    <div className="relative flex flex-col h-full">
+    <div className="flex flex-col h-full">
       {/* Header */}
       <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0">
         <div className="flex items-center gap-3">
@@ -516,7 +519,7 @@ function ProfileView({ onNavClick }: any) {
       </div>
 
       {/* Settings List - Scrollable */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 pb-20 space-y-3">
+      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
         <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-4 shadow-lg">
           <h3 className="text-sm font-semibold text-navy mb-1">Preferences</h3>
           <p className="text-xs text-navy/60">Manage your stay preferences</p>
@@ -536,7 +539,7 @@ function ProfileView({ onNavClick }: any) {
       </div>
 
       {/* Bottom Navigation - Glassy */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2 z-10">
+      <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2">
         <button onClick={() => onNavClick('concierge')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
           <Sparkles className="w-5 h-5" />
           <span className="text-[10px] font-medium">Concierge</span>
@@ -571,9 +574,9 @@ function RoomServiceView({ onBack, onAddToCart }: any) {
   }
 
   return (
-    <div className="relative flex flex-col h-full">
+    <div className="flex flex-col h-full">
       {/* Header with Back Button */}
-      <div className="sticky top-0 bg-white border-b border-gray-200 px-4 py-3 flex items-center gap-3 z-10">
+      <div className="flex-shrink-0 bg-white border-b border-gray-200 px-4 py-3 flex items-center gap-3">
         <button onClick={onBack} className="flex items-center gap-1 text-navy hover:text-gold transition-colors">
           <ChevronLeft className="w-5 h-5" />
         </button>
@@ -584,7 +587,7 @@ function RoomServiceView({ onBack, onAddToCart }: any) {
       </div>
 
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto pb-20">
+      <div className="flex-1 overflow-y-auto">
         <div className="px-5 pt-4">
           <div className="bg-gold/10 border-l-4 border-gold p-3 rounded-lg mb-4 flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-gold flex-shrink-0" />
@@ -628,7 +631,7 @@ function RoomServiceView({ onBack, onAddToCart }: any) {
       </div>
 
       {/* Bottom Navigation - Glassy */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2 z-10">
+      <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2">
         <button onClick={onBack} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
           <Sparkles className="w-5 h-5" />
           <span className="text-[10px] font-medium">Concierge</span>
