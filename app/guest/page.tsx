@@ -111,15 +111,15 @@ export default function GuestApp() {
                     <span className="text-3xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INNARA</span>
                   </div>
                   <span className="text-sm text-gold font-semibold tracking-wide">Room 1204</span>
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gold-light to-gold flex items-center justify-center text-white text-sm font-semibold shadow-lg">
-                    SA
+                  <div className="w-10 h-10 rounded-full bg-navy flex items-center justify-center text-white text-sm font-semibold shadow-lg border-2 border-gold/30">
+                    AA
                   </div>
                 </div>
 
                 {/* Welcome Section */}
-                <div className="px-5 py-8">
-                  <h1 className="text-2xl font-semibold text-navy mb-2">Welcome back, Sarah</h1>
-                  <p className="text-sm text-navy/60">How can we help you today?</p>
+                <div className="px-5 py-6">
+                  <h1 className="text-xl font-semibold text-navy mb-1">Welcome back, Ahmed</h1>
+                  <p className="text-xs text-navy/60">How can we help you today?</p>
                 </div>
 
                 {/* Main Content */}
@@ -174,7 +174,7 @@ function ChatView({ step, nextStep, onRoomServiceClick }: any) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-t-[32px] -mt-6 min-h-[calc(100vh-200px)] p-5 pb-24 shadow-2xl"
+      className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-t-[32px] -mt-6 p-5 pb-6 shadow-2xl"
     >
       {/* Chat Messages */}
       <div className="space-y-4 mb-6">
@@ -204,7 +204,7 @@ function ChatView({ step, nextStep, onRoomServiceClick }: any) {
                     AI
                   </div>
                   <div className="bg-gradient-to-br from-gold-light to-gold text-white px-4 py-3 rounded-2xl rounded-bl-md max-w-[85%] shadow-2xl">
-                    <p>Of course, Sarah! I'll send housekeeping to Room 1204 right away. 🧹</p>
+                    <p>Of course, Ahmed! I'll send housekeeping to Room 1204 right away. 🧹</p>
                     <p className="mt-2">When would you like them to arrive?</p>
                   </div>
                 </div>
@@ -281,8 +281,8 @@ function ChatView({ step, nextStep, onRoomServiceClick }: any) {
           transition={{ delay: 0.5 }}
           className="mt-8"
         >
-          <h3 className="text-lg font-semibold mb-3 text-navy">Quick Actions</h3>
-          <div className="grid grid-cols-4 gap-3">
+          <h3 className="text-sm font-semibold mb-2 text-navy">Quick Actions</h3>
+          <div className="grid grid-cols-4 gap-2">
             <ActionButton icon={Home} label="Housekeeping" badge />
             <ActionButton icon={UtensilsCrossed} label="Room Service" highlight onClick={onRoomServiceClick} />
             <ActionButton icon={Car} label="Valet" />
@@ -316,16 +316,16 @@ function RoomServiceView({ onBack, onAddToCart }: any) {
       animate={{ y: 0 }}
       exit={{ y: '100%' }}
       transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-      className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-t-[32px] -mt-6 min-h-[calc(100vh-200px)] pb-24 shadow-2xl"
+      className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-t-[32px] -mt-6 pb-20 shadow-2xl"
     >
-      <button onClick={onBack} className="flex items-center gap-1 p-5 text-white hover:text-gold transition-colors">
+      <button onClick={onBack} className="flex items-center gap-1 p-4 text-white hover:text-gold transition-colors">
         <ChevronLeft className="w-5 h-5" />
         <span className="text-sm font-medium">Back</span>
       </button>
 
       <div className="px-5">
-        <h2 className="text-2xl font-semibold mb-1 text-white">Room Service</h2>
-        <p className="text-sm text-white/60 mb-4">Available 24/7</p>
+        <h2 className="text-xl font-semibold mb-1 text-white">Room Service</h2>
+        <p className="text-xs text-white/60 mb-3">Available 24/7</p>
 
         <div className="backdrop-blur-xl bg-gold/20 border-l-4 border-gold p-3 rounded-lg mb-4 flex items-center gap-2 shadow-lg">
           <Sparkles className="w-4 h-4 text-gold flex-shrink-0" />
@@ -494,10 +494,10 @@ function TypingIndicator() {
 
 function ActionButton({ icon: Icon, label, badge, highlight, onClick }: any) {
   return (
-    <button onClick={onClick} className={`relative aspect-square p-3 rounded-3xl border flex flex-col items-center justify-center gap-2 transition-all backdrop-blur-xl shadow-lg ${highlight ? 'bg-gold/20 border-gold shadow-[0_0_30px_rgba(189,155,48,0.4)]' : 'bg-white/10 border-white/20 hover:bg-white/15 hover:border-gold hover:shadow-xl hover:-translate-y-1'}`}>
-      {badge && <div className="absolute top-2 right-2 w-2.5 h-2.5 bg-green-400 rounded-full shadow-lg" />}
-      <Icon className="w-6 h-6 text-gold" />
-      <span className="text-xs text-navy text-center leading-tight font-medium">{label}</span>
+    <button onClick={onClick} className={`relative aspect-square p-2 rounded-2xl border flex flex-col items-center justify-center gap-1 transition-all backdrop-blur-xl shadow-lg ${highlight ? 'bg-gold/20 border-gold shadow-[0_0_30px_rgba(189,155,48,0.4)]' : 'bg-white/10 border-white/20 hover:bg-white/15 hover:border-gold hover:shadow-xl hover:-translate-y-1'}`}>
+      {badge && <div className="absolute top-1 right-1 w-2 h-2 bg-green-400 rounded-full shadow-lg" />}
+      <Icon className="w-5 h-5 text-gold" />
+      <span className="text-[10px] text-navy text-center leading-tight font-medium">{label}</span>
     </button>
   )
 }
