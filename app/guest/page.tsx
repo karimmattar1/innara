@@ -365,51 +365,18 @@ function ExploreView({ onServiceClick, onNavClick }: any) {
       </div>
 
       {/* Services Grid - Scrollable */}
-      <div className="flex-1 overflow-y-auto px-4 py-4">
-        <div className="grid grid-cols-2 gap-4 mb-6 auto-rows-fr">
+      <div className="flex-1 overflow-y-auto flex flex-col">
+        <div className="px-6 py-6 grid grid-cols-2 gap-4 flex-1 content-center">
           {allServices.map((service) => (
             <button
               key={service.value}
               onClick={() => onServiceClick(service.value)}
-              className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-5 flex flex-col items-center justify-center gap-3 hover:bg-white/15 hover:border-gold hover:scale-105 transition-all shadow-lg aspect-square"
+              className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 flex flex-col items-center justify-center gap-3 hover:bg-white/20 hover:border-gold/50 hover:scale-105 transition-all shadow-lg aspect-square"
             >
-              <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${service.color} flex items-center justify-center shadow-lg`}>
-                <service.icon className="w-6 h-6 text-white" />
-              </div>
+              <service.icon className="w-8 h-8 text-gold" />
               <span className="text-xs text-navy text-center leading-tight font-medium">{service.label}</span>
             </button>
           ))}
-        </div>
-
-        {/* Promotions Section */}
-        <div className="mt-6">
-          <h2 className="text-sm font-semibold text-navy mb-3 px-1">Special Offers</h2>
-          <div className="space-y-3">
-            <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-4 shadow-lg">
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gold-light to-gold flex items-center justify-center flex-shrink-0">
-                  <Sparkles className="w-5 h-5 text-white" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-sm font-semibold text-navy">Spa Package - 20% Off</h3>
-                  <p className="text-xs text-navy/60 mt-1">Book any spa treatment and get 20% off your next visit</p>
-                  <button className="mt-2 text-xs font-semibold text-gold">Learn More →</button>
-                </div>
-              </div>
-            </div>
-            <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-4 shadow-lg">
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-cyan-500 flex items-center justify-center flex-shrink-0">
-                  <UtensilsCrossed className="w-5 h-5 text-white" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-sm font-semibold text-navy">Late Night Dining</h3>
-                  <p className="text-xs text-navy/60 mt-1">Order room service after 10 PM and get a free dessert</p>
-                  <button className="mt-2 text-xs font-semibold text-gold">Order Now →</button>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -451,32 +418,34 @@ function RequestsView({ onNavClick }: any) {
       </div>
 
       {/* Requests List - Scrollable */}
-      <div className="flex-1 overflow-y-auto px-4 py-6 flex flex-col gap-3">
-        {requests.map((request) => (
-          <div key={request.id} className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-5 shadow-lg">
-            <div className="flex items-start gap-3">
-              <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${request.color} flex items-center justify-center flex-shrink-0`}>
-                <request.icon className="w-6 h-6 text-white" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-sm font-semibold text-navy">{request.service}</h3>
-                <p className="text-xs text-navy/60 mt-1">{request.status}</p>
-                <div className="mt-2 inline-block px-2 py-1 rounded-full bg-gold/20 border border-gold/30 text-xs font-semibold text-gold">
-                  {request.time}
+      <div className="flex-1 overflow-y-auto flex flex-col">
+        <div className="px-6 py-6 flex flex-col gap-4 flex-1">
+          {requests.map((request) => (
+            <div key={request.id} className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 shadow-lg">
+              <div className="flex items-start gap-4">
+                <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${request.color} flex items-center justify-center flex-shrink-0`}>
+                  <request.icon className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-sm font-semibold text-navy">{request.service}</h3>
+                  <p className="text-xs text-navy/60 mt-1">{request.status}</p>
+                  <div className="mt-2 inline-block px-3 py-1 rounded-full bg-gold/20 border border-gold/30 text-xs font-semibold text-gold">
+                    {request.time}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
 
-        {requests.length === 0 && (
-          <div className="text-center py-12 flex-1 flex flex-col items-center justify-center">
-            <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-3">
-              <ClipboardList className="w-8 h-8 text-navy/40" />
+          {requests.length === 0 && (
+            <div className="text-center py-12 flex-1 flex flex-col items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-3">
+                <ClipboardList className="w-8 h-8 text-navy/40" />
+              </div>
+              <p className="text-sm text-navy/60">No active requests</p>
             </div>
-            <p className="text-sm text-navy/60">No active requests</p>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* Bottom Navigation - Glassy */}
@@ -519,22 +488,24 @@ function ProfileView({ onNavClick }: any) {
       </div>
 
       {/* Settings List - Scrollable */}
-      <div className="flex-1 overflow-y-auto px-4 py-6 flex flex-col gap-3">
-        <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-5 shadow-lg">
-          <h3 className="text-sm font-semibold text-navy mb-1">Preferences</h3>
-          <p className="text-xs text-navy/60">Manage your stay preferences</p>
-        </div>
-        <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-5 shadow-lg">
-          <h3 className="text-sm font-semibold text-navy mb-1">Payment Methods</h3>
-          <p className="text-xs text-navy/60">Manage billing and payments</p>
-        </div>
-        <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-5 shadow-lg">
-          <h3 className="text-sm font-semibold text-navy mb-1">Notifications</h3>
-          <p className="text-xs text-navy/60">Configure alerts and updates</p>
-        </div>
-        <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-5 shadow-lg">
-          <h3 className="text-sm font-semibold text-navy mb-1">Support</h3>
-          <p className="text-xs text-navy/60">Get help and contact us</p>
+      <div className="flex-1 overflow-y-auto flex flex-col">
+        <div className="px-6 py-6 flex flex-col gap-4 flex-1">
+          <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 shadow-lg">
+            <h3 className="text-sm font-semibold text-navy mb-1">Preferences</h3>
+            <p className="text-xs text-navy/60">Manage your stay preferences</p>
+          </div>
+          <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 shadow-lg">
+            <h3 className="text-sm font-semibold text-navy mb-1">Payment Methods</h3>
+            <p className="text-xs text-navy/60">Manage billing and payments</p>
+          </div>
+          <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 shadow-lg">
+            <h3 className="text-sm font-semibold text-navy mb-1">Notifications</h3>
+            <p className="text-xs text-navy/60">Configure alerts and updates</p>
+          </div>
+          <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 shadow-lg">
+            <h3 className="text-sm font-semibold text-navy mb-1">Support</h3>
+            <p className="text-xs text-navy/60">Get help and contact us</p>
+          </div>
         </div>
       </div>
 
@@ -587,46 +558,46 @@ function RoomServiceView({ onBack, onAddToCart }: any) {
       </div>
 
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto">
-        <div className="px-5 pt-4">
+      <div className="flex-1 overflow-y-auto flex flex-col">
+        <div className="px-6 py-6 flex-1">
           <div className="bg-gold/10 border-l-4 border-gold p-3 rounded-lg mb-4 flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-gold flex-shrink-0" />
             <span className="text-sm text-navy">💡 Popular right now: Caesar Salad</span>
           </div>
-        </div>
 
-        <div className="flex gap-2 overflow-x-auto mb-4 pb-2 -mx-5 px-5">
-          {['Popular', 'Breakfast', 'Lunch', 'Dinner', 'Drinks', 'Desserts'].map((cat, i) => (
-            <button key={cat} className={`px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap border shadow-lg transition-all hover:scale-105 ${i === 0 ? 'bg-gradient-to-r from-gold-light to-gold text-white border-gold' : 'backdrop-blur-xl bg-white/10 text-navy border-white/20 hover:bg-white/15'}`}>
-              {cat}
-            </button>
-          ))}
-        </div>
+          <div className="flex gap-2 overflow-x-auto mb-4 pb-2">
+            {['Popular', 'Breakfast', 'Lunch', 'Dinner', 'Drinks', 'Desserts'].map((cat, i) => (
+              <button key={cat} className={`px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap border shadow-lg transition-all hover:scale-105 ${i === 0 ? 'bg-gradient-to-r from-gold-light to-gold text-white border-gold' : 'backdrop-blur-xl bg-white/10 text-navy border-white/20 hover:bg-white/15'}`}>
+                {cat}
+              </button>
+            ))}
+          </div>
 
-        <div className="space-y-4">
-          <FoodCard
-            name="Caesar Salad"
-            description="Romaine, croutons, parmesan"
-            price={12}
-            image="https://images.unsplash.com/photo-1546793665-c74683f339c1?w=400&q=80"
-            aiPick
-            added={added}
-            onAdd={handleAdd}
-          />
-          <FoodCard
-            name="Margherita Pizza"
-            description="Tomato, mozzarella, basil"
-            price={18}
-            image="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&q=80"
-            onAdd={() => {}}
-          />
-          <FoodCard
-            name="Grilled Salmon"
-            description="Asparagus, herb butter"
-            price={24}
-            image="https://images.unsplash.com/photo-1485921325833-c519f76c4927?w=400&q=80"
-            onAdd={() => {}}
-          />
+          <div className="space-y-4">
+            <FoodCard
+              name="Caesar Salad"
+              description="Romaine, croutons, parmesan"
+              price={12}
+              image="https://images.unsplash.com/photo-1546793665-c74683f339c1?w=400&q=80"
+              aiPick
+              added={added}
+              onAdd={handleAdd}
+            />
+            <FoodCard
+              name="Margherita Pizza"
+              description="Tomato, mozzarella, basil"
+              price={18}
+              image="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&q=80"
+              onAdd={() => {}}
+            />
+            <FoodCard
+              name="Grilled Salmon"
+              description="Asparagus, herb butter"
+              price={24}
+              image="https://images.unsplash.com/photo-1485921325833-c519f76c4927?w=400&q=80"
+              onAdd={() => {}}
+            />
+          </div>
         </div>
       </div>
 
