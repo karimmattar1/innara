@@ -105,7 +105,7 @@ export default function GuestApp() {
               {/* Content */}
               <div className="relative z-10">
                 {/* Top Bar - Transparent & Blurred */}
-                <div className="sticky top-0 z-20 h-[60px] backdrop-blur-2xl bg-white/20 border-b border-white/20 px-4 flex items-center justify-between">
+                <div className="sticky top-0 z-20 h-[70px] backdrop-blur-2xl bg-white/20 border-b border-white/20 px-4 flex items-center justify-between pt-3">
                   <div className="flex items-center gap-2">
                     <Image src="/logo.png" alt="INNARA" width={40} height={40} className="rounded-full" />
                     <span className="text-xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INNARA</span>
@@ -117,7 +117,7 @@ export default function GuestApp() {
                 </div>
 
                 {/* Main Content - Full Height */}
-                <div className="flex flex-col h-[calc(100%-60px)]">
+                <div className="flex flex-col h-[calc(100%-70px)]">
                   <AnimatePresence mode="wait">
                   {view === 'concierge' && (
                     <ConciergeView
@@ -208,18 +208,16 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick }: any) {
           <button
             key={service.value}
             onClick={() => onServiceClick(service.value)}
-            className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-3 flex flex-col items-center gap-2 hover:bg-white/15 hover:border-gold hover:scale-105 transition-all shadow-lg"
+            className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-4 flex flex-col items-center gap-2 hover:bg-white/20 hover:border-gold/50 hover:scale-105 transition-all shadow-lg"
           >
-            <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${service.color} flex items-center justify-center shadow-lg`}>
-              <service.icon className="w-6 h-6 text-white" />
-            </div>
+            <service.icon className="w-7 h-7 text-gold" />
             <span className="text-[10px] text-navy text-center leading-tight font-medium">{service.label}</span>
           </button>
         ))}
       </div>
 
       {/* Chat Messages - Scrollable */}
-      <div className="flex-1 overflow-y-auto px-4 space-y-3 pb-24">
+      <div className="flex-1 overflow-y-auto px-4 space-y-3 pb-32">
         {step >= 1 && (
           <motion.div
             initial={{ y: 20, opacity: 0 }}
@@ -303,15 +301,15 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick }: any) {
       </div>
 
       {/* Bottom Fixed Chat Input */}
-      <div className="absolute bottom-16 left-0 right-0 px-4 py-3 bg-white/80 backdrop-blur-xl border-t border-gray-200 z-10">
-        <div className="relative max-w-md mx-auto">
+      <div className="absolute bottom-16 left-0 right-0 px-4 py-2 backdrop-blur-xl bg-white/10 border-t border-white/20 z-10">
+        <div className="relative">
           <input
             type="text"
             placeholder="What do you need today?"
             onClick={() => step === 0 && nextStep()}
-            className="w-full h-12 pl-4 pr-14 rounded-full bg-white border-2 border-gold/30 text-sm text-navy placeholder:text-navy/40 focus:outline-none focus:border-gold transition-all shadow-lg"
+            className="w-full h-11 pl-4 pr-12 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-sm text-navy placeholder:text-navy/50 focus:outline-none focus:border-gold focus:bg-white/30 transition-all shadow-lg"
           />
-          <button className="absolute right-2 top-2 w-8 h-8 rounded-full bg-gradient-to-br from-gold-light to-gold flex items-center justify-center shadow-md hover:scale-110 transition-transform">
+          <button className="absolute right-1.5 top-1.5 w-8 h-8 rounded-full bg-gradient-to-br from-gold-light to-gold flex items-center justify-center shadow-md hover:scale-110 transition-transform">
             <Sparkles className="w-4 h-4 text-white" />
           </button>
         </div>
