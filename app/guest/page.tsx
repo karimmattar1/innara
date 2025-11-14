@@ -31,7 +31,7 @@ export default function GuestApp() {
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[30px] bg-black rounded-b-3xl z-50 shadow-lg"></div>
 
             {/* Actual App Content */}
-            <div className="relative w-full h-full overflow-y-auto overflow-x-hidden">
+            <div className="relative w-full h-full overflow-hidden">
               {/* Light background with flowing dark blue smoke */}
               <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-gray-100 to-white">
         <div className="absolute inset-0">
@@ -116,14 +116,9 @@ export default function GuestApp() {
                   </div>
                 </div>
 
-                {/* Welcome Section */}
-                <div className="px-5 py-4">
-                  <h1 className="text-lg font-semibold text-navy mb-1">Welcome back, Ahmed</h1>
-                  <p className="text-xs text-navy/60">How can we help you today?</p>
-                </div>
-
-                {/* Main Content */}
-                <AnimatePresence mode="wait">
+                {/* Main Content - Full Height */}
+                <div className="flex flex-col h-[calc(100%-60px)]">
+                  <AnimatePresence mode="wait">
                   {view === 'chat' && (
                     <ChatView
                       step={step}
@@ -150,7 +145,8 @@ export default function GuestApp() {
                       }}
                     />
                   )}
-                </AnimatePresence>
+                  </AnimatePresence>
+                </div>
               </div>
             </div>
           </div>
@@ -170,14 +166,15 @@ function ChatView({ step, nextStep, onRoomServiceClick }: any) {
   }, [step, nextStep])
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-t-[32px] -mt-6 p-4 pb-6 shadow-2xl"
-    >
-      {/* Chat Messages */}
-      <div className="space-y-3 mb-4">
+    <div className="relative flex flex-col h-full">
+      {/* Welcome Section */}
+      <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0">
+        <h1 className="text-lg font-semibold text-navy mb-1">Welcome back, Ahmed</h1>
+        <p className="text-xs text-navy/60">How can we help you today?</p>
+      </div>
+
+      {/* Chat Messages - Scrollable */}
+      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 pb-24">
         {step >= 1 && (
           <motion.div
             initial={{ y: 20, opacity: 0 }}
@@ -260,39 +257,41 @@ function ChatView({ step, nextStep, onRoomServiceClick }: any) {
         )}
       </div>
 
-      {/* Chat Input */}
-      <div className="relative">
-        <input
-          type="text"
-          placeholder="What do you need today?"
-          onClick={() => step === 0 && nextStep()}
-          className="w-full h-11 pl-4 pr-14 rounded-full backdrop-blur-xl bg-white/20 border-2 border-white/30 text-sm text-navy placeholder:text-navy/50 focus:outline-none focus:border-gold focus:shadow-glow-gold transition-all"
-        />
-        <button className="absolute right-1.5 top-1.5 w-8 h-8 rounded-full bg-gradient-to-br from-gold-light to-gold flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
-          <Sparkles className="w-4 h-4 text-white" />
-        </button>
+      {/* Bottom Fixed Chat Input */}
+      <div className="absolute bottom-16 left-0 right-0 px-4 py-3 bg-white/80 backdrop-blur-xl border-t border-gray-200 z-10">
+        <div className="relative max-w-md mx-auto">
+          <input
+            type="text"
+            placeholder="What do you need today?"
+            onClick={() => step === 0 && nextStep()}
+            className="w-full h-12 pl-4 pr-14 rounded-full bg-white border-2 border-gold/30 text-sm text-navy placeholder:text-navy/40 focus:outline-none focus:border-gold transition-all shadow-lg"
+          />
+          <button className="absolute right-2 top-2 w-8 h-8 rounded-full bg-gradient-to-br from-gold-light to-gold flex items-center justify-center shadow-md hover:scale-110 transition-transform">
+            <Sparkles className="w-4 h-4 text-white" />
+          </button>
+        </div>
       </div>
 
-      {/* Quick Actions - Always visible */}
-      <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: step >= 4 ? 0.5 : 0 }}
-        className="mt-6"
-      >
-        <h3 className="text-sm font-semibold mb-2 text-navy">Quick Actions</h3>
-        <div className="grid grid-cols-4 gap-2">
-          <ActionButton icon={Home} label="Housekeeping" badge={step >= 4} />
-          <ActionButton icon={UtensilsCrossed} label="Room Service" highlight={step >= 4} onClick={onRoomServiceClick} />
-          <ActionButton icon={Car} label="Valet" />
-          <ActionButton icon={Flower2} label="Spa" />
-          <ActionButton icon={Bell} label="Concierge" />
-          <ActionButton icon={Shirt} label="Laundry" />
-          <ActionButton icon={Wrench} label="Maintenance" />
-          <ActionButton icon={Clock} label="Checkout" />
-        </div>
-      </motion.div>
-    </motion.div>
+      {/* Bottom Navigation */}
+      <div className="absolute bottom-0 left-0 right-0 h-16 bg-white border-t border-gray-200 flex items-center justify-around px-2 z-10">
+        <button className="flex flex-col items-center gap-0.5 py-2 text-gold">
+          <Home className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Home</span>
+        </button>
+        <button onClick={onRoomServiceClick} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <UtensilsCrossed className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Dining</span>
+        </button>
+        <button className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <Flower2 className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Services</span>
+        </button>
+        <button className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <Bell className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Requests</span>
+        </button>
+      </div>
+    </div>
   )
 }
 
@@ -309,25 +308,25 @@ function RoomServiceView({ onBack, onAddToCart }: any) {
   }
 
   return (
-    <motion.div
-      initial={{ y: '100%' }}
-      animate={{ y: 0 }}
-      exit={{ y: '100%' }}
-      transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-      className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-t-[32px] -mt-6 pb-20 shadow-2xl"
-    >
-      <button onClick={onBack} className="flex items-center gap-1 p-4 text-white hover:text-gold transition-colors">
-        <ChevronLeft className="w-5 h-5" />
-        <span className="text-sm font-medium">Back</span>
-      </button>
+    <div className="relative flex flex-col h-full">
+      {/* Header with Back Button */}
+      <div className="sticky top-0 bg-white border-b border-gray-200 px-4 py-3 flex items-center gap-3 z-10">
+        <button onClick={onBack} className="flex items-center gap-1 text-navy hover:text-gold transition-colors">
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+        <div className="flex-1">
+          <h2 className="text-lg font-semibold text-navy">Room Service</h2>
+          <p className="text-xs text-navy/60">Available 24/7</p>
+        </div>
+      </div>
 
-      <div className="px-5">
-        <h2 className="text-xl font-semibold mb-1 text-white">Room Service</h2>
-        <p className="text-xs text-white/60 mb-3">Available 24/7</p>
-
-        <div className="backdrop-blur-xl bg-gold/20 border-l-4 border-gold p-3 rounded-lg mb-4 flex items-center gap-2 shadow-lg">
-          <Sparkles className="w-4 h-4 text-gold flex-shrink-0" />
-          <span className="text-sm text-navy">💡 Popular right now: Caesar Salad</span>
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-y-auto pb-32">
+        <div className="px-5 pt-4">
+          <div className="bg-gold/10 border-l-4 border-gold p-3 rounded-lg mb-4 flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-gold flex-shrink-0" />
+            <span className="text-sm text-navy">💡 Popular right now: Caesar Salad</span>
+          </div>
         </div>
 
         <div className="flex gap-2 overflow-x-auto mb-4 pb-2 -mx-5 px-5">
@@ -364,7 +363,27 @@ function RoomServiceView({ onBack, onAddToCart }: any) {
           />
         </div>
       </div>
-    </motion.div>
+
+      {/* Bottom Navigation */}
+      <div className="absolute bottom-0 left-0 right-0 h-16 bg-white border-t border-gray-200 flex items-center justify-around px-2 z-10">
+        <button onClick={onBack} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <Home className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Home</span>
+        </button>
+        <button className="flex flex-col items-center gap-0.5 py-2 text-gold">
+          <UtensilsCrossed className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Dining</span>
+        </button>
+        <button className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <Flower2 className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Services</span>
+        </button>
+        <button className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <Bell className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Requests</span>
+        </button>
+      </div>
+    </div>
   )
 }
 
