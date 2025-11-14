@@ -110,9 +110,11 @@ export default function GuestApp() {
                     <Image src="/logo.png" alt="INNARA" width={40} height={40} className="rounded-full" />
                     <span className="text-xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INNARA</span>
                   </div>
-                  <span className="text-xs text-gold font-semibold tracking-wide">Room 1204</span>
-                  <div className="w-9 h-9 rounded-full bg-navy flex items-center justify-center text-white text-xs font-semibold shadow-lg border-2 border-gold/30">
-                    AA
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs text-gold font-semibold tracking-wide">Room 1204</span>
+                    <div className="w-9 h-9 rounded-full bg-navy flex items-center justify-center text-white text-xs font-semibold shadow-lg border-2 border-gold/30">
+                      AA
+                    </div>
                   </div>
                 </div>
 
@@ -203,21 +205,24 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick }: any) {
       </div>
 
       {/* Service Tiles */}
-      <div className="px-4 py-4 grid grid-cols-3 gap-3">
+      <div className="px-4 py-3 grid grid-cols-3 gap-3">
         {popularServices.map((service) => (
           <button
             key={service.value}
             onClick={() => onServiceClick(service.value)}
-            className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-4 flex flex-col items-center gap-2 hover:bg-white/20 hover:border-gold/50 hover:scale-105 transition-all shadow-lg"
+            className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-3 flex flex-col items-center gap-2 hover:bg-white/20 hover:border-gold/50 hover:scale-105 transition-all shadow-lg"
           >
-            <service.icon className="w-7 h-7 text-gold" />
+            <service.icon className="w-6 h-6 text-gold" />
             <span className="text-[10px] text-navy text-center leading-tight font-medium">{service.label}</span>
           </button>
         ))}
       </div>
 
+      {/* Spacer to push chat input to bottom when no messages */}
+      {step === 0 && <div className="flex-1"></div>}
+
       {/* Chat Messages - Scrollable */}
-      <div className="flex-1 overflow-y-auto px-4 space-y-3 pb-32">
+      <div className={`overflow-y-auto px-4 py-3 space-y-3 ${step >= 1 ? 'flex-1' : ''} pb-28`}>
         {step >= 1 && (
           <motion.div
             initial={{ y: 20, opacity: 0 }}
