@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Sparkles, ShoppingCart, UtensilsCrossed, Home, Car, Bell, Flower2, Shirt, Wrench, Clock, Plus, Check, ChevronLeft, ArrowRight, X } from 'lucide-react'
+import { Sparkles, ShoppingCart, UtensilsCrossed, Home, Car, Bell, Flower2, Shirt, Wrench, Clock, Plus, Check, ChevronLeft, ArrowRight, X, Compass, ClipboardList, User, ConciergeBell, ShoppingBag, Package, Wine } from 'lucide-react'
 import Image from 'next/image'
 
 export default function GuestApp() {
-  const [view, setView] = useState<'chat' | 'room-service' | 'checkout'>('chat')
+  const [view, setView] = useState<'concierge' | 'explore' | 'requests' | 'profile' | 'room-service' | 'spa' | 'laundry' | 'valet' | 'checkout'>('concierge')
   const [step, setStep] = useState(0)
   const [cartItems, setCartItems] = useState<any[]>([])
 
@@ -119,17 +119,37 @@ export default function GuestApp() {
                 {/* Main Content - Full Height */}
                 <div className="flex flex-col h-[calc(100%-60px)]">
                   <AnimatePresence mode="wait">
-                  {view === 'chat' && (
-                    <ChatView
+                  {view === 'concierge' && (
+                    <ConciergeView
                       step={step}
                       nextStep={nextStep}
-                      onRoomServiceClick={() => setView('room-service')}
+                      onServiceClick={(service: string) => setView(service as any)}
+                      onNavClick={(nav: string) => setView(nav as any)}
+                    />
+                  )}
+
+                  {view === 'explore' && (
+                    <ExploreView
+                      onServiceClick={(service: string) => setView(service as any)}
+                      onNavClick={(nav: string) => setView(nav as any)}
+                    />
+                  )}
+
+                  {view === 'requests' && (
+                    <RequestsView
+                      onNavClick={(nav: string) => setView(nav as any)}
+                    />
+                  )}
+
+                  {view === 'profile' && (
+                    <ProfileView
+                      onNavClick={(nav: string) => setView(nav as any)}
                     />
                   )}
 
                   {view === 'room-service' && (
                     <RoomServiceView
-                      onBack={() => setView('chat')}
+                      onBack={() => setView('concierge')}
                       onAddToCart={(item: any) => {
                         setCartItems([item])
                         setTimeout(() => setView('checkout'), 800)
@@ -141,7 +161,7 @@ export default function GuestApp() {
                     <CheckoutView
                       item={cartItems[0]}
                       onPlaceOrder={() => {
-                        setTimeout(() => setView('chat'), 3000)
+                        setTimeout(() => setView('concierge'), 3000)
                       }}
                     />
                   )}
@@ -156,7 +176,7 @@ export default function GuestApp() {
   )
 }
 
-function ChatView({ step, nextStep, onRoomServiceClick }: any) {
+function ConciergeView({ step, nextStep, onServiceClick, onNavClick }: any) {
   // Auto-advance from step 2 (typing) to step 3 (AI response)
   useEffect(() => {
     if (step === 2) {
@@ -164,6 +184,15 @@ function ChatView({ step, nextStep, onRoomServiceClick }: any) {
       return () => clearTimeout(timer)
     }
   }, [step, nextStep])
+
+  const popularServices = [
+    { icon: UtensilsCrossed, label: 'Room Service', value: 'room-service', color: 'from-amber-400 to-orange-500' },
+    { icon: Flower2, label: 'Spa & Wellness', value: 'spa', color: 'from-pink-400 to-rose-500' },
+    { icon: Shirt, label: 'Laundry', value: 'laundry', color: 'from-blue-400 to-cyan-500' },
+    { icon: Car, label: 'Valet', value: 'valet', color: 'from-purple-400 to-indigo-500' },
+    { icon: ConciergeBell, label: 'Concierge', value: 'concierge', color: 'from-yellow-400 to-amber-500' },
+    { icon: ShoppingBag, label: 'Shopping', value: 'shopping', color: 'from-green-400 to-emerald-500' },
+  ]
 
   return (
     <div className="relative flex flex-col h-full">
@@ -173,8 +202,24 @@ function ChatView({ step, nextStep, onRoomServiceClick }: any) {
         <p className="text-xs text-navy/60">How can we help you today?</p>
       </div>
 
+      {/* Service Tiles */}
+      <div className="px-4 py-4 grid grid-cols-3 gap-3">
+        {popularServices.map((service) => (
+          <button
+            key={service.value}
+            onClick={() => onServiceClick(service.value)}
+            className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-3 flex flex-col items-center gap-2 hover:bg-white/15 hover:border-gold hover:scale-105 transition-all shadow-lg"
+          >
+            <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${service.color} flex items-center justify-center shadow-lg`}>
+              <service.icon className="w-6 h-6 text-white" />
+            </div>
+            <span className="text-[10px] text-navy text-center leading-tight font-medium">{service.label}</span>
+          </button>
+        ))}
+      </div>
+
       {/* Chat Messages - Scrollable */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 pb-24">
+      <div className="flex-1 overflow-y-auto px-4 space-y-3 pb-24">
         {step >= 1 && (
           <motion.div
             initial={{ y: 20, opacity: 0 }}
@@ -272,23 +317,241 @@ function ChatView({ step, nextStep, onRoomServiceClick }: any) {
         </div>
       </div>
 
-      {/* Bottom Navigation */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-white border-t border-gray-200 flex items-center justify-around px-2 z-10">
+      {/* Bottom Navigation - Glassy */}
+      <div className="absolute bottom-0 left-0 right-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2 z-10">
         <button className="flex flex-col items-center gap-0.5 py-2 text-gold">
-          <Home className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Home</span>
+          <Sparkles className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Concierge</span>
         </button>
-        <button onClick={onRoomServiceClick} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-          <UtensilsCrossed className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Dining</span>
+        <button onClick={() => onNavClick('explore')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <Compass className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Explore</span>
         </button>
-        <button className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-          <Flower2 className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Services</span>
-        </button>
-        <button className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-          <Bell className="w-5 h-5" />
+        <button onClick={() => onNavClick('requests')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <ClipboardList className="w-5 h-5" />
           <span className="text-[10px] font-medium">Requests</span>
+        </button>
+        <button onClick={() => onNavClick('profile')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <User className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Profile</span>
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function ExploreView({ onServiceClick, onNavClick }: any) {
+  const allServices = [
+    { icon: UtensilsCrossed, label: 'Room Service', value: 'room-service', color: 'from-amber-400 to-orange-500' },
+    { icon: Flower2, label: 'Spa & Wellness', value: 'spa', color: 'from-pink-400 to-rose-500' },
+    { icon: Shirt, label: 'Laundry', value: 'laundry', color: 'from-blue-400 to-cyan-500' },
+    { icon: Car, label: 'Valet', value: 'valet', color: 'from-purple-400 to-indigo-500' },
+    { icon: ConciergeBell, label: 'Concierge', value: 'concierge', color: 'from-yellow-400 to-amber-500' },
+    { icon: ShoppingBag, label: 'Shopping', value: 'shopping', color: 'from-green-400 to-emerald-500' },
+    { icon: Wine, label: 'Mini Bar', value: 'minibar', color: 'from-red-400 to-pink-500' },
+    { icon: Package, label: 'Packages', value: 'packages', color: 'from-indigo-400 to-purple-500' },
+    { icon: Wrench, label: 'Maintenance', value: 'maintenance', color: 'from-gray-400 to-slate-500' },
+  ]
+
+  return (
+    <div className="relative flex flex-col h-full">
+      {/* Header */}
+      <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0">
+        <h1 className="text-lg font-semibold text-navy mb-1">Explore Services</h1>
+        <p className="text-xs text-navy/60">Browse all available amenities</p>
+      </div>
+
+      {/* Services Grid - Scrollable */}
+      <div className="flex-1 overflow-y-auto px-4 py-4 pb-24">
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          {allServices.map((service) => (
+            <button
+              key={service.value}
+              onClick={() => onServiceClick(service.value)}
+              className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-3 flex flex-col items-center gap-2 hover:bg-white/15 hover:border-gold hover:scale-105 transition-all shadow-lg"
+            >
+              <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${service.color} flex items-center justify-center shadow-lg`}>
+                <service.icon className="w-6 h-6 text-white" />
+              </div>
+              <span className="text-[10px] text-navy text-center leading-tight font-medium">{service.label}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Promotions Section */}
+        <div className="mt-6">
+          <h2 className="text-sm font-semibold text-navy mb-3 px-1">Special Offers</h2>
+          <div className="space-y-3">
+            <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-4 shadow-lg">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gold-light to-gold flex items-center justify-center flex-shrink-0">
+                  <Sparkles className="w-5 h-5 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-sm font-semibold text-navy">Spa Package - 20% Off</h3>
+                  <p className="text-xs text-navy/60 mt-1">Book any spa treatment and get 20% off your next visit</p>
+                  <button className="mt-2 text-xs font-semibold text-gold">Learn More →</button>
+                </div>
+              </div>
+            </div>
+            <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-4 shadow-lg">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-cyan-500 flex items-center justify-center flex-shrink-0">
+                  <UtensilsCrossed className="w-5 h-5 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-sm font-semibold text-navy">Late Night Dining</h3>
+                  <p className="text-xs text-navy/60 mt-1">Order room service after 10 PM and get a free dessert</p>
+                  <button className="mt-2 text-xs font-semibold text-gold">Order Now →</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Navigation - Glassy */}
+      <div className="absolute bottom-0 left-0 right-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2 z-10">
+        <button onClick={() => onNavClick('concierge')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <Sparkles className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Concierge</span>
+        </button>
+        <button className="flex flex-col items-center gap-0.5 py-2 text-gold">
+          <Compass className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Explore</span>
+        </button>
+        <button onClick={() => onNavClick('requests')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <ClipboardList className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Requests</span>
+        </button>
+        <button onClick={() => onNavClick('profile')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <User className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Profile</span>
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function RequestsView({ onNavClick }: any) {
+  const requests = [
+    { id: 1, service: 'Housekeeping', status: 'In Progress', time: '~18 min', icon: Wrench, color: 'from-blue-400 to-cyan-500' },
+    { id: 2, service: 'Room Service', status: 'Delivered', time: 'Completed', icon: UtensilsCrossed, color: 'from-green-400 to-emerald-500' },
+  ]
+
+  return (
+    <div className="relative flex flex-col h-full">
+      {/* Header */}
+      <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0">
+        <h1 className="text-lg font-semibold text-navy mb-1">Your Requests</h1>
+        <p className="text-xs text-navy/60">Track all your service requests</p>
+      </div>
+
+      {/* Requests List - Scrollable */}
+      <div className="flex-1 overflow-y-auto px-4 py-4 pb-24 space-y-3">
+        {requests.map((request) => (
+          <div key={request.id} className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-4 shadow-lg">
+            <div className="flex items-start gap-3">
+              <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${request.color} flex items-center justify-center flex-shrink-0`}>
+                <request.icon className="w-6 h-6 text-white" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-sm font-semibold text-navy">{request.service}</h3>
+                <p className="text-xs text-navy/60 mt-1">{request.status}</p>
+                <div className="mt-2 inline-block px-2 py-1 rounded-full bg-gold/20 border border-gold/30 text-xs font-semibold text-gold">
+                  {request.time}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+
+        {requests.length === 0 && (
+          <div className="text-center py-12">
+            <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-3">
+              <ClipboardList className="w-8 h-8 text-navy/40" />
+            </div>
+            <p className="text-sm text-navy/60">No active requests</p>
+          </div>
+        )}
+      </div>
+
+      {/* Bottom Navigation - Glassy */}
+      <div className="absolute bottom-0 left-0 right-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2 z-10">
+        <button onClick={() => onNavClick('concierge')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <Sparkles className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Concierge</span>
+        </button>
+        <button onClick={() => onNavClick('explore')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <Compass className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Explore</span>
+        </button>
+        <button className="flex flex-col items-center gap-0.5 py-2 text-gold">
+          <ClipboardList className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Requests</span>
+        </button>
+        <button onClick={() => onNavClick('profile')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <User className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Profile</span>
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function ProfileView({ onNavClick }: any) {
+  return (
+    <div className="relative flex flex-col h-full">
+      {/* Header */}
+      <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0">
+        <div className="flex items-center gap-3">
+          <div className="w-16 h-16 rounded-full bg-navy flex items-center justify-center text-white text-xl font-semibold shadow-lg border-2 border-gold/30">
+            AA
+          </div>
+          <div>
+            <h1 className="text-lg font-semibold text-navy">Ahmed Ali</h1>
+            <p className="text-xs text-navy/60">Room 1204 • Premium Guest</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Settings List - Scrollable */}
+      <div className="flex-1 overflow-y-auto px-4 py-4 pb-24 space-y-3">
+        <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-4 shadow-lg">
+          <h3 className="text-sm font-semibold text-navy mb-1">Preferences</h3>
+          <p className="text-xs text-navy/60">Manage your stay preferences</p>
+        </div>
+        <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-4 shadow-lg">
+          <h3 className="text-sm font-semibold text-navy mb-1">Payment Methods</h3>
+          <p className="text-xs text-navy/60">Manage billing and payments</p>
+        </div>
+        <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-4 shadow-lg">
+          <h3 className="text-sm font-semibold text-navy mb-1">Notifications</h3>
+          <p className="text-xs text-navy/60">Configure alerts and updates</p>
+        </div>
+        <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-4 shadow-lg">
+          <h3 className="text-sm font-semibold text-navy mb-1">Support</h3>
+          <p className="text-xs text-navy/60">Get help and contact us</p>
+        </div>
+      </div>
+
+      {/* Bottom Navigation - Glassy */}
+      <div className="absolute bottom-0 left-0 right-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2 z-10">
+        <button onClick={() => onNavClick('concierge')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <Sparkles className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Concierge</span>
+        </button>
+        <button onClick={() => onNavClick('explore')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <Compass className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Explore</span>
+        </button>
+        <button onClick={() => onNavClick('requests')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <ClipboardList className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Requests</span>
+        </button>
+        <button className="flex flex-col items-center gap-0.5 py-2 text-gold">
+          <User className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Profile</span>
         </button>
       </div>
     </div>
@@ -364,23 +627,23 @@ function RoomServiceView({ onBack, onAddToCart }: any) {
         </div>
       </div>
 
-      {/* Bottom Navigation */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-white border-t border-gray-200 flex items-center justify-around px-2 z-10">
+      {/* Bottom Navigation - Glassy */}
+      <div className="absolute bottom-0 left-0 right-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2 z-10">
         <button onClick={onBack} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-          <Home className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Home</span>
-        </button>
-        <button className="flex flex-col items-center gap-0.5 py-2 text-gold">
-          <UtensilsCrossed className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Dining</span>
+          <Sparkles className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Concierge</span>
         </button>
         <button className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-          <Flower2 className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Services</span>
+          <Compass className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Explore</span>
         </button>
         <button className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-          <Bell className="w-5 h-5" />
+          <ClipboardList className="w-5 h-5" />
           <span className="text-[10px] font-medium">Requests</span>
+        </button>
+        <button className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <User className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Profile</span>
         </button>
       </div>
     </div>
