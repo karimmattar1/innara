@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-gray-bg text-navy;
     font-feature-settings: "rlig" 1, "calt" 1;

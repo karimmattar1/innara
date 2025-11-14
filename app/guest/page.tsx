@@ -13,9 +13,27 @@ export default function GuestApp() {
   const nextStep = () => setStep(s => s + 1)
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Light background with flowing dark blue smoke */}
-      <div className="fixed inset-0 bg-gradient-to-br from-gray-50 via-gray-100 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-8">
+      {/* Phone Frame */}
+      <div className="relative">
+        {/* Power Button */}
+        <div className="absolute right-0 top-[200px] w-[3px] h-[80px] bg-slate-800 rounded-l-sm"></div>
+
+        {/* Volume Buttons */}
+        <div className="absolute left-0 top-[180px] w-[3px] h-[50px] bg-slate-800 rounded-r-sm"></div>
+        <div className="absolute left-0 top-[240px] w-[3px] h-[50px] bg-slate-800 rounded-r-sm"></div>
+
+        {/* Phone Bezel */}
+        <div className="relative w-[413px] h-[872px] bg-gradient-to-b from-slate-900 to-slate-950 rounded-[50px] shadow-2xl p-[10px] ring-2 ring-slate-700">
+          {/* Screen Container */}
+          <div className="relative w-full h-full bg-black rounded-[42px] overflow-hidden shadow-inner">
+            {/* Dynamic Island / Notch */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[30px] bg-black rounded-b-3xl z-50 shadow-lg"></div>
+
+            {/* Actual App Content */}
+            <div className="relative w-full h-full overflow-hidden">
+              {/* Light background with flowing dark blue smoke */}
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-gray-100 to-white">
         <div className="absolute inset-0">
           {/* Dark blue smoke clouds - very subtle */}
           <motion.div
@@ -81,58 +99,62 @@ export default function GuestApp() {
               delay: 6
             }}
           />
-        </div>
-      </div>
+                </div>
+              </div>
 
-      {/* Content */}
-      <div className="relative z-10">
-        {/* Top Bar - Transparent & Blurred */}
-        <div className="sticky top-0 z-20 h-[72px] backdrop-blur-2xl bg-white/20 border-b border-white/20 px-6 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Image src="/logo.png" alt="INNARA" width={56} height={56} className="rounded-full" />
-            <span className="text-3xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INNARA</span>
+              {/* Content */}
+              <div className="relative z-10">
+                {/* Top Bar - Transparent & Blurred */}
+                <div className="sticky top-0 z-20 h-[72px] backdrop-blur-2xl bg-white/20 border-b border-white/20 px-6 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Image src="/logo.png" alt="INNARA" width={56} height={56} className="rounded-full" />
+                    <span className="text-3xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INNARA</span>
+                  </div>
+                  <span className="text-sm text-gold font-semibold tracking-wide">Room 1204</span>
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gold-light to-gold flex items-center justify-center text-white text-sm font-semibold shadow-lg">
+                    SA
+                  </div>
+                </div>
+
+                {/* Welcome Section */}
+                <div className="px-5 py-8">
+                  <h1 className="text-2xl font-semibold text-navy mb-2">Welcome back, Sarah</h1>
+                  <p className="text-sm text-navy/60">How can we help you today?</p>
+                </div>
+
+                {/* Main Content */}
+                <AnimatePresence mode="wait">
+                  {view === 'chat' && (
+                    <ChatView
+                      step={step}
+                      nextStep={nextStep}
+                      onRoomServiceClick={() => setView('room-service')}
+                    />
+                  )}
+
+                  {view === 'room-service' && (
+                    <RoomServiceView
+                      onBack={() => setView('chat')}
+                      onAddToCart={(item: any) => {
+                        setCartItems([item])
+                        setTimeout(() => setView('checkout'), 800)
+                      }}
+                    />
+                  )}
+
+                  {view === 'checkout' && (
+                    <CheckoutView
+                      item={cartItems[0]}
+                      onPlaceOrder={() => {
+                        setTimeout(() => setView('chat'), 3000)
+                      }}
+                    />
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
           </div>
-          <span className="text-sm text-gold font-semibold tracking-wide">Room 1204</span>
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gold-light to-gold flex items-center justify-center text-white text-sm font-semibold shadow-lg">
-            SA
-          </div>
         </div>
-
-        {/* Welcome Section */}
-        <div className="px-5 py-8">
-          <h1 className="text-2xl font-semibold text-navy mb-2">Welcome back, Sarah</h1>
-          <p className="text-sm text-navy/60">How can we help you today?</p>
-        </div>
-
-        {/* Main Content */}
-        <AnimatePresence mode="wait">
-          {view === 'chat' && (
-            <ChatView
-              step={step}
-              nextStep={nextStep}
-              onRoomServiceClick={() => setView('room-service')}
-            />
-          )}
-
-          {view === 'room-service' && (
-            <RoomServiceView
-              onBack={() => setView('chat')}
-              onAddToCart={(item: any) => {
-                setCartItems([item])
-                setTimeout(() => setView('checkout'), 800)
-              }}
-            />
-          )}
-
-          {view === 'checkout' && (
-            <CheckoutView
-              item={cartItems[0]}
-              onPlaceOrder={() => {
-                setTimeout(() => setView('chat'), 3000)
-              }}
-            />
-          )}
-        </AnimatePresence>
       </div>
     </div>
   )

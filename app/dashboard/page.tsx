@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ClipboardList, Home, UtensilsCrossed, Car, Bell, SlidersHorizontal, Sparkles } from 'lucide-react'
+import { ClipboardList, Home, UtensilsCrossed, Car, Bell, SlidersHorizontal, Sparkles, TrendingUp, Lightbulb, Zap } from 'lucide-react'
 import Image from 'next/image'
 
 const initialRequests = [
@@ -219,24 +219,26 @@ export default function Dashboard() {
             <div className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-3xl shadow-2xl p-8">
               <div className="space-y-6">
                 <InsightCard
-                  icon="🔥"
+                  icon={TrendingUp}
                   title="Peak Demand"
                   value="2-4 PM today"
                   description="25% higher request volume"
                   progress={75}
+                  valueColor="text-navy"
                 />
                 <InsightCard
-                  icon="💡"
+                  icon={Lightbulb}
                   title="Upsell Opportunity"
                   value="3 guests"
                   description="Viewed spa menu but didn't book"
+                  valueColor="text-navy"
                 />
                 <InsightCard
-                  icon="⚡"
+                  icon={Zap}
                   title="Avg Response Time"
                   value="8 minutes"
                   description="↓ 15% from yesterday"
-                  valueColor="text-green-400"
+                  valueColor="text-navy"
                 />
               </div>
 
@@ -383,17 +385,14 @@ function StatusBadge({ status }: any) {
 }
 
 function StaffAvatar({ initials, name }: any) {
-  const colors = ['from-blue-500 to-blue-600', 'from-purple-500 to-purple-600', 'from-pink-500 to-pink-600', 'from-green-500 to-green-600', 'from-orange-500 to-orange-600']
-  const color = colors[initials.charCodeAt(0) % colors.length]
-
   return (
-    <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${color} flex items-center justify-center text-white text-xs font-bold border-2 border-white/20 shadow-lg hover:scale-110 transition-transform cursor-pointer`}>
+    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-navy to-navy-dark flex items-center justify-center text-gold text-xs font-bold border-2 border-gold/20 shadow-lg hover:scale-110 transition-transform cursor-pointer">
       {initials}
     </div>
   )
 }
 
-function InsightCard({ icon, title, value, description, progress, valueColor = 'text-gold' }: any) {
+function InsightCard({ icon: Icon, title, value, description, progress, valueColor = 'text-gold' }: any) {
   return (
     <motion.div
       initial={{ y: 20, opacity: 0 }}
@@ -401,7 +400,9 @@ function InsightCard({ icon, title, value, description, progress, valueColor = '
       className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all"
     >
       <div className="flex items-start gap-4">
-        <span className="text-3xl">{icon}</span>
+        <div className="w-10 h-10 rounded-xl bg-gold/20 flex items-center justify-center flex-shrink-0">
+          <Icon className="w-5 h-5 text-gold" />
+        </div>
         <div className="flex-1">
           <p className="text-sm font-semibold text-navy/90 mb-2">{title}</p>
           <p className={`text-2xl font-bold ${valueColor} mb-2`}>{value}</p>
