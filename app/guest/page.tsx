@@ -365,8 +365,8 @@ function ExploreView({ onServiceClick, onNavClick }: any) {
       </div>
 
       {/* Services Grid - Scrollable */}
-      <div className="flex-1 overflow-y-auto flex flex-col">
-        <div className="px-6 py-6 grid grid-cols-2 gap-4 flex-1 content-center">
+      <div className="flex-1 overflow-y-auto">
+        <div className="px-6 py-6 grid grid-cols-2 gap-4">
           {allServices.map((service) => (
             <button
               key={service.value}
@@ -418,8 +418,8 @@ function RequestsView({ onNavClick }: any) {
       </div>
 
       {/* Requests List - Scrollable */}
-      <div className="flex-1 overflow-y-auto flex flex-col">
-        <div className="px-6 py-6 flex flex-col gap-4 flex-1">
+      <div className="flex-1 overflow-y-auto">
+        <div className="px-6 py-6 flex flex-col gap-4">
           {requests.map((request) => (
             <div key={request.id} className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 shadow-lg">
               <div className="flex items-start gap-4">
@@ -438,7 +438,7 @@ function RequestsView({ onNavClick }: any) {
           ))}
 
           {requests.length === 0 && (
-            <div className="text-center py-12 flex-1 flex flex-col items-center justify-center">
+            <div className="text-center py-12">
               <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-3">
                 <ClipboardList className="w-8 h-8 text-navy/40" />
               </div>
@@ -488,8 +488,8 @@ function ProfileView({ onNavClick }: any) {
       </div>
 
       {/* Settings List - Scrollable */}
-      <div className="flex-1 overflow-y-auto flex flex-col">
-        <div className="px-6 py-6 flex flex-col gap-4 flex-1">
+      <div className="flex-1 overflow-y-auto">
+        <div className="px-6 py-6 flex flex-col gap-4">
           <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 shadow-lg">
             <h3 className="text-sm font-semibold text-navy mb-1">Preferences</h3>
             <p className="text-xs text-navy/60">Manage your stay preferences</p>
@@ -558,8 +558,8 @@ function RoomServiceView({ onBack, onAddToCart }: any) {
       </div>
 
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto flex flex-col">
-        <div className="px-6 py-6 flex-1">
+      <div className="flex-1 overflow-y-auto">
+        <div className="px-6 py-6">
           <div className="bg-gold/10 border-l-4 border-gold p-3 rounded-lg mb-4 flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-gold flex-shrink-0" />
             <span className="text-sm text-navy">💡 Popular right now: Caesar Salad</span>
