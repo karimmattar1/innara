@@ -205,14 +205,14 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick }: any) {
       </div>
 
       {/* Scrollable Content Area */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto flex flex-col">
         {/* Service Tiles - 2x3 Grid */}
-        <div className="px-6 py-6 grid grid-cols-2 gap-4">
+        <div className={`px-6 py-6 grid grid-cols-2 gap-4 ${step === 0 ? 'flex-1 content-center' : ''}`}>
           {popularServices.map((service) => (
             <button
               key={service.value}
               onClick={() => onServiceClick(service.value)}
-              className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 flex flex-col items-center gap-3 hover:bg-white/20 hover:border-gold/50 hover:scale-105 transition-all shadow-lg h-28"
+              className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 flex flex-col items-center justify-center gap-3 hover:bg-white/20 hover:border-gold/50 hover:scale-105 transition-all shadow-lg aspect-square"
             >
               <service.icon className="w-8 h-8 text-gold" />
               <span className="text-xs text-navy text-center leading-tight font-medium">{service.label}</span>
@@ -366,12 +366,12 @@ function ExploreView({ onServiceClick, onNavClick }: any) {
 
       {/* Services Grid - Scrollable */}
       <div className="flex-1 overflow-y-auto px-4 py-4">
-        <div className="grid grid-cols-2 gap-4 mb-6">
+        <div className="grid grid-cols-2 gap-4 mb-6 auto-rows-fr">
           {allServices.map((service) => (
             <button
               key={service.value}
               onClick={() => onServiceClick(service.value)}
-              className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-5 flex flex-col items-center gap-3 hover:bg-white/15 hover:border-gold hover:scale-105 transition-all shadow-lg"
+              className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-5 flex flex-col items-center justify-center gap-3 hover:bg-white/15 hover:border-gold hover:scale-105 transition-all shadow-lg aspect-square"
             >
               <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${service.color} flex items-center justify-center shadow-lg`}>
                 <service.icon className="w-6 h-6 text-white" />
@@ -451,9 +451,9 @@ function RequestsView({ onNavClick }: any) {
       </div>
 
       {/* Requests List - Scrollable */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
+      <div className="flex-1 overflow-y-auto px-4 py-6 flex flex-col gap-3">
         {requests.map((request) => (
-          <div key={request.id} className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-4 shadow-lg">
+          <div key={request.id} className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-5 shadow-lg">
             <div className="flex items-start gap-3">
               <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${request.color} flex items-center justify-center flex-shrink-0`}>
                 <request.icon className="w-6 h-6 text-white" />
@@ -470,7 +470,7 @@ function RequestsView({ onNavClick }: any) {
         ))}
 
         {requests.length === 0 && (
-          <div className="text-center py-12">
+          <div className="text-center py-12 flex-1 flex flex-col items-center justify-center">
             <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-3">
               <ClipboardList className="w-8 h-8 text-navy/40" />
             </div>
@@ -519,20 +519,20 @@ function ProfileView({ onNavClick }: any) {
       </div>
 
       {/* Settings List - Scrollable */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
-        <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-4 shadow-lg">
+      <div className="flex-1 overflow-y-auto px-4 py-6 flex flex-col gap-3">
+        <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-5 shadow-lg">
           <h3 className="text-sm font-semibold text-navy mb-1">Preferences</h3>
           <p className="text-xs text-navy/60">Manage your stay preferences</p>
         </div>
-        <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-4 shadow-lg">
+        <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-5 shadow-lg">
           <h3 className="text-sm font-semibold text-navy mb-1">Payment Methods</h3>
           <p className="text-xs text-navy/60">Manage billing and payments</p>
         </div>
-        <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-4 shadow-lg">
+        <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-5 shadow-lg">
           <h3 className="text-sm font-semibold text-navy mb-1">Notifications</h3>
           <p className="text-xs text-navy/60">Configure alerts and updates</p>
         </div>
-        <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-4 shadow-lg">
+        <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-5 shadow-lg">
           <h3 className="text-sm font-semibold text-navy mb-1">Support</h3>
           <p className="text-xs text-navy/60">Get help and contact us</p>
         </div>
