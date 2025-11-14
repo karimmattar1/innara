@@ -31,7 +31,7 @@ export default function GuestApp() {
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[30px] bg-black rounded-b-3xl z-50 shadow-lg"></div>
 
             {/* Actual App Content */}
-            <div className="relative w-full h-full overflow-hidden">
+            <div className="relative w-full h-full overflow-y-auto overflow-x-hidden">
               {/* Light background with flowing dark blue smoke */}
               <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-gray-100 to-white">
         <div className="absolute inset-0">
@@ -105,20 +105,20 @@ export default function GuestApp() {
               {/* Content */}
               <div className="relative z-10">
                 {/* Top Bar - Transparent & Blurred */}
-                <div className="sticky top-0 z-20 h-[72px] backdrop-blur-2xl bg-white/20 border-b border-white/20 px-6 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Image src="/logo.png" alt="INNARA" width={56} height={56} className="rounded-full" />
-                    <span className="text-3xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INNARA</span>
+                <div className="sticky top-0 z-20 h-[60px] backdrop-blur-2xl bg-white/20 border-b border-white/20 px-4 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Image src="/logo.png" alt="INNARA" width={40} height={40} className="rounded-full" />
+                    <span className="text-xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INNARA</span>
                   </div>
-                  <span className="text-sm text-gold font-semibold tracking-wide">Room 1204</span>
-                  <div className="w-10 h-10 rounded-full bg-navy flex items-center justify-center text-white text-sm font-semibold shadow-lg border-2 border-gold/30">
+                  <span className="text-xs text-gold font-semibold tracking-wide">Room 1204</span>
+                  <div className="w-9 h-9 rounded-full bg-navy flex items-center justify-center text-white text-xs font-semibold shadow-lg border-2 border-gold/30">
                     AA
                   </div>
                 </div>
 
                 {/* Welcome Section */}
-                <div className="px-5 py-6">
-                  <h1 className="text-xl font-semibold text-navy mb-1">Welcome back, Ahmed</h1>
+                <div className="px-5 py-4">
+                  <h1 className="text-lg font-semibold text-navy mb-1">Welcome back, Ahmed</h1>
                   <p className="text-xs text-navy/60">How can we help you today?</p>
                 </div>
 
@@ -174,10 +174,10 @@ function ChatView({ step, nextStep, onRoomServiceClick }: any) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-t-[32px] -mt-6 p-5 pb-6 shadow-2xl"
+      className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-t-[32px] -mt-6 p-4 pb-6 shadow-2xl"
     >
       {/* Chat Messages */}
-      <div className="space-y-4 mb-6">
+      <div className="space-y-3 mb-4">
         {step >= 1 && (
           <motion.div
             initial={{ y: 20, opacity: 0 }}
@@ -266,34 +266,32 @@ function ChatView({ step, nextStep, onRoomServiceClick }: any) {
           type="text"
           placeholder="What do you need today?"
           onClick={() => step === 0 && nextStep()}
-          className="w-full h-14 pl-5 pr-16 rounded-full backdrop-blur-xl bg-white/20 border-2 border-white/30 text-navy placeholder:text-navy/50 focus:outline-none focus:border-gold focus:shadow-glow-gold transition-all"
+          className="w-full h-11 pl-4 pr-14 rounded-full backdrop-blur-xl bg-white/20 border-2 border-white/30 text-sm text-navy placeholder:text-navy/50 focus:outline-none focus:border-gold focus:shadow-glow-gold transition-all"
         />
-        <button className="absolute right-2 top-2 w-10 h-10 rounded-full bg-gradient-to-br from-gold-light to-gold flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
-          <Sparkles className="w-5 h-5 text-white" />
+        <button className="absolute right-1.5 top-1.5 w-8 h-8 rounded-full bg-gradient-to-br from-gold-light to-gold flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+          <Sparkles className="w-4 h-4 text-white" />
         </button>
       </div>
 
-      {/* Quick Actions */}
-      {step >= 4 && (
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="mt-8"
-        >
-          <h3 className="text-sm font-semibold mb-2 text-navy">Quick Actions</h3>
-          <div className="grid grid-cols-4 gap-2">
-            <ActionButton icon={Home} label="Housekeeping" badge />
-            <ActionButton icon={UtensilsCrossed} label="Room Service" highlight onClick={onRoomServiceClick} />
-            <ActionButton icon={Car} label="Valet" />
-            <ActionButton icon={Flower2} label="Spa" />
-            <ActionButton icon={Bell} label="Concierge" />
-            <ActionButton icon={Shirt} label="Laundry" />
-            <ActionButton icon={Wrench} label="Maintenance" />
-            <ActionButton icon={Clock} label="Checkout" />
-          </div>
-        </motion.div>
-      )}
+      {/* Quick Actions - Always visible */}
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: step >= 4 ? 0.5 : 0 }}
+        className="mt-6"
+      >
+        <h3 className="text-sm font-semibold mb-2 text-navy">Quick Actions</h3>
+        <div className="grid grid-cols-4 gap-2">
+          <ActionButton icon={Home} label="Housekeeping" badge={step >= 4} />
+          <ActionButton icon={UtensilsCrossed} label="Room Service" highlight={step >= 4} onClick={onRoomServiceClick} />
+          <ActionButton icon={Car} label="Valet" />
+          <ActionButton icon={Flower2} label="Spa" />
+          <ActionButton icon={Bell} label="Concierge" />
+          <ActionButton icon={Shirt} label="Laundry" />
+          <ActionButton icon={Wrench} label="Maintenance" />
+          <ActionButton icon={Clock} label="Checkout" />
+        </div>
+      </motion.div>
     </motion.div>
   )
 }
