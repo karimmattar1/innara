@@ -365,7 +365,7 @@ function ExploreView({ onServiceClick, onNavClick }: any) {
       </div>
 
       {/* Services Grid - Scrollable */}
-      <div className="flex-1 overflow-y-auto flex flex-col" style={{ border: '3px solid blue' }}>
+      <div className="flex-1 overflow-y-auto" style={{ border: '3px solid blue' }}>
         <div className="px-6 py-6 grid grid-cols-2 gap-4" style={{ backgroundColor: 'rgba(0,255,0,0.1)' }}>
           {allServices.map((service) => (
             <button
