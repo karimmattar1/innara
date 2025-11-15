@@ -12,7 +12,13 @@ import {
   TrendingUp,
   Zap,
   Shield,
-  Globe
+  Globe,
+  DollarSign,
+  Target,
+  Rocket,
+  Award,
+  Building2,
+  ChartLine
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -133,22 +139,22 @@ export default function LandingPage() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2 }}
-                className="inline-flex items-center gap-2 mb-8 px-6 py-3 backdrop-blur-xl bg-white/40 border border-white/40 rounded-full shadow-lg"
+                className="inline-flex items-center gap-2 mb-8 px-6 py-3 backdrop-blur-xl bg-gradient-to-r from-gold/30 to-gold/20 border border-gold/40 rounded-full shadow-xl"
               >
                 <Sparkles className="w-5 h-5 text-gold" />
-                <span className="text-navy font-semibold">Backed by AI • Trusted by 5-star hotels</span>
+                <span className="text-navy font-bold">Raising $250K • $1.5T Market Opportunity</span>
               </motion.div>
 
               <h1 className="text-6xl md:text-8xl font-light text-navy mb-8 leading-tight tracking-tight" style={{ fontFamily: 'Georgia, serif' }}>
-                The AI Concierge
+                Revolutionizing
                 <br />
-                <span className="font-normal italic">Hotels Deserve</span>
+                <span className="font-normal italic bg-gradient-to-r from-navy to-navy/70 bg-clip-text">Luxury Hospitality</span>
               </h1>
 
               <p className="text-xl md:text-2xl text-navy/70 mb-12 leading-relaxed max-w-3xl mx-auto font-light">
-                Transform guest experiences with intelligent automation.
+                AI-powered concierge platform transforming the $1.5T global hospitality industry.
                 <br className="hidden md:block" />
-                Increase revenue, reduce costs, delight every guest.
+                <span className="font-semibold text-navy">Increase revenue by 40%, reduce costs by 35%, delight every guest.</span>
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
@@ -173,23 +179,217 @@ export default function LandingPage() {
               </div>
 
               {/* Key Metrics */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
                 {[
-                  { value: '55%', label: 'Guest Adoption', icon: Users },
-                  { value: '2.5x', label: 'Faster Response', icon: Zap },
-                  { value: '40%', label: 'Cost Reduction', icon: TrendingUp },
-                  { value: '90%', label: 'Satisfaction', icon: Shield },
+                  { value: '$1.5T', label: 'Market Size', icon: Globe, highlight: true },
+                  { value: '40%', label: 'Revenue Increase', icon: DollarSign, highlight: true },
+                  { value: '35%', label: 'Cost Reduction', icon: TrendingUp, highlight: false },
+                  { value: '94%', label: 'Guest Satisfaction', icon: Award, highlight: false },
                 ].map((metric, i) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 + i * 0.1 }}
-                    className="backdrop-blur-xl bg-white/30 border border-white/40 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all"
+                    className={`backdrop-blur-xl ${metric.highlight ? 'bg-gradient-to-br from-gold/20 to-gold/10 border-gold/50' : 'bg-white/30 border-white/40'} border rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:scale-105 transition-all`}
                   >
-                    <metric.icon className="w-8 h-8 text-gold mb-3 mx-auto" />
-                    <div className="text-4xl font-bold text-navy mb-1">{metric.value}</div>
+                    <metric.icon className={`w-8 h-8 ${metric.highlight ? 'text-gold' : 'text-navy'} mb-3 mx-auto`} />
+                    <div className={`text-4xl font-bold ${metric.highlight ? 'text-gold' : 'text-navy'} mb-1`}>{metric.value}</div>
                     <div className="text-sm text-navy/70 font-medium">{metric.label}</div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Revenue Model Section */}
+        <section className="py-20 px-6 bg-gradient-to-b from-transparent via-navy/5 to-transparent">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-5xl md:text-6xl font-light text-navy mb-6" style={{ fontFamily: 'Georgia, serif' }}>
+                <span className="italic">Four</span> Revenue Streams
+              </h2>
+              <p className="text-xl text-navy/70 max-w-2xl mx-auto font-light">
+                Diversified business model designed for sustainable growth
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                {
+                  icon: Building2,
+                  title: 'SaaS Licensing',
+                  description: 'Per-room monthly subscription for hotels',
+                  color: 'from-gold/20 to-gold/10',
+                  borderColor: 'border-gold/40'
+                },
+                {
+                  icon: DollarSign,
+                  title: 'Transaction Fees',
+                  description: '2-5% commission on orders and bookings',
+                  color: 'from-blue-500/20 to-blue-500/10',
+                  borderColor: 'border-blue-500/40'
+                },
+                {
+                  icon: Rocket,
+                  title: 'Upsell Revenue',
+                  description: 'Share of AI-driven incremental sales',
+                  color: 'from-green-500/20 to-green-500/10',
+                  borderColor: 'border-green-500/40'
+                },
+                {
+                  icon: ChartLine,
+                  title: 'Data Analytics',
+                  description: 'Premium insights and reporting packages',
+                  color: 'from-purple-500/20 to-purple-500/10',
+                  borderColor: 'border-purple-500/40'
+                }
+              ].map((stream, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  className={`backdrop-blur-xl bg-gradient-to-br ${stream.color} border ${stream.borderColor} rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all`}
+                >
+                  <div className="w-16 h-16 bg-navy rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                    <stream.icon className="w-8 h-8 text-gold" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-navy mb-3">{stream.title}</h3>
+                  <p className="text-navy/70 leading-relaxed">{stream.description}</p>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Value Proposition */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mt-16 backdrop-blur-xl bg-gradient-to-r from-navy/90 to-navy-dark/90 border border-white/20 rounded-3xl p-12 text-center shadow-2xl"
+            >
+              <Target className="w-16 h-16 text-gold mx-auto mb-6" />
+              <h3 className="text-3xl md:text-4xl font-light text-white mb-4" style={{ fontFamily: 'Georgia, serif' }}>
+                <span className="italic">Proven</span> Business Model
+              </h3>
+              <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
+                With pilot agreements from 3 luxury hotels and a waitlist of 50+ properties,
+                we're positioned to capture significant market share in the $1.5T hospitality industry.
+              </p>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Traction & Market Timing */}
+        <section id="metrics" className="py-20 px-6">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-5xl md:text-6xl font-light text-navy mb-6" style={{ fontFamily: 'Georgia, serif' }}>
+                Traction &amp; <span className="italic">Growth</span>
+              </h2>
+              <p className="text-xl text-navy/70 max-w-2xl mx-auto font-light">
+                Early momentum proving product-market fit
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-3 gap-8 mb-16">
+              {[
+                {
+                  value: '3',
+                  label: 'Pilot Hotels',
+                  sublabel: 'Luxury properties signed',
+                  icon: Building2,
+                  color: 'from-gold/30 to-gold/20'
+                },
+                {
+                  value: '50+',
+                  label: 'Waitlist Hotels',
+                  sublabel: 'Ready to deploy',
+                  icon: TrendingUp,
+                  color: 'from-blue-500/30 to-blue-500/20'
+                },
+                {
+                  value: '94%',
+                  label: 'Satisfaction Score',
+                  sublabel: 'From pilot guests',
+                  icon: Award,
+                  color: 'from-green-500/30 to-green-500/20'
+                }
+              ].map((metric, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.15 }}
+                  className={`backdrop-blur-xl bg-gradient-to-br ${metric.color} border border-white/40 rounded-3xl p-10 text-center shadow-2xl hover:scale-105 transition-all`}
+                >
+                  <metric.icon className="w-12 h-12 text-navy mx-auto mb-6" />
+                  <div className="text-6xl font-bold text-navy mb-3">{metric.value}</div>
+                  <div className="text-xl font-semibold text-navy mb-2">{metric.label}</div>
+                  <div className="text-sm text-navy/60">{metric.sublabel}</div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Why Now */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="backdrop-blur-xl bg-white/40 border border-white/40 rounded-3xl p-12 shadow-2xl"
+            >
+              <div className="text-center mb-10">
+                <Rocket className="w-16 h-16 text-gold mx-auto mb-6" />
+                <h3 className="text-4xl font-light text-navy mb-4" style={{ fontFamily: 'Georgia, serif' }}>
+                  Why <span className="italic">Now</span>?
+                </h3>
+              </div>
+              <div className="grid md:grid-cols-2 gap-8">
+                {[
+                  {
+                    title: 'Labor Crisis',
+                    description: 'Hotels facing 30% staff shortages post-pandemic. AI automation is no longer optional—it\'s survival.'
+                  },
+                  {
+                    title: 'Guest Expectations',
+                    description: '87% of luxury travelers now expect instant, personalized service through mobile apps.'
+                  },
+                  {
+                    title: 'Technology Readiness',
+                    description: 'Modern LLMs finally capable of human-quality conversations at scale.'
+                  },
+                  {
+                    title: 'Market Consolidation',
+                    description: 'First mover advantage in emerging $15B hotel tech AI segment.'
+                  }
+                ].map((reason, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                    className="flex gap-4"
+                  >
+                    <Check className="w-6 h-6 text-gold flex-shrink-0 mt-1" />
+                    <div>
+                      <h4 className="text-xl font-semibold text-navy mb-2">{reason.title}</h4>
+                      <p className="text-navy/70 leading-relaxed">{reason.description}</p>
+                    </div>
                   </motion.div>
                 ))}
               </div>
