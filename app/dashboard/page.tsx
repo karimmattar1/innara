@@ -145,6 +145,40 @@ export default function Dashboard() {
 
       {/* Main Content */}
       <div className="relative z-10 p-12 space-y-8">
+        {/* Active Requests Table - Top Priority */}
+        <div className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-3xl shadow-2xl p-8">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-navy mb-1">Active Requests</h2>
+              <p className="text-sm text-navy/60">Real-time request tracking and assignment</p>
+            </div>
+            <button className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/20 backdrop-blur-xl border border-white/30 text-navy hover:bg-white/30 transition-all">
+              <SlidersHorizontal className="w-4 h-4" />
+              <span className="text-sm font-medium">Filter</span>
+            </button>
+          </div>
+
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-navy/20">
+                <th className="text-left text-xs uppercase text-navy/70 font-semibold pb-4">Guest</th>
+                <th className="text-left text-xs uppercase text-navy/70 font-semibold pb-4">Room</th>
+                <th className="text-left text-xs uppercase text-navy/70 font-semibold pb-4">Item</th>
+                <th className="text-left text-xs uppercase text-navy/70 font-semibold pb-4">Status</th>
+                <th className="text-left text-xs uppercase text-navy/70 font-semibold pb-4">Requested</th>
+                <th className="text-left text-xs uppercase text-navy/70 font-semibold pb-4">Staff</th>
+              </tr>
+            </thead>
+            <tbody>
+              <AnimatePresence>
+                {requests.map((request) => (
+                  <RequestRow key={request.id} request={request} />
+                ))}
+              </AnimatePresence>
+            </tbody>
+          </table>
+        </div>
+
         {/* Top Stats Row - Key Metrics */}
         <div className="grid grid-cols-5 gap-6">
           <MetricCard
@@ -328,40 +362,6 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Recent Requests Table */}
-        <div className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-3xl shadow-2xl p-8">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-2xl font-bold text-navy mb-1">Active Requests</h2>
-              <p className="text-sm text-navy/60">Real-time request tracking and assignment</p>
-            </div>
-            <button className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/20 backdrop-blur-xl border border-white/30 text-navy hover:bg-white/30 transition-all">
-              <SlidersHorizontal className="w-4 h-4" />
-              <span className="text-sm font-medium">Filter</span>
-            </button>
-          </div>
-
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-navy/20">
-                <th className="text-left text-xs uppercase text-navy/70 font-semibold pb-4">Guest</th>
-                <th className="text-left text-xs uppercase text-navy/70 font-semibold pb-4">Room</th>
-                <th className="text-left text-xs uppercase text-navy/70 font-semibold pb-4">Item</th>
-                <th className="text-left text-xs uppercase text-navy/70 font-semibold pb-4">Status</th>
-                <th className="text-left text-xs uppercase text-navy/70 font-semibold pb-4">Requested</th>
-                <th className="text-left text-xs uppercase text-navy/70 font-semibold pb-4">Staff</th>
-              </tr>
-            </thead>
-            <tbody>
-              <AnimatePresence>
-                {requests.map((request) => (
-                  <RequestRow key={request.id} request={request} />
-                ))}
-              </AnimatePresence>
-            </tbody>
-          </table>
         </div>
       </div>
 
