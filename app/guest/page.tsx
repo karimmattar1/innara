@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Sparkles, ShoppingCart, UtensilsCrossed, Home, Car, Bell, Flower2, Shirt, Wrench, Clock, Plus, Check, ChevronLeft, ArrowRight, X, Compass, ClipboardList, User, ConciergeBell, ShoppingBag, Package, Wine } from 'lucide-react'
+import { Sparkles, ShoppingCart, UtensilsCrossed, Home, Car, Bell, Flower2, Shirt, Wrench, Clock, Plus, Check, ChevronLeft, ArrowRight, X, Compass, ClipboardList, User, ConciergeBell, ShoppingBag, Package, Wine, Search, Dumbbell } from 'lucide-react'
 import Image from 'next/image'
 
 export default function GuestApp() {
@@ -354,6 +354,7 @@ function ExploreView({ onServiceClick, onNavClick }: any) {
     { icon: Wine, label: 'Mini Bar', value: 'minibar', color: 'from-red-400 to-pink-500' },
     { icon: Package, label: 'Packages', value: 'packages', color: 'from-indigo-400 to-purple-500' },
     { icon: Wrench, label: 'Maintenance', value: 'maintenance', color: 'from-gray-400 to-slate-500' },
+    { icon: Dumbbell, label: 'Gym & Fitness', value: 'gym', color: 'from-teal-400 to-cyan-500' },
   ]
 
   return (
@@ -361,7 +362,17 @@ function ExploreView({ onServiceClick, onNavClick }: any) {
       {/* Header */}
       <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0">
         <h1 className="text-lg font-semibold text-navy mb-1">Explore Services</h1>
-        <p className="text-xs text-navy/60">Browse all available amenities</p>
+        <p className="text-xs text-navy/60 mb-3">Browse all available amenities</p>
+
+        {/* Search Bar */}
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-navy/40" />
+          <input
+            type="text"
+            placeholder="Search services..."
+            className="w-full h-9 pl-9 pr-3 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-sm text-navy placeholder:text-navy/50 focus:outline-none focus:border-gold/50 focus:bg-white/30 transition-all"
+          />
+        </div>
       </div>
 
       {/* Services Grid - Scrollable */}
@@ -545,8 +556,8 @@ function RoomServiceView({ onBack, onAddToCart }: any) {
   return (
     <div className="flex flex-col h-full">
       {/* Header with Back Button */}
-      <div className="flex-shrink-0 bg-white border-b border-gray-200 px-4 py-3 flex items-center gap-3">
-        <button onClick={onBack} className="flex items-center gap-1 text-navy hover:text-gold transition-colors">
+      <div className="flex-shrink-0 backdrop-blur-xl bg-white/20 border-b border-white/20 px-4 py-3 flex items-center gap-3">
+        <button onClick={onBack} className="flex items-center gap-1 text-navy hover:text-navy/70 transition-colors">
           <ChevronLeft className="w-5 h-5" />
         </button>
         <div className="flex-1">
@@ -558,14 +569,14 @@ function RoomServiceView({ onBack, onAddToCart }: any) {
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto">
         <div className="px-6 py-6">
-          <div className="bg-gold/10 border-l-4 border-gold p-3 rounded-lg mb-4 flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-gold flex-shrink-0" />
-            <span className="text-sm text-navy">💡 Popular right now: Caesar Salad</span>
+          <div className="backdrop-blur-xl bg-white/10 border-l-4 border-navy/30 p-3 rounded-lg mb-4 flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-navy flex-shrink-0" />
+            <span className="text-sm text-navy">Popular right now: Caesar Salad</span>
           </div>
 
           <div className="flex gap-2 overflow-x-auto mb-4 pb-2">
             {['Popular', 'Breakfast', 'Lunch', 'Dinner', 'Drinks', 'Desserts'].map((cat, i) => (
-              <button key={cat} className={`px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap border shadow-lg transition-all hover:scale-105 ${i === 0 ? 'bg-gradient-to-r from-gold-light to-gold text-white border-gold' : 'backdrop-blur-xl bg-white/10 text-navy border-white/20 hover:bg-white/15'}`}>
+              <button key={cat} className={`px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap border transition-all hover:scale-105 ${i === 0 ? 'backdrop-blur-xl bg-white/30 text-navy border-white/40 shadow-lg' : 'backdrop-blur-xl bg-white/10 text-navy border-white/20 hover:bg-white/15'}`}>
                 {cat}
               </button>
             ))}
@@ -756,28 +767,28 @@ function ActionButton({ icon: Icon, label, badge, highlight, onClick }: any) {
 
 function FoodCard({ name, description, price, image, aiPick, added, onAdd }: any) {
   return (
-    <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl p-3 flex gap-3 hover:shadow-2xl hover:bg-white/15 hover:border-gold hover:scale-[1.02] transition-all shadow-lg">
+    <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl p-3 flex gap-3 hover:shadow-2xl hover:bg-white/15 hover:scale-[1.02] transition-all shadow-lg">
       <div className="relative">
         <img src={image} alt={name} className="w-24 h-24 rounded-2xl object-cover" />
         {aiPick && (
-          <div className="absolute top-1 right-1 bg-gradient-to-r from-gold-light to-gold text-white text-xs px-2 py-0.5 rounded-full font-semibold shadow-lg">
-            AI Pick
+          <div className="absolute top-1 right-1 backdrop-blur-xl bg-white/30 text-navy text-xs px-2 py-0.5 rounded-full font-semibold shadow-lg border border-white/40">
+            Popular
           </div>
         )}
       </div>
       <div className="flex-1">
         <h4 className="font-semibold text-navy">{name}</h4>
         <p className="text-xs text-navy/60 line-clamp-1">{description}</p>
-        <p className="text-sm font-semibold text-gold mt-2">${price}</p>
+        <p className="text-sm font-semibold text-navy mt-2">${price}</p>
       </div>
       <button
         onClick={onAdd}
-        className="w-10 h-10 rounded-full bg-gradient-to-br from-gold-light to-gold flex items-center justify-center hover:scale-110 active:scale-95 transition-transform shadow-xl"
+        className="w-10 h-10 rounded-full backdrop-blur-xl bg-white/30 border border-white/40 flex items-center justify-center hover:scale-110 active:scale-95 transition-transform shadow-lg"
       >
         {added ? (
-          <Check className="w-5 h-5 text-white" />
+          <Check className="w-5 h-5 text-navy" />
         ) : (
-          <Plus className="w-5 h-5 text-white" />
+          <Plus className="w-5 h-5 text-navy" />
         )}
       </button>
     </div>
