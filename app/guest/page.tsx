@@ -577,7 +577,7 @@ function RoomServiceView({ onBack, onAddToCart }: any) {
           <div className="flex gap-3 mb-4">
             {['Popular', 'Meals', 'Drinks'].map((cat, i) => (
               <button key={cat} className={`relative flex-1 px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap border transition-all hover:scale-105 overflow-hidden ${i === 0 ? 'backdrop-blur-xl bg-white/10 text-navy border-white/40 shadow-lg' : 'backdrop-blur-xl bg-white/10 text-navy border-white/20 hover:bg-white/15'}`}>
-                {i === 0 && <div className="absolute inset-0 bg-navy/20 rounded-full" style={{ width: '62%' }}></div>}
+                {i === 0 && <div className="absolute inset-0 bg-navy/20 rounded-full"></div>}
                 <span className="relative z-10">{cat}</span>
               </button>
             ))}
