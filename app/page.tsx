@@ -18,7 +18,7 @@ import {
   Rocket,
   Award,
   Building2,
-  ChartLine
+  LineChart
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -244,7 +244,7 @@ export default function LandingPage() {
                   borderColor: 'border-green-500/40'
                 },
                 {
-                  icon: ChartLine,
+                  icon: LineChart,
                   title: 'Data Analytics',
                   description: 'Premium insights and reporting packages',
                   color: 'from-purple-500/20 to-purple-500/10',
