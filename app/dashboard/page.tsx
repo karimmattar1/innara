@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ClipboardList, Home, UtensilsCrossed, Car, Bell, SlidersHorizontal, Sparkles, TrendingUp, Lightbulb, Zap } from 'lucide-react'
+import { ClipboardList, Home, UtensilsCrossed, Car, Bell, SlidersHorizontal, Sparkles, TrendingUp, Lightbulb, Zap, DollarSign, Clock, Users, BarChart3, TrendingDown, Star, Award, Target } from 'lucide-react'
 import Image from 'next/image'
 
 const initialRequests = [
@@ -144,113 +144,174 @@ export default function Dashboard() {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 p-12">
-        {/* Stats Row - Glass Cards */}
-        <div className="grid grid-cols-4 gap-6 mb-8">
-          <StatCard
+      <div className="relative z-10 p-12 space-y-8">
+        {/* Top Stats Row - Key Metrics */}
+        <div className="grid grid-cols-5 gap-6">
+          <MetricCard
+            icon={Star}
+            label="Guest Happiness"
+            value="94%"
+            change="+3% vs last week"
+            trend="up"
+            description="Based on 128 interactions"
+          />
+          <MetricCard
+            icon={DollarSign}
+            label="Revenue Today"
+            value="$12.4K"
+            change="+$2.1K vs yesterday"
+            trend="up"
+            description="Upsell conversion: 34%"
+          />
+          <MetricCard
+            icon={Clock}
+            label="Avg Resolution"
+            value="6.2 min"
+            change="-1.8 min vs yesterday"
+            trend="up"
+            description="Target: < 8 min"
+          />
+          <MetricCard
             icon={ClipboardList}
-            label="Total Requests"
+            label="Active Requests"
             value={stats.total}
             change="+2 today"
+            trend="neutral"
+            description="2 high priority"
           />
-          <StatCard
-            icon={Home}
-            label="Housekeeping"
-            value={stats.housekeeping}
-          />
-          <StatCard
-            icon={UtensilsCrossed}
-            label="Room Service"
-            value={stats.roomService}
-            change="+1 today"
-          />
-          <StatCard
-            icon={Car}
-            label="Valet"
-            value={stats.valet}
+          <MetricCard
+            icon={Users}
+            label="Guests Served"
+            value="87"
+            change="+12 today"
+            trend="up"
+            description="168 total checked in"
           />
         </div>
 
-        {/* Main Grid */}
-        <div className="grid grid-cols-12 gap-6">
-          {/* Requests Table */}
-          <div className="col-span-8">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-3xl font-bold text-navy">Active Requests</h2>
-              <button className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/20 backdrop-blur-xl border border-white/30 text-navy hover:bg-white/30 transition-all">
-                <SlidersHorizontal className="w-4 h-4" />
-                <span className="text-sm font-medium">Filter</span>
-              </button>
+        {/* 30-Day Trends Chart */}
+        <div className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-3xl shadow-2xl p-8">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-2xl font-bold text-navy flex items-center gap-2 mb-1">
+                30-Day Performance Trends
+                <BarChart3 className="w-6 h-6 text-gold" />
+              </h2>
+              <p className="text-sm text-navy/60">Request volume, resolution time, and guest satisfaction</p>
             </div>
+            <div className="flex gap-4">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-gold"></div>
+                <span className="text-xs text-navy/70">Requests</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+                <span className="text-xs text-navy/70">Satisfaction</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                <span className="text-xs text-navy/70">Revenue</span>
+              </div>
+            </div>
+          </div>
+          <TrendsChart />
+        </div>
 
+        {/* Main Analytics Grid */}
+        <div className="grid grid-cols-12 gap-6">
+          {/* Room Service Demand Forecast */}
+          <div className="col-span-5">
             <div className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-3xl shadow-2xl p-8">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-navy/20">
-                    <th className="text-left text-xs uppercase text-navy/70 font-semibold pb-4">Guest</th>
-                    <th className="text-left text-xs uppercase text-navy/70 font-semibold pb-4">Room</th>
-                    <th className="text-left text-xs uppercase text-navy/70 font-semibold pb-4">Item</th>
-                    <th className="text-left text-xs uppercase text-navy/70 font-semibold pb-4">Status</th>
-                    <th className="text-left text-xs uppercase text-navy/70 font-semibold pb-4">Requested</th>
-                    <th className="text-left text-xs uppercase text-navy/70 font-semibold pb-4">Staff</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <AnimatePresence>
-                    {requests.map((request) => (
-                      <RequestRow key={request.id} request={request} />
-                    ))}
-                  </AnimatePresence>
-                </tbody>
-              </table>
+              <div className="mb-6">
+                <h2 className="text-xl font-bold text-navy flex items-center gap-2 mb-1">
+                  <UtensilsCrossed className="w-5 h-5 text-gold" />
+                  Room Service Forecast
+                </h2>
+                <p className="text-sm text-navy/60">Next 6 hours predicted demand</p>
+              </div>
+              <div className="space-y-4">
+                <ForecastBar time="2-3 PM" demand={85} label="Peak" />
+                <ForecastBar time="3-4 PM" demand={92} label="Peak" highlight />
+                <ForecastBar time="4-5 PM" demand={78} label="High" />
+                <ForecastBar time="5-6 PM" demand={65} label="Moderate" />
+                <ForecastBar time="6-7 PM" demand={88} label="Peak" />
+                <ForecastBar time="7-8 PM" demand={95} label="Peak" highlight />
+              </div>
+              <div className="mt-6 pt-6 border-t border-navy/20">
+                <div className="flex items-center gap-3 backdrop-blur-xl bg-gold/10 border-l-4 border-gold p-4 rounded-lg">
+                  <Sparkles className="w-5 h-5 text-gold flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-semibold text-navy mb-1">AI Recommendation</p>
+                    <p className="text-xs text-navy/70">Add 2 kitchen staff for 3-4 PM and 7-8 PM peaks</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* AI Insights Panel */}
+          {/* Staff Performance Leaderboard */}
           <div className="col-span-4">
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold text-navy flex items-center gap-2 mb-2">
-                AI Insights
-                <Sparkles className="w-6 h-6 text-gold" />
-              </h2>
-              <p className="text-sm text-navy/60">Real-time intelligence</p>
-            </div>
-
             <div className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-3xl shadow-2xl p-8">
-              <div className="space-y-6">
-                <InsightCard
+              <div className="mb-6">
+                <h2 className="text-xl font-bold text-navy flex items-center gap-2 mb-1">
+                  <Award className="w-5 h-5 text-gold" />
+                  Top Performers Today
+                </h2>
+                <p className="text-sm text-navy/60">Based on speed and guest ratings</p>
+              </div>
+              <div className="space-y-4">
+                <StaffRank rank={1} name="James Miller" tasks={23} rating={4.9} avgTime="4.2 min" />
+                <StaffRank rank={2} name="Sarah Johnson" tasks={21} rating={4.8} avgTime="5.1 min" />
+                <StaffRank rank={3} name="Ahmed Ali" tasks={19} rating={4.9} avgTime="5.8 min" />
+                <StaffRank rank={4} name="Olivia Chen" tasks={18} rating={4.7} avgTime="6.3 min" />
+                <StaffRank rank={5} name="Michael Brown" tasks={17} rating={4.8} avgTime="6.5 min" />
+              </div>
+            </div>
+          </div>
+
+          {/* Predictive AI Insights */}
+          <div className="col-span-3">
+            <div className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-3xl shadow-2xl p-8">
+              <div className="mb-6">
+                <h2 className="text-xl font-bold text-navy flex items-center gap-2 mb-1">
+                  AI Insights
+                  <Sparkles className="w-5 h-5 text-gold" />
+                </h2>
+                <p className="text-sm text-navy/60">Real-time intelligence</p>
+              </div>
+              <div className="space-y-5">
+                <AIInsightCard
+                  icon={Target}
+                  title="Upsell Alert"
+                  value="Room 1204"
+                  description="Guest ordered Caesar Salad - recommend wine pairing"
+                  urgency="high"
+                />
+                <AIInsightCard
                   icon={TrendingUp}
-                  title="Peak Demand"
-                  value="2-4 PM today"
-                  description="25% higher request volume"
-                  progress={75}
-                  valueColor="text-navy"
+                  title="Demand Spike"
+                  value="+40% spa"
+                  description="Sunny weather forecast tomorrow - pre-stock towels"
+                  urgency="medium"
                 />
-                <InsightCard
+                <AIInsightCard
                   icon={Lightbulb}
-                  title="Upsell Opportunity"
-                  value="3 guests"
-                  description="Viewed spa menu but didn't book"
-                  valueColor="text-navy"
-                />
-                <InsightCard
-                  icon={Zap}
-                  title="Avg Response Time"
-                  value="8 minutes"
-                  description="↓ 15% from yesterday"
-                  valueColor="text-navy"
+                  title="Pattern Detected"
+                  value="3 VIP guests"
+                  description="Checking in at 3 PM - prep premium amenities"
+                  urgency="high"
                 />
               </div>
 
-              <div className="mt-8 pt-8 border-t border-navy/20">
+              <div className="mt-8 pt-6 border-t border-navy/20">
                 <h3 className="text-sm font-semibold text-navy mb-4">Live Activity</h3>
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {activities.map((activity) => (
                     <motion.div
                       key={activity.id}
                       initial={{ x: 20, opacity: 0 }}
                       animate={{ x: 0, opacity: 1 }}
-                      className="flex items-start gap-3"
+                      className="flex items-start gap-2"
                     >
                       <motion.div
                         animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
@@ -258,8 +319,8 @@ export default function Dashboard() {
                         className="w-2 h-2 bg-gold rounded-full mt-1.5 flex-shrink-0"
                       />
                       <div>
-                        <p className="text-sm text-navy/90">{activity.text}</p>
-                        <p className="text-xs text-navy/50 mt-0.5">{activity.time}</p>
+                        <p className="text-xs text-navy/90">{activity.text}</p>
+                        <p className="text-[10px] text-navy/50 mt-0.5">{activity.time}</p>
                       </div>
                     </motion.div>
                   ))}
@@ -267,6 +328,40 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Recent Requests Table */}
+        <div className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-3xl shadow-2xl p-8">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-navy mb-1">Active Requests</h2>
+              <p className="text-sm text-navy/60">Real-time request tracking and assignment</p>
+            </div>
+            <button className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/20 backdrop-blur-xl border border-white/30 text-navy hover:bg-white/30 transition-all">
+              <SlidersHorizontal className="w-4 h-4" />
+              <span className="text-sm font-medium">Filter</span>
+            </button>
+          </div>
+
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-navy/20">
+                <th className="text-left text-xs uppercase text-navy/70 font-semibold pb-4">Guest</th>
+                <th className="text-left text-xs uppercase text-navy/70 font-semibold pb-4">Room</th>
+                <th className="text-left text-xs uppercase text-navy/70 font-semibold pb-4">Item</th>
+                <th className="text-left text-xs uppercase text-navy/70 font-semibold pb-4">Status</th>
+                <th className="text-left text-xs uppercase text-navy/70 font-semibold pb-4">Requested</th>
+                <th className="text-left text-xs uppercase text-navy/70 font-semibold pb-4">Staff</th>
+              </tr>
+            </thead>
+            <tbody>
+              <AnimatePresence>
+                {requests.map((request) => (
+                  <RequestRow key={request.id} request={request} />
+                ))}
+              </AnimatePresence>
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -291,33 +386,237 @@ export default function Dashboard() {
   )
 }
 
-function StatCard({ icon: Icon, label, value, change }: any) {
+function MetricCard({ icon: Icon, label, value, change, trend, description }: any) {
+  const trendColors = {
+    up: 'text-green-500',
+    down: 'text-red-500',
+    neutral: 'text-navy/60'
+  }
+
   return (
     <motion.div
       layout
-      className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-3xl p-8 shadow-2xl hover:bg-white/15 hover:scale-105 hover:shadow-[0_0_40px_rgba(189,155,48,0.3)] transition-all duration-300"
+      className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-3xl p-6 shadow-2xl hover:bg-white/15 hover:scale-105 hover:shadow-[0_0_40px_rgba(189,155,48,0.3)] transition-all duration-300"
     >
-      <div className="flex items-center justify-between mb-4">
-        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-gold/30 to-gold/10 flex items-center justify-center">
-          <Icon className="w-7 h-7 text-gold" />
+      <div className="flex items-center justify-between mb-3">
+        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gold/30 to-gold/10 flex items-center justify-center">
+          <Icon className="w-6 h-6 text-gold" />
         </div>
       </div>
-      <p className="text-xs uppercase text-navy/70 font-semibold tracking-wide mb-2">{label}</p>
+      <p className="text-xs uppercase text-navy/70 font-semibold tracking-wide mb-1">{label}</p>
       <motion.p
         key={value}
-        initial={{ scale: 1.3, color: '#bd9b30' }}
+        initial={{ scale: 1.2, color: '#bd9b30' }}
         animate={{ scale: 1, color: '#1d1b38' }}
         transition={{ duration: 0.6 }}
-        className="text-5xl font-bold text-navy mb-2"
+        className="text-4xl font-bold text-navy mb-1"
       >
         {value}
       </motion.p>
-      {change && (
-        <p className="text-sm text-green-400 flex items-center gap-1 font-medium">
-          <span>↑</span>
-          {change}
-        </p>
-      )}
+      <p className={`text-xs ${trendColors[trend as keyof typeof trendColors]} font-medium mb-1`}>
+        {change}
+      </p>
+      <p className="text-[10px] text-navy/50">{description}</p>
+    </motion.div>
+  )
+}
+
+function TrendsChart() {
+  // 30 data points for the last 30 days
+  const requestData = [42, 38, 45, 48, 44, 52, 49, 55, 51, 48, 56, 53, 58, 62, 59, 64, 61, 58, 65, 68, 63, 70, 67, 72, 69, 75, 71, 78, 74, 80]
+  const satisfactionData = [88, 87, 89, 91, 90, 92, 91, 93, 92, 91, 94, 93, 95, 94, 93, 95, 94, 96, 95, 94, 96, 95, 97, 96, 95, 97, 96, 95, 96, 94]
+  const revenueData = [8.2, 7.8, 8.5, 9.1, 8.7, 9.4, 9.2, 10.1, 9.8, 9.5, 10.3, 10.0, 10.8, 11.2, 10.9, 11.5, 11.2, 10.9, 11.8, 12.1, 11.7, 12.4, 12.0, 12.7, 12.3, 13.0, 12.6, 13.3, 12.9, 12.4]
+
+  const maxRequest = Math.max(...requestData)
+  const maxSatisfaction = 100
+  const maxRevenue = Math.max(...revenueData)
+
+  const width = 1100
+  const height = 250
+  const padding = 40
+
+  const createPath = (data: number[], max: number) => {
+    const xStep = (width - padding * 2) / (data.length - 1)
+    const points = data.map((value, i) => {
+      const x = padding + i * xStep
+      const y = height - padding - ((value / max) * (height - padding * 2))
+      return `${x},${y}`
+    })
+    return `M ${points.join(' L ')}`
+  }
+
+  return (
+    <div className="relative">
+      <svg width="100%" height={height} viewBox={`0 0 ${width} ${height}`} className="overflow-visible">
+        {/* Grid lines */}
+        {[0, 1, 2, 3, 4].map((i) => (
+          <line
+            key={i}
+            x1={padding}
+            y1={padding + i * ((height - padding * 2) / 4)}
+            x2={width - padding}
+            y2={padding + i * ((height - padding * 2) / 4)}
+            stroke="#1d1b38"
+            strokeOpacity="0.1"
+            strokeWidth="1"
+          />
+        ))}
+
+        {/* Revenue area */}
+        <motion.path
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ pathLength: 1, opacity: 0.3 }}
+          transition={{ duration: 2, delay: 0.4 }}
+          d={`${createPath(revenueData, maxRevenue)} L ${width - padding},${height - padding} L ${padding},${height - padding} Z`}
+          fill="url(#revenueGradient)"
+        />
+
+        {/* Revenue line */}
+        <motion.path
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 2, delay: 0.4 }}
+          d={createPath(revenueData, maxRevenue)}
+          stroke="#10b981"
+          strokeWidth="3"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+
+        {/* Requests line */}
+        <motion.path
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 2 }}
+          d={createPath(requestData, maxRequest)}
+          stroke="#bd9b30"
+          strokeWidth="3"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+
+        {/* Satisfaction line */}
+        <motion.path
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 2, delay: 0.2 }}
+          d={createPath(satisfactionData, maxSatisfaction)}
+          stroke="#3b82f6"
+          strokeWidth="3"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+
+        {/* Gradients */}
+        <defs>
+          <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#10b981" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+      </svg>
+
+      {/* X-axis labels */}
+      <div className="flex justify-between mt-4 px-10">
+        <span className="text-xs text-navy/50">Day 1</span>
+        <span className="text-xs text-navy/50">Day 15</span>
+        <span className="text-xs text-navy/50">Day 30</span>
+      </div>
+    </div>
+  )
+}
+
+function ForecastBar({ time, demand, label, highlight }: any) {
+  const getColor = () => {
+    if (demand >= 90) return 'from-red-500 to-red-600'
+    if (demand >= 75) return 'from-orange-500 to-orange-600'
+    return 'from-blue-500 to-blue-600'
+  }
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-sm font-semibold text-navy">{time}</span>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-navy/60">{label}</span>
+          {highlight && (
+            <Sparkles className="w-3 h-3 text-gold" />
+          )}
+        </div>
+      </div>
+      <div className="relative h-3 bg-white/10 rounded-full overflow-hidden">
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: `${demand}%` }}
+          transition={{ duration: 1.5, delay: 0.2 }}
+          className={`h-full bg-gradient-to-r ${getColor()} rounded-full`}
+        />
+      </div>
+    </div>
+  )
+}
+
+function StaffRank({ rank, name, tasks, rating, avgTime }: any) {
+  const getMedalColor = () => {
+    if (rank === 1) return 'from-gold to-yellow-600'
+    if (rank === 2) return 'from-gray-300 to-gray-400'
+    if (rank === 3) return 'from-amber-600 to-amber-700'
+    return 'from-navy/20 to-navy/30'
+  }
+
+  return (
+    <motion.div
+      initial={{ x: -20, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ delay: rank * 0.1 }}
+      className="flex items-center gap-4 backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 hover:bg-white/10 transition-all"
+    >
+      <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${getMedalColor()} flex items-center justify-center font-bold text-white text-lg shadow-lg`}>
+        {rank}
+      </div>
+      <div className="flex-1">
+        <p className="text-sm font-semibold text-navy">{name}</p>
+        <div className="flex items-center gap-3 mt-1">
+          <span className="text-xs text-navy/60">{tasks} tasks</span>
+          <span className="text-xs text-navy/60">•</span>
+          <div className="flex items-center gap-1">
+            <Star className="w-3 h-3 text-gold fill-gold" />
+            <span className="text-xs text-navy/70 font-semibold">{rating}</span>
+          </div>
+          <span className="text-xs text-navy/60">•</span>
+          <span className="text-xs text-navy/60">{avgTime}</span>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
+function AIInsightCard({ icon: Icon, title, value, description, urgency }: any) {
+  const urgencyColors = {
+    high: 'border-l-red-500 bg-red-500/5',
+    medium: 'border-l-orange-500 bg-orange-500/5',
+    low: 'border-l-blue-500 bg-blue-500/5'
+  }
+
+  return (
+    <motion.div
+      initial={{ y: 20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      className={`backdrop-blur-xl bg-white/5 border-l-4 ${urgencyColors[urgency as keyof typeof urgencyColors]} border border-white/10 rounded-xl p-4`}
+    >
+      <div className="flex items-start gap-3">
+        <div className="w-8 h-8 rounded-lg bg-gold/20 flex items-center justify-center flex-shrink-0">
+          <Icon className="w-4 h-4 text-gold" />
+        </div>
+        <div className="flex-1">
+          <p className="text-xs font-semibold text-navy/90 mb-1">{title}</p>
+          <p className="text-sm font-bold text-navy mb-1">{value}</p>
+          <p className="text-[10px] text-navy/60 leading-relaxed">{description}</p>
+        </div>
+      </div>
     </motion.div>
   )
 }
@@ -392,33 +691,3 @@ function StaffAvatar({ initials, name }: any) {
   )
 }
 
-function InsightCard({ icon: Icon, title, value, description, progress, valueColor = 'text-gold' }: any) {
-  return (
-    <motion.div
-      initial={{ y: 20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all"
-    >
-      <div className="flex items-start gap-4">
-        <div className="w-10 h-10 rounded-xl bg-gold/20 flex items-center justify-center flex-shrink-0">
-          <Icon className="w-5 h-5 text-gold" />
-        </div>
-        <div className="flex-1">
-          <p className="text-sm font-semibold text-navy/90 mb-2">{title}</p>
-          <p className={`text-2xl font-bold ${valueColor} mb-2`}>{value}</p>
-          <p className="text-xs text-navy/60 leading-relaxed">{description}</p>
-          {progress && (
-            <div className="w-full h-2 bg-white/10 rounded-full mt-4 overflow-hidden">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${progress}%` }}
-                transition={{ duration: 1.5, delay: 0.5 }}
-                className="h-full bg-gradient-to-r from-gold-light via-gold to-gold-light rounded-full"
-              />
-            </div>
-          )}
-        </div>
-      </div>
-    </motion.div>
-  )
-}
