@@ -366,15 +366,15 @@ function ExploreView({ onServiceClick, onNavClick }: any) {
 
       {/* Services Grid - Scrollable */}
       <div className="flex-1 overflow-y-auto" style={{ border: '3px solid blue' }}>
-        <div className="px-6 py-6 grid grid-cols-3 gap-3" style={{ backgroundColor: 'rgba(0,255,0,0.1)' }}>
+        <div className="px-6 py-6 grid grid-cols-2 gap-4" style={{ backgroundColor: 'rgba(0,255,0,0.1)' }}>
           {allServices.map((service) => (
             <button
               key={service.value}
               onClick={() => onServiceClick(service.value)}
-              className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-3 flex flex-col items-center justify-center gap-2 hover:bg-white/20 hover:border-gold/50 hover:scale-105 transition-all shadow-lg aspect-square"
+              className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 flex flex-col items-center justify-center gap-3 hover:bg-white/20 hover:border-gold/50 hover:scale-105 transition-all shadow-lg aspect-square"
             >
-              <service.icon className="w-6 h-6 text-gold" />
-              <span className="text-[10px] text-navy text-center leading-tight font-medium">{service.label}</span>
+              <service.icon className="w-8 h-8 text-gold" />
+              <span className="text-xs text-navy text-center leading-tight font-medium">{service.label}</span>
             </button>
           ))}
         </div>
