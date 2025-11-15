@@ -365,7 +365,7 @@ function ExploreView({ onServiceClick, onNavClick }: any) {
       </div>
 
       {/* Services Grid - Scrollable */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto flex flex-col">
         <div className="px-6 py-6 grid grid-cols-2 gap-4">
           {allServices.map((service) => (
             <button
@@ -418,8 +418,8 @@ function RequestsView({ onNavClick }: any) {
       </div>
 
       {/* Requests List - Scrollable */}
-      <div className="flex-1 overflow-y-auto">
-        <div className="px-6 py-6 flex flex-col gap-4">
+      <div className="flex-1 overflow-y-auto flex flex-col">
+        <div className="px-6 py-6 flex flex-col gap-4 flex-1 content-center">
           {requests.map((request) => (
             <div key={request.id} className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 shadow-lg">
               <div className="flex items-start gap-4">
@@ -486,8 +486,8 @@ function ProfileView({ onNavClick }: any) {
       </div>
 
       {/* Settings List - Scrollable */}
-      <div className="flex-1 overflow-y-auto">
-        <div className="px-6 py-6 flex flex-col gap-4">
+      <div className="flex-1 overflow-y-auto flex flex-col">
+        <div className="px-6 py-6 flex flex-col gap-4 flex-1 content-center">
           <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 shadow-lg">
             <h3 className="text-sm font-semibold text-navy mb-1">Preferences</h3>
             <p className="text-xs text-navy/60">Manage your stay preferences</p>
