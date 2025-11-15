@@ -37,7 +37,7 @@ export default function GuestApp() {
         <div className="absolute inset-0">
           {/* Dark blue smoke clouds - very subtle */}
           <motion.div
-            className="absolute -top-32 -left-32 w-[700px] h-[500px] bg-blue-600/35 mix-blend-multiply filter blur-3xl"
+            className="absolute -top-32 -left-32 w-[700px] h-[500px] bg-blue-600/15 mix-blend-multiply filter blur-3xl"
             style={{ borderRadius: '60% 40% 30% 70% / 60% 30% 70% 40%' }}
             animate={{
               x: [0, 80, 0],
@@ -52,7 +52,7 @@ export default function GuestApp() {
             }}
           />
           <motion.div
-            className="absolute top-20 -right-32 w-[600px] h-[600px] bg-indigo-600/35 mix-blend-multiply filter blur-3xl"
+            className="absolute top-20 -right-32 w-[600px] h-[600px] bg-indigo-600/15 mix-blend-multiply filter blur-3xl"
             style={{ borderRadius: '30% 60% 70% 40% / 50% 60% 30% 60%' }}
             animate={{
               x: [0, -60, 0],
@@ -68,7 +68,7 @@ export default function GuestApp() {
             }}
           />
           <motion.div
-            className="absolute bottom-0 left-1/4 w-[800px] h-[400px] bg-blue-700/35 mix-blend-multiply filter blur-3xl"
+            className="absolute bottom-0 left-1/4 w-[800px] h-[400px] bg-blue-700/15 mix-blend-multiply filter blur-3xl"
             style={{ borderRadius: '50% 50% 30% 70% / 60% 40% 60% 40%' }}
             animate={{
               x: [0, -50, 0],
@@ -84,7 +84,7 @@ export default function GuestApp() {
             }}
           />
           <motion.div
-            className="absolute top-1/2 right-1/4 w-[650px] h-[550px] bg-indigo-700/35 mix-blend-multiply filter blur-3xl"
+            className="absolute top-1/2 right-1/4 w-[650px] h-[550px] bg-indigo-700/15 mix-blend-multiply filter blur-3xl"
             style={{ borderRadius: '40% 60% 60% 40% / 60% 30% 70% 40%' }}
             animate={{
               x: [0, 40, 0],
@@ -105,7 +105,7 @@ export default function GuestApp() {
               {/* Content */}
               <div className="relative z-10 h-full flex flex-col">
                 {/* Top Bar - Transparent & Blurred */}
-                <div className="flex-shrink-0 h-[70px] backdrop-blur-2xl bg-white/20 border-b border-white/20 px-4 flex items-center justify-between pt-3">
+                <div className="flex-shrink-0 h-[70px] backdrop-blur-2xl bg-white/20 border-b border-white/20 px-4 flex items-center justify-between pt-8">
                   <div className="flex items-center gap-2">
                     <Image src="/logo.png" alt="INNARA" width={40} height={40} className="rounded-full" />
                     <span className="text-xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INNARA</span>
@@ -376,8 +376,8 @@ function ExploreView({ onServiceClick, onNavClick }: any) {
       </div>
 
       {/* Services Grid - Scrollable */}
-      <div className="flex-1 overflow-y-auto">
-        <div className="px-4 py-3 grid grid-cols-2 gap-3 content-start">
+      <div className="flex-1 overflow-y-auto flex flex-col">
+        <div className="px-4 py-3 grid grid-cols-2 gap-3 flex-1 content-center">
           {allServices.map((service) => (
             <button
               key={service.value}
@@ -576,8 +576,9 @@ function RoomServiceView({ onBack, onAddToCart }: any) {
 
           <div className="flex gap-2 overflow-x-auto mb-4 pb-2">
             {['Popular', 'Breakfast', 'Lunch', 'Dinner', 'Drinks', 'Desserts'].map((cat, i) => (
-              <button key={cat} className={`px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap border transition-all hover:scale-105 ${i === 0 ? 'backdrop-blur-xl bg-white/30 text-navy border-white/40 shadow-lg' : 'backdrop-blur-xl bg-white/10 text-navy border-white/20 hover:bg-white/15'}`}>
-                {cat}
+              <button key={cat} className={`relative px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap border transition-all hover:scale-105 overflow-hidden ${i === 0 ? 'backdrop-blur-xl bg-white/10 text-navy border-white/40 shadow-lg' : 'backdrop-blur-xl bg-white/10 text-navy border-white/20 hover:bg-white/15'}`}>
+                {i === 0 && <div className="absolute inset-0 bg-navy/20 rounded-full" style={{ width: '62%' }}></div>}
+                <span className="relative z-10">{cat}</span>
               </button>
             ))}
           </div>
@@ -608,6 +609,14 @@ function RoomServiceView({ onBack, onAddToCart }: any) {
             />
           </div>
         </div>
+      </div>
+
+      {/* Add to Cart Button */}
+      <div className="flex-shrink-0 px-4 py-3 backdrop-blur-xl bg-white/10 border-t border-white/20">
+        <button className="w-full h-12 backdrop-blur-xl bg-white/30 border border-white/40 text-navy rounded-full font-semibold text-sm flex items-center justify-center gap-2 hover:scale-105 transition-all shadow-lg">
+          <ShoppingCart className="w-5 h-5" />
+          Add to Cart
+        </button>
       </div>
 
       {/* Bottom Navigation - Glassy */}
