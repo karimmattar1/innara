@@ -103,9 +103,9 @@ export default function GuestApp() {
               </div>
 
               {/* Content */}
-              <div className="relative z-10">
+              <div className="relative z-10 h-full flex flex-col">
                 {/* Top Bar - Transparent & Blurred */}
-                <div className="sticky top-0 z-20 h-[70px] backdrop-blur-2xl bg-white/20 border-b border-white/20 px-4 flex items-center justify-between pt-3">
+                <div className="flex-shrink-0 h-[70px] backdrop-blur-2xl bg-white/20 border-b border-white/20 px-4 flex items-center justify-between pt-3">
                   <div className="flex items-center gap-2">
                     <Image src="/logo.png" alt="INNARA" width={40} height={40} className="rounded-full" />
                     <span className="text-xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INNARA</span>
@@ -119,7 +119,7 @@ export default function GuestApp() {
                 </div>
 
                 {/* Main Content - Full Height */}
-                <div className="flex flex-col h-[calc(100%-70px)]">
+                <div className="flex-1 flex flex-col">
                   <AnimatePresence mode="wait">
                   {view === 'concierge' && (
                     <ConciergeView
@@ -508,7 +508,7 @@ function ProfileView({ onNavClick }: any) {
       </div>
 
       {/* Bottom Navigation - Glassy */}
-      <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2">
+      <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2" style={{ backgroundColor: 'rgba(255,255,0,0.3)' }}>
         <button onClick={() => onNavClick('concierge')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
           <Sparkles className="w-5 h-5" />
           <span className="text-[10px] font-medium">Concierge</span>
