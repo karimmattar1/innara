@@ -357,16 +357,16 @@ function ExploreView({ onServiceClick, onNavClick }: any) {
   ]
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full" style={{ border: '3px solid red' }}>
       {/* Header */}
-      <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0">
+      <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0" style={{ backgroundColor: 'rgba(255,0,0,0.1)' }}>
         <h1 className="text-lg font-semibold text-navy mb-1">Explore Services</h1>
         <p className="text-xs text-navy/60">Browse all available amenities</p>
       </div>
 
       {/* Services Grid - Scrollable */}
-      <div className="flex-1 overflow-y-auto flex flex-col">
-        <div className="px-6 py-6 grid grid-cols-2 gap-4">
+      <div className="flex-1 overflow-y-auto flex flex-col" style={{ border: '3px solid blue' }}>
+        <div className="px-6 py-6 grid grid-cols-2 gap-4" style={{ backgroundColor: 'rgba(0,255,0,0.1)' }}>
           {allServices.map((service) => (
             <button
               key={service.value}
@@ -381,7 +381,7 @@ function ExploreView({ onServiceClick, onNavClick }: any) {
       </div>
 
       {/* Bottom Navigation - Glassy */}
-      <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2">
+      <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2" style={{ backgroundColor: 'rgba(255,255,0,0.3)' }}>
         <button onClick={() => onNavClick('concierge')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
           <Sparkles className="w-5 h-5" />
           <span className="text-[10px] font-medium">Concierge</span>
@@ -410,16 +410,16 @@ function RequestsView({ onNavClick }: any) {
   ]
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full" style={{ border: '3px solid red' }}>
       {/* Header */}
-      <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0">
+      <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0" style={{ backgroundColor: 'rgba(255,0,0,0.1)' }}>
         <h1 className="text-lg font-semibold text-navy mb-1">Your Requests</h1>
         <p className="text-xs text-navy/60">Track all your service requests</p>
       </div>
 
       {/* Requests List - Scrollable */}
-      <div className="flex-1 overflow-y-auto flex flex-col">
-        <div className="px-6 py-6 flex flex-col gap-4 flex-1 content-center">
+      <div className="flex-1 overflow-y-auto flex flex-col" style={{ border: '3px solid blue' }}>
+        <div className="px-6 py-6 flex flex-col gap-4 flex-1 content-center" style={{ backgroundColor: 'rgba(0,255,0,0.1)' }}>
           {requests.map((request) => (
             <div key={request.id} className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 shadow-lg">
               <div className="flex items-start gap-4">
@@ -447,7 +447,7 @@ function RequestsView({ onNavClick }: any) {
       </div>
 
       {/* Bottom Navigation - Glassy */}
-      <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2">
+      <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2" style={{ backgroundColor: 'rgba(255,255,0,0.3)' }}>
         <button onClick={() => onNavClick('concierge')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
           <Sparkles className="w-5 h-5" />
           <span className="text-[10px] font-medium">Concierge</span>
@@ -471,9 +471,9 @@ function RequestsView({ onNavClick }: any) {
 
 function ProfileView({ onNavClick }: any) {
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full" style={{ border: '3px solid red' }}>
       {/* Header */}
-      <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0">
+      <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0" style={{ backgroundColor: 'rgba(255,0,0,0.1)' }}>
         <div className="flex items-center gap-3">
           <div className="w-16 h-16 rounded-full bg-navy flex items-center justify-center text-white text-xl font-semibold shadow-lg border-2 border-gold/30">
             AA
@@ -486,8 +486,8 @@ function ProfileView({ onNavClick }: any) {
       </div>
 
       {/* Settings List - Scrollable */}
-      <div className="flex-1 overflow-y-auto flex flex-col">
-        <div className="px-6 py-6 flex flex-col gap-4 flex-1 content-center">
+      <div className="flex-1 overflow-y-auto flex flex-col" style={{ border: '3px solid blue' }}>
+        <div className="px-6 py-6 flex flex-col gap-4 flex-1 content-center" style={{ backgroundColor: 'rgba(0,255,0,0.1)' }}>
           <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 shadow-lg">
             <h3 className="text-sm font-semibold text-navy mb-1">Preferences</h3>
             <p className="text-xs text-navy/60">Manage your stay preferences</p>
