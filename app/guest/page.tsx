@@ -1,37 +1,24 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Sparkles, ShoppingCart, UtensilsCrossed, Home, Car, Bell, Flower2, Shirt, Wrench, Clock, Plus, Check, ChevronLeft, ArrowRight, X, Compass, ClipboardList, User, ConciergeBell, ShoppingBag, Package, Wine, Search, Dumbbell } from 'lucide-react'
 import Image from 'next/image'
 
 export default function GuestApp() {
+  const searchParams = useSearchParams()
+  const isEmbed = searchParams.get('embed') === 'true'
+
   const [view, setView] = useState<'concierge' | 'explore' | 'requests' | 'profile' | 'room-service' | 'spa' | 'laundry' | 'valet' | 'checkout'>('concierge')
   const [step, setStep] = useState(0)
   const [cartItems, setCartItems] = useState<any[]>([])
 
   const nextStep = () => setStep(s => s + 1)
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-8">
-      {/* Phone Frame */}
-      <div className="relative">
-        {/* Power Button */}
-        <div className="absolute right-0 top-[200px] w-[3px] h-[80px] bg-slate-800 rounded-l-sm"></div>
-
-        {/* Volume Buttons */}
-        <div className="absolute left-0 top-[180px] w-[3px] h-[50px] bg-slate-800 rounded-r-sm"></div>
-        <div className="absolute left-0 top-[240px] w-[3px] h-[50px] bg-slate-800 rounded-r-sm"></div>
-
-        {/* Phone Bezel */}
-        <div className="relative w-[413px] h-[872px] bg-gradient-to-b from-slate-900 to-slate-950 rounded-[50px] shadow-2xl p-[10px] ring-2 ring-slate-700">
-          {/* Screen Container */}
-          <div className="relative w-full h-full bg-black rounded-[42px] overflow-hidden shadow-inner">
-            {/* Dynamic Island / Notch */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[30px] bg-black rounded-b-3xl z-50 shadow-lg"></div>
-
-            {/* Actual App Content */}
-            <div className="relative w-full h-full overflow-hidden">
+  // Render just the app content without phone frame when embedded
+  const AppContent = () => (
+    <div className="relative w-full h-full overflow-hidden">
               {/* Light background with flowing dark blue smoke */}
               <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-gray-100 to-white">
         <div className="absolute inset-0">
@@ -171,6 +158,34 @@ export default function GuestApp() {
                 </div>
               </div>
             </div>
+  )
+
+  // If embedded, render just the app content without phone frame
+  if (isEmbed) {
+    return <AppContent />
+  }
+
+  // Otherwise render with full phone mockup
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-8">
+      {/* Phone Frame */}
+      <div className="relative">
+        {/* Power Button */}
+        <div className="absolute right-0 top-[200px] w-[3px] h-[80px] bg-slate-800 rounded-l-sm"></div>
+
+        {/* Volume Buttons */}
+        <div className="absolute left-0 top-[180px] w-[3px] h-[50px] bg-slate-800 rounded-r-sm"></div>
+        <div className="absolute left-0 top-[240px] w-[3px] h-[50px] bg-slate-800 rounded-r-sm"></div>
+
+        {/* Phone Bezel */}
+        <div className="relative w-[413px] h-[872px] bg-gradient-to-b from-slate-900 to-slate-950 rounded-[50px] shadow-2xl p-[10px] ring-2 ring-slate-700">
+          {/* Screen Container */}
+          <div className="relative w-full h-full bg-black rounded-[42px] overflow-hidden shadow-inner">
+            {/* Dynamic Island / Notch */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[30px] bg-black rounded-b-3xl z-50 shadow-lg"></div>
+
+            {/* Actual App Content */}
+            <AppContent />
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ClipboardList, Home, UtensilsCrossed, Car, Bell, SlidersHorizontal, Sparkles, TrendingUp, Lightbulb, Zap, DollarSign, Clock, Users, BarChart3, TrendingDown, Star, Award, Target } from 'lucide-react'
 import Image from 'next/image'
@@ -14,6 +15,9 @@ const initialRequests = [
 ]
 
 export default function Dashboard() {
+  const searchParams = useSearchParams()
+  const isEmbed = searchParams.get('embed') === 'true'
+
   const [stats, setStats] = useState({
     total: 42,
     housekeeping: 14,
@@ -112,36 +116,38 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Top Nav - Transparent & Blurred */}
-      <div className="sticky top-0 z-20 backdrop-blur-2xl bg-white/20 border-b border-white/20">
-        <div className="px-12 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="relative w-16 h-16">
-              <Image src="/logo.png" alt="INNARA" fill className="object-contain rounded-full" />
-            </div>
-            <span className="text-4xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INNARA</span>
-          </div>
-
-          <div className="flex items-center gap-8">
-            <button className="text-sm font-semibold text-gold border-b-2 border-gold pb-5 pt-6">Dashboard</button>
-            <button className="text-sm font-semibold text-navy/60 hover:text-navy pb-5 pt-6 transition-colors">Requests</button>
-            <button className="text-sm font-semibold text-navy/60 hover:text-navy pb-5 pt-6 transition-colors">Rooms</button>
-            <button className="text-sm font-semibold text-navy/60 hover:text-navy pb-5 pt-6 transition-colors">Reports</button>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <div className="relative">
-              <div className="w-11 h-11 rounded-full bg-white/40 backdrop-blur-xl border border-white/30 flex items-center justify-center hover:scale-110 transition-transform cursor-pointer">
-                <Bell className="w-5 h-5 text-navy" />
+      {/* Top Nav - Transparent & Blurred (Hidden in embed mode) */}
+      {!isEmbed && (
+        <div className="sticky top-0 z-20 backdrop-blur-2xl bg-white/20 border-b border-white/20">
+          <div className="px-12 h-20 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="relative w-16 h-16">
+                <Image src="/logo.png" alt="INNARA" fill className="object-contain rounded-full" />
               </div>
-              <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center text-white text-xs font-bold border-2 border-white">2</div>
+              <span className="text-4xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INNARA</span>
             </div>
-            <div className="w-11 h-11 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold cursor-pointer hover:scale-110 transition-transform shadow-lg">
-              JM
+
+            <div className="flex items-center gap-8">
+              <button className="text-sm font-semibold text-gold border-b-2 border-gold pb-5 pt-6">Dashboard</button>
+              <button className="text-sm font-semibold text-navy/60 hover:text-navy pb-5 pt-6 transition-colors">Requests</button>
+              <button className="text-sm font-semibold text-navy/60 hover:text-navy pb-5 pt-6 transition-colors">Rooms</button>
+              <button className="text-sm font-semibold text-navy/60 hover:text-navy pb-5 pt-6 transition-colors">Reports</button>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <div className="relative">
+                <div className="w-11 h-11 rounded-full bg-white/40 backdrop-blur-xl border border-white/30 flex items-center justify-center hover:scale-110 transition-transform cursor-pointer">
+                  <Bell className="w-5 h-5 text-navy" />
+                </div>
+                <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center text-white text-xs font-bold border-2 border-white">2</div>
+              </div>
+              <div className="w-11 h-11 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold cursor-pointer hover:scale-110 transition-transform shadow-lg">
+                JM
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Main Content */}
       <div className="relative z-10 p-12 space-y-8">

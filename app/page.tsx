@@ -353,7 +353,7 @@ export default function LandingPage() {
                   <div className="relative mx-auto mb-6" style={{ height: '500px' }}>
                     <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl border-2 border-gray-200">
                       <iframe
-                        src="/guest"
+                        src="/guest?embed=true"
                         className="w-full h-full border-0"
                         style={{ pointerEvents: 'none' }}
                         title="Guest App Preview"
@@ -401,7 +401,7 @@ export default function LandingPage() {
                   <div className="relative mb-6" style={{ height: '500px' }}>
                     <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl border-2 border-gray-200">
                       <iframe
-                        src="/dashboard"
+                        src="/dashboard?embed=true"
                         className="w-full h-full border-0"
                         style={{ pointerEvents: 'none' }}
                         title="Dashboard Preview"
