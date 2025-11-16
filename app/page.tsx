@@ -329,13 +329,13 @@ export default function LandingPage() {
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-3 gap-12 mb-20">
+            <div className="grid md:grid-cols-2 gap-12 mb-20">
               {/* Guest Side - Phone with Live Preview */}
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                className="col-span-1 group relative"
+                className="group relative"
               >
                 <div className="absolute -inset-4 bg-gradient-to-r from-gold/20 to-gold/10 rounded-3xl opacity-0 group-hover:opacity-100 blur-2xl transition-all duration-500"></div>
                 <div className="relative backdrop-blur-xl bg-white/40 border border-white/40 rounded-3xl p-8 shadow-2xl hover:shadow-glow-gold transition-all">
@@ -349,25 +349,20 @@ export default function LandingPage() {
                     </div>
                   </div>
 
-                  {/* iPhone Mockup with Live Preview */}
-                  <div className="relative mx-auto" style={{ width: '280px' }}>
-                    {/* iPhone Frame */}
-                    <div className="relative bg-gray-900 rounded-[3rem] p-3 shadow-2xl border-8 border-gray-900">
-                      {/* Notch */}
-                      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-gray-900 rounded-b-2xl z-10"></div>
-                      {/* Screen */}
-                      <div className="relative bg-white rounded-[2.3rem] overflow-hidden" style={{ height: '570px' }}>
-                        <iframe
-                          src="/guest"
-                          className="w-full h-full border-0 pointer-events-none"
-                          title="Guest App Preview"
-                        />
-                      </div>
+                  {/* Live Preview */}
+                  <div className="relative mx-auto mb-6" style={{ height: '500px' }}>
+                    <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl border-2 border-gray-200">
+                      <iframe
+                        src="/guest"
+                        className="w-full h-full border-0"
+                        style={{ pointerEvents: 'none' }}
+                        title="Guest App Preview"
+                      />
                     </div>
-                    <p className="text-center text-sm text-navy/60 mt-4 italic">Live preview • Auto-cycling</p>
+                    <p className="text-center text-sm text-navy/60 mt-4 italic">Live preview • Interactive demo</p>
                   </div>
 
-                  <ul className="space-y-3 mt-6">
+                  <ul className="space-y-3">
                     {[
                       'Natural AI conversations',
                       'Instant service requests',
@@ -383,12 +378,12 @@ export default function LandingPage() {
                 </div>
               </motion.div>
 
-              {/* Hotel Side - Laptop with Live Previews */}
+              {/* Hotel Side - Dashboard with Live Preview */}
               <motion.div
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                className="col-span-2 group relative"
+                className="group relative"
               >
                 <div className="absolute -inset-4 bg-gradient-to-r from-gold/10 to-gold/20 rounded-3xl opacity-0 group-hover:opacity-100 blur-2xl transition-all duration-500"></div>
                 <div className="relative backdrop-blur-xl bg-white/40 border border-white/40 rounded-3xl p-8 shadow-2xl hover:shadow-glow-gold transition-all">
@@ -402,45 +397,20 @@ export default function LandingPage() {
                     </div>
                   </div>
 
-                  <div className="space-y-8">
-                    {/* Laptop Mockup 1 - Main View */}
-                    <div className="relative">
-                      <div className="relative bg-gray-900 rounded-2xl p-2 shadow-2xl">
-                        {/* Screen Bezel */}
-                        <div className="relative bg-white rounded-lg overflow-hidden border-2 border-gray-800" style={{ height: '320px' }}>
-                          <iframe
-                            src="/dashboard"
-                            className="w-full h-full border-0 pointer-events-none scale-[0.7] origin-top-left"
-                            style={{ width: '142.857%', height: '142.857%' }}
-                            title="Dashboard Preview 1"
-                          />
-                        </div>
-                        {/* Laptop Base */}
-                        <div className="h-2 bg-gradient-to-b from-gray-800 to-gray-900 rounded-b-2xl"></div>
-                      </div>
-                      <p className="text-center text-xs text-navy/60 mt-3 italic">Metrics & Active Requests</p>
+                  {/* Live Preview */}
+                  <div className="relative mb-6" style={{ height: '500px' }}>
+                    <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl border-2 border-gray-200">
+                      <iframe
+                        src="/dashboard"
+                        className="w-full h-full border-0"
+                        style={{ pointerEvents: 'none' }}
+                        title="Dashboard Preview"
+                      />
                     </div>
-
-                    {/* Laptop Mockup 2 - Analytics View */}
-                    <div className="relative">
-                      <div className="relative bg-gray-900 rounded-2xl p-2 shadow-2xl">
-                        {/* Screen Bezel */}
-                        <div className="relative bg-white rounded-lg overflow-hidden border-2 border-gray-800" style={{ height: '320px' }}>
-                          <iframe
-                            src="/dashboard"
-                            className="w-full h-full border-0 pointer-events-none scale-[0.7] origin-top-left"
-                            style={{ width: '142.857%', height: '142.857%', marginTop: '-500px' }}
-                            title="Dashboard Preview 2"
-                          />
-                        </div>
-                        {/* Laptop Base */}
-                        <div className="h-2 bg-gradient-to-b from-gray-800 to-gray-900 rounded-b-2xl"></div>
-                      </div>
-                      <p className="text-center text-xs text-navy/60 mt-3 italic">Analytics & AI Insights</p>
-                    </div>
+                    <p className="text-center text-sm text-navy/60 mt-4 italic">Live preview • Real-time updates</p>
                   </div>
 
-                  <ul className="space-y-3 mt-6">
+                  <ul className="space-y-3">
                     {[
                       'Real-time request management',
                       'AI-powered insights & analytics',
