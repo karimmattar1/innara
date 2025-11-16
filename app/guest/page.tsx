@@ -1,12 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Sparkles, ShoppingCart, UtensilsCrossed, Home, Car, Bell, Flower2, Shirt, Wrench, Clock, Plus, Check, ChevronLeft, ArrowRight, X, Compass, ClipboardList, User, ConciergeBell, ShoppingBag, Package, Wine, Search, Dumbbell } from 'lucide-react'
 import Image from 'next/image'
 
-export default function GuestApp() {
+function GuestAppContent() {
   const searchParams = useSearchParams()
   const isEmbed = searchParams.get('embed') === 'true'
 
@@ -190,6 +190,14 @@ export default function GuestApp() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function GuestApp() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-white" />}>
+      <GuestAppContent />
+    </Suspense>
   )
 }
 

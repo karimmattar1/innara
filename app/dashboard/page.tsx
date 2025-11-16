@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ClipboardList, Home, UtensilsCrossed, Car, Bell, SlidersHorizontal, Sparkles, TrendingUp, Lightbulb, Zap, DollarSign, Clock, Users, BarChart3, TrendingDown, Star, Award, Target } from 'lucide-react'
@@ -14,7 +14,7 @@ const initialRequests = [
   { id: 5, guest: 'Michael Brown', room: '210', item: 'Extra Pillows', status: 'in_progress', time: '45 min. ago', staff: 'Sarah', staffInitials: 'SJ' },
 ]
 
-export default function Dashboard() {
+function DashboardContent() {
   const searchParams = useSearchParams()
   const isEmbed = searchParams.get('embed') === 'true'
 
@@ -389,6 +389,14 @@ export default function Dashboard() {
         }
       `}</style>
     </div>
+  )
+}
+
+export default function Dashboard() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-white" />}>
+      <DashboardContent />
+    </Suspense>
   )
 }
 
