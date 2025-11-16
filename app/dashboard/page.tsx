@@ -16,7 +16,7 @@ const initialRequests = [
 
 function DashboardContent() {
   const searchParams = useSearchParams()
-  const isEmbed = searchParams.get('embed') === 'true'
+  const [isEmbed, setIsEmbed] = useState(false)
 
   const [stats, setStats] = useState({
     total: 42,
@@ -30,16 +30,22 @@ function DashboardContent() {
     { id: 'a4', text: 'Room 305 • Towels delivered', time: '12 min ago' },
   ])
 
-  // DEBUG: Log embed detection
+  // Check for embed parameter using window.location for better iframe compatibility
   useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const embedParam = urlParams.get('embed')
+    const isEmbedMode = embedParam === 'true'
+    setIsEmbed(isEmbedMode)
+
     console.log('=== DASHBOARD DEBUG ===')
-    console.log('Full URL:', typeof window !== 'undefined' ? window.location.href : 'SSR')
-    console.log('Search Params:', searchParams.toString())
-    console.log('Embed param value:', searchParams.get('embed'))
-    console.log('isEmbed:', isEmbed)
-    console.log('Will hide nav bar:', isEmbed)
+    console.log('Full URL:', window.location.href)
+    console.log('Search string:', window.location.search)
+    console.log('URLSearchParams:', urlParams.toString())
+    console.log('Embed param value:', embedParam)
+    console.log('isEmbed:', isEmbedMode)
+    console.log('Will hide nav bar:', isEmbedMode)
     console.log('======================')
-  }, [searchParams, isEmbed])
+  }, [])
 
   useEffect(() => {
     const timer1 = setTimeout(() => {
@@ -104,6 +110,11 @@ function DashboardContent() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
+      {/* DEBUG OVERLAY - Remove after testing */}
+      <div className="absolute top-0 left-0 z-50 bg-red-500 text-white text-xs p-2 opacity-90">
+        DEBUG: isEmbed={isEmbed ? 'TRUE' : 'FALSE'} | URL={typeof window !== 'undefined' ? window.location.search : 'SSR'}
+      </div>
+
       {/* Light background with flowing dark blue smoke */}
       <div className="fixed inset-0 bg-gradient-to-br from-gray-50 via-gray-100 to-white">
         <div className="absolute inset-0">

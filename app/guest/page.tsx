@@ -8,7 +8,7 @@ import Image from 'next/image'
 
 function GuestAppContent() {
   const searchParams = useSearchParams()
-  const isEmbed = searchParams.get('embed') === 'true'
+  const [isEmbed, setIsEmbed] = useState(false)
 
   const [view, setView] = useState<'concierge' | 'explore' | 'requests' | 'profile' | 'room-service' | 'spa' | 'laundry' | 'valet' | 'checkout'>('concierge')
   const [step, setStep] = useState(0)
@@ -16,20 +16,30 @@ function GuestAppContent() {
 
   const nextStep = () => setStep(s => s + 1)
 
-  // DEBUG: Log embed detection
+  // Check for embed parameter using window.location for better iframe compatibility
   useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const embedParam = urlParams.get('embed')
+    const isEmbedMode = embedParam === 'true'
+    setIsEmbed(isEmbedMode)
+
     console.log('=== GUEST APP DEBUG ===')
-    console.log('Full URL:', typeof window !== 'undefined' ? window.location.href : 'SSR')
-    console.log('Search Params:', searchParams.toString())
-    console.log('Embed param value:', searchParams.get('embed'))
-    console.log('isEmbed:', isEmbed)
-    console.log('Will render:', isEmbed ? 'EMBED MODE (no frame)' : 'FULL MODE (with frame)')
+    console.log('Full URL:', window.location.href)
+    console.log('Search string:', window.location.search)
+    console.log('URLSearchParams:', urlParams.toString())
+    console.log('Embed param value:', embedParam)
+    console.log('isEmbed:', isEmbedMode)
+    console.log('Will render:', isEmbedMode ? 'EMBED MODE (no frame)' : 'FULL MODE (with frame)')
     console.log('======================')
-  }, [searchParams, isEmbed])
+  }, [])
 
   // Render just the app content without phone frame when embedded
   const AppContent = () => (
     <div className="relative w-full h-full overflow-hidden">
+      {/* DEBUG OVERLAY - Remove after testing */}
+      <div className="absolute top-0 left-0 z-50 bg-red-500 text-white text-xs p-2 opacity-90">
+        DEBUG: isEmbed={isEmbed ? 'TRUE' : 'FALSE'} | URL={typeof window !== 'undefined' ? window.location.search : 'SSR'}
+      </div>
               {/* Light background with flowing dark blue smoke */}
               <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-gray-100 to-white">
         <div className="absolute inset-0">
