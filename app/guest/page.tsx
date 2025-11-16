@@ -16,6 +16,17 @@ function GuestAppContent() {
 
   const nextStep = () => setStep(s => s + 1)
 
+  // DEBUG: Log embed detection
+  useEffect(() => {
+    console.log('=== GUEST APP DEBUG ===')
+    console.log('Full URL:', typeof window !== 'undefined' ? window.location.href : 'SSR')
+    console.log('Search Params:', searchParams.toString())
+    console.log('Embed param value:', searchParams.get('embed'))
+    console.log('isEmbed:', isEmbed)
+    console.log('Will render:', isEmbed ? 'EMBED MODE (no frame)' : 'FULL MODE (with frame)')
+    console.log('======================')
+  }, [searchParams, isEmbed])
+
   // Render just the app content without phone frame when embedded
   const AppContent = () => (
     <div className="relative w-full h-full overflow-hidden">

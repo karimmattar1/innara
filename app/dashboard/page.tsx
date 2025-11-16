@@ -30,6 +30,17 @@ function DashboardContent() {
     { id: 'a4', text: 'Room 305 • Towels delivered', time: '12 min ago' },
   ])
 
+  // DEBUG: Log embed detection
+  useEffect(() => {
+    console.log('=== DASHBOARD DEBUG ===')
+    console.log('Full URL:', typeof window !== 'undefined' ? window.location.href : 'SSR')
+    console.log('Search Params:', searchParams.toString())
+    console.log('Embed param value:', searchParams.get('embed'))
+    console.log('isEmbed:', isEmbed)
+    console.log('Will hide nav bar:', isEmbed)
+    console.log('======================')
+  }, [searchParams, isEmbed])
+
   useEffect(() => {
     const timer1 = setTimeout(() => {
       setRequests(prev => [{
