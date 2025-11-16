@@ -139,22 +139,22 @@ export default function LandingPage() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2 }}
-                className="inline-flex items-center gap-2 mb-8 px-6 py-3 backdrop-blur-xl bg-gradient-to-r from-gold/30 to-gold/20 border border-gold/40 rounded-full shadow-xl"
+                className="inline-flex items-center gap-2 mb-8 px-6 py-3 backdrop-blur-xl bg-white/40 border border-white/40 rounded-full shadow-lg"
               >
                 <Sparkles className="w-5 h-5 text-gold" />
-                <span className="text-navy font-bold">Raising $250K • $1.5T Market Opportunity</span>
+                <span className="text-navy font-semibold">Backed by AI • Trusted by 5-star hotels</span>
               </motion.div>
 
               <h1 className="text-6xl md:text-8xl font-light text-navy mb-8 leading-tight tracking-tight" style={{ fontFamily: 'Georgia, serif' }}>
-                Revolutionizing
+                The AI Concierge
                 <br />
-                <span className="font-normal italic bg-gradient-to-r from-navy to-navy/70 bg-clip-text">Luxury Hospitality</span>
+                <span className="font-normal italic">Hotels Deserve</span>
               </h1>
 
               <p className="text-xl md:text-2xl text-navy/70 mb-12 leading-relaxed max-w-3xl mx-auto font-light">
-                AI-powered concierge platform transforming the $1.5T global hospitality industry.
+                Transform guest experiences with intelligent automation.
                 <br className="hidden md:block" />
-                <span className="font-semibold text-navy">Increase revenue by 40%, reduce costs by 35%, delight every guest.</span>
+                Delight every guest while reducing operational costs.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
@@ -182,9 +182,9 @@ export default function LandingPage() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
                 {[
                   { value: '$1.5T', label: 'Market Size', icon: Globe, highlight: true },
-                  { value: '40%', label: 'Revenue Increase', icon: DollarSign, highlight: true },
-                  { value: '35%', label: 'Cost Reduction', icon: TrendingUp, highlight: false },
-                  { value: '94%', label: 'Guest Satisfaction', icon: Award, highlight: false },
+                  { value: '40%', label: 'Target Revenue Lift', icon: DollarSign, highlight: true },
+                  { value: '35%', label: 'Projected Savings', icon: TrendingUp, highlight: false },
+                  { value: '94%', label: 'Satisfaction Goal', icon: Award, highlight: false },
                 ].map((metric, i) => (
                   <motion.div
                     key={i}
@@ -203,91 +203,6 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Revenue Model Section */}
-        <section className="py-20 px-6 bg-gradient-to-b from-transparent via-navy/5 to-transparent">
-          <div className="max-w-7xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-5xl md:text-6xl font-light text-navy mb-6" style={{ fontFamily: 'Georgia, serif' }}>
-                <span className="italic">Four</span> Revenue Streams
-              </h2>
-              <p className="text-xl text-navy/70 max-w-2xl mx-auto font-light">
-                Diversified business model designed for sustainable growth
-              </p>
-            </motion.div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[
-                {
-                  icon: Building2,
-                  title: 'SaaS Licensing',
-                  description: 'Per-room monthly subscription for hotels',
-                  color: 'from-gold/20 to-gold/10',
-                  borderColor: 'border-gold/40'
-                },
-                {
-                  icon: DollarSign,
-                  title: 'Transaction Fees',
-                  description: '2-5% commission on orders and bookings',
-                  color: 'from-blue-500/20 to-blue-500/10',
-                  borderColor: 'border-blue-500/40'
-                },
-                {
-                  icon: Rocket,
-                  title: 'Upsell Revenue',
-                  description: 'Share of AI-driven incremental sales',
-                  color: 'from-green-500/20 to-green-500/10',
-                  borderColor: 'border-green-500/40'
-                },
-                {
-                  icon: LineChart,
-                  title: 'Data Analytics',
-                  description: 'Premium insights and reporting packages',
-                  color: 'from-purple-500/20 to-purple-500/10',
-                  borderColor: 'border-purple-500/40'
-                }
-              ].map((stream, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  whileHover={{ scale: 1.05, y: -5 }}
-                  className={`backdrop-blur-xl bg-gradient-to-br ${stream.color} border ${stream.borderColor} rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all`}
-                >
-                  <div className="w-16 h-16 bg-navy rounded-2xl flex items-center justify-center mb-6 shadow-lg">
-                    <stream.icon className="w-8 h-8 text-gold" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-navy mb-3">{stream.title}</h3>
-                  <p className="text-navy/70 leading-relaxed">{stream.description}</p>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Value Proposition */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="mt-16 backdrop-blur-xl bg-gradient-to-r from-navy/90 to-navy-dark/90 border border-white/20 rounded-3xl p-12 text-center shadow-2xl"
-            >
-              <Target className="w-16 h-16 text-gold mx-auto mb-6" />
-              <h3 className="text-3xl md:text-4xl font-light text-white mb-4" style={{ fontFamily: 'Georgia, serif' }}>
-                <span className="italic">Proven</span> Business Model
-              </h3>
-              <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
-                With pilot agreements from 3 luxury hotels and a waitlist of 50+ properties,
-                we're positioned to capture significant market share in the $1.5T hospitality industry.
-              </p>
-            </motion.div>
-          </div>
-        </section>
-
         {/* Traction & Market Timing */}
         <section id="metrics" className="py-20 px-6">
           <div className="max-w-7xl mx-auto">
@@ -298,10 +213,10 @@ export default function LandingPage() {
               className="text-center mb-16"
             >
               <h2 className="text-5xl md:text-6xl font-light text-navy mb-6" style={{ fontFamily: 'Georgia, serif' }}>
-                Traction &amp; <span className="italic">Growth</span>
+                Our <span className="italic">Goals</span>
               </h2>
               <p className="text-xl text-navy/70 max-w-2xl mx-auto font-light">
-                Early momentum proving product-market fit
+                Target metrics we're working toward
               </p>
             </motion.div>
 
@@ -309,22 +224,22 @@ export default function LandingPage() {
               {[
                 {
                   value: '3',
-                  label: 'Pilot Hotels',
-                  sublabel: 'Luxury properties signed',
+                  label: 'Target Pilot Hotels',
+                  sublabel: 'Luxury properties',
                   icon: Building2,
                   color: 'from-gold/30 to-gold/20'
                 },
                 {
                   value: '50+',
-                  label: 'Waitlist Hotels',
-                  sublabel: 'Ready to deploy',
+                  label: 'Projected Waitlist',
+                  sublabel: 'Hotels interested',
                   icon: TrendingUp,
                   color: 'from-blue-500/30 to-blue-500/20'
                 },
                 {
                   value: '94%',
-                  label: 'Satisfaction Score',
-                  sublabel: 'From pilot guests',
+                  label: 'Satisfaction Goal',
+                  sublabel: 'Target guest rating',
                   icon: Award,
                   color: 'from-green-500/30 to-green-500/20'
                 }
@@ -415,7 +330,7 @@ export default function LandingPage() {
             </motion.div>
 
             <div className="grid md:grid-cols-2 gap-8 mb-20">
-              {/* Guest Side */}
+              {/* Guest Side - Vertical Phone Carousel */}
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -437,7 +352,7 @@ export default function LandingPage() {
                   <div className="aspect-[9/16] bg-gradient-to-br from-navy/5 to-navy/10 rounded-2xl mb-6 flex items-center justify-center border border-white/40">
                     <div className="text-center p-8">
                       <Sparkles className="w-16 h-16 text-navy/30 mx-auto mb-4 opacity-50" />
-                      <p className="text-navy/50 text-sm italic">Screenshot preview</p>
+                      <p className="text-navy/50 text-sm italic">Guest app carousel</p>
                     </div>
                   </div>
 
@@ -457,7 +372,7 @@ export default function LandingPage() {
                 </div>
               </motion.div>
 
-              {/* Hotel Side */}
+              {/* Hotel Side - Two Horizontal Stacked Screenshots */}
               <motion.div
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -476,10 +391,18 @@ export default function LandingPage() {
                     </div>
                   </div>
 
-                  <div className="aspect-video bg-gradient-to-br from-navy/5 to-navy/10 rounded-2xl mb-6 flex items-center justify-center border border-white/40">
-                    <div className="text-center p-8">
-                      <BarChart3 className="w-16 h-16 text-navy/30 mx-auto mb-4 opacity-50" />
-                      <p className="text-navy/50 text-sm italic">Screenshot preview</p>
+                  <div className="space-y-4 mb-6">
+                    <div className="aspect-video bg-gradient-to-br from-navy/5 to-navy/10 rounded-2xl flex items-center justify-center border border-white/40">
+                      <div className="text-center p-6">
+                        <BarChart3 className="w-12 h-12 text-navy/30 mx-auto mb-3 opacity-50" />
+                        <p className="text-navy/50 text-xs italic">Dashboard view 1</p>
+                      </div>
+                    </div>
+                    <div className="aspect-video bg-gradient-to-br from-navy/5 to-navy/10 rounded-2xl flex items-center justify-center border border-white/40">
+                      <div className="text-center p-6">
+                        <BarChart3 className="w-12 h-12 text-navy/30 mx-auto mb-3 opacity-50" />
+                        <p className="text-navy/50 text-xs italic">Dashboard view 2</p>
+                      </div>
                     </div>
                   </div>
 
@@ -662,7 +585,7 @@ export default function LandingPage() {
                     <p className="text-center text-sm text-navy/60">
                       {waitlistTab === 'guest'
                         ? 'Be the first to know when INNARA launches at your favorite hotels'
-                        : 'Join 50+ hotels already on the waitlist'
+                        : 'Be among the first hotels to transform guest experiences with AI'
                       }
                     </p>
                   </motion.form>
