@@ -74,7 +74,7 @@ export default function LandingPage() {
                 estimate: '~18 min'
               }
             }, window.location.origin)
-          }, 500)
+          }, 800)
         } else if (action === 'FOOD_ORDERED') {
           setTimeout(() => {
             dashboardIframeRef.current?.contentWindow?.postMessage({
@@ -92,7 +92,7 @@ export default function LandingPage() {
                 estimate: '~32 min'
               }
             }, window.location.origin)
-          }, 500)
+          }, 800)
         } else if (action === 'VIEWING_REQUESTS') {
           // Switch dashboard to analytics after a delay
           setTimeout(() => {
@@ -100,7 +100,7 @@ export default function LandingPage() {
               type: 'SWITCH_VIEW',
               view: 'analytics'
             }, window.location.origin)
-          }, 2000)
+          }, 3000)
         }
       }
     }

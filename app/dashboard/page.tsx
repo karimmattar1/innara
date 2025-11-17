@@ -44,9 +44,7 @@ function DashboardContent() {
       if (metaViewport) {
         metaViewport.setAttribute('content', 'width=1440, initial-scale=1, maximum-scale=1, user-scalable=no')
       }
-      // Also set body to exact size to prevent overflow
-      document.body.style.width = '1440px'
-      document.body.style.height = '900px' // Standard desktop height
+      // Set overflow hidden to prevent scrolling in iframe
       document.body.style.overflow = 'hidden'
       document.documentElement.style.overflow = 'hidden'
     }
@@ -185,9 +183,13 @@ function DashboardContent() {
   return (
     <div className="min-h-screen relative overflow-hidden" style={isEmbed ? {
       width: '1440px',
-      height: '900px',
+      minHeight: '1400px',
       transformOrigin: 'top left',
-      transform: 'scale(0.625)',
+      transform: 'scale(0.5)',
+      position: 'absolute',
+      top: 0,
+      left: '50%',
+      marginLeft: '-720px',
     } : undefined}>
 
       {/* Light background with flowing dark blue smoke */}

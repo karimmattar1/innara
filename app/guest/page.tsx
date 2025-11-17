@@ -23,31 +23,31 @@ function GuestAppContent() {
 
     const sequence = async () => {
       // Step 1: Start conversation (auto-advance to step 1 - user message)
-      await new Promise(resolve => setTimeout(resolve, 800))
+      await new Promise(resolve => setTimeout(resolve, 1500))
       setStep(1)
 
       // Step 2: Show typing indicator (auto-advance to step 2)
-      await new Promise(resolve => setTimeout(resolve, 800))
+      await new Promise(resolve => setTimeout(resolve, 1500))
       setStep(2)
 
       // Step 3 will auto-advance via existing useEffect in ConciergeView after 1200ms
       // Step 4: Auto-click "Now" button - this happens at step 3, give it time to render
-      await new Promise(resolve => setTimeout(resolve, 2500))
+      await new Promise(resolve => setTimeout(resolve, 4000))
       setStep(4) // Confirmation shown
 
       // Notify parent: housekeeping requested
-      await new Promise(resolve => setTimeout(resolve, 500))
+      await new Promise(resolve => setTimeout(resolve, 1000))
       window.parent.postMessage({
         type: 'DEMO_EVENT',
         action: 'HOUSEKEEPING_REQUESTED'
       }, window.location.origin)
 
       // Step 5: Navigate to room service after showing confirmation
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      await new Promise(resolve => setTimeout(resolve, 3000))
       setView('room-service')
 
       // Step 6: Auto-add Caesar Salad to cart
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      await new Promise(resolve => setTimeout(resolve, 3000))
       setCartItems([{
         name: 'Caesar Salad',
         price: 12,
@@ -55,27 +55,27 @@ function GuestAppContent() {
       }])
 
       // Step 7: Go to checkout
-      await new Promise(resolve => setTimeout(resolve, 800))
+      await new Promise(resolve => setTimeout(resolve, 2000))
       setView('checkout')
 
       // Notify parent: food ordered
-      await new Promise(resolve => setTimeout(resolve, 500))
+      await new Promise(resolve => setTimeout(resolve, 1000))
       window.parent.postMessage({
         type: 'DEMO_EVENT',
         action: 'FOOD_ORDERED'
       }, window.location.origin)
 
       // Step 8: Show order confirmation, then go back to concierge
-      await new Promise(resolve => setTimeout(resolve, 3000))
+      await new Promise(resolve => setTimeout(resolve, 4000))
       setView('concierge')
       setStep(4) // Stay at confirmation step
 
       // Step 9: Navigate to requests view
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      await new Promise(resolve => setTimeout(resolve, 3000))
       setView('requests')
 
       // Notify parent: viewing requests
-      await new Promise(resolve => setTimeout(resolve, 500))
+      await new Promise(resolve => setTimeout(resolve, 1000))
       window.parent.postMessage({
         type: 'DEMO_EVENT',
         action: 'VIEWING_REQUESTS'
@@ -120,9 +120,7 @@ function GuestAppContent() {
       if (metaViewport) {
         metaViewport.setAttribute('content', 'width=375, initial-scale=1, maximum-scale=1, user-scalable=no')
       }
-      // Also set body to exact size to prevent overflow
-      document.body.style.width = '375px'
-      document.body.style.height = '812px' // iPhone X/11/12 height
+      // Set overflow hidden to prevent scrolling in iframe
       document.body.style.overflow = 'hidden'
       document.documentElement.style.overflow = 'hidden'
     }
@@ -180,12 +178,18 @@ function GuestAppContent() {
 
   // Render just the app content without phone frame when embedded
   const AppContent = () => (
-    <div data-app-container className="relative w-full h-full overflow-hidden" style={isEmbed ? {
+    <div data-app-container className="relative overflow-hidden" style={isEmbed ? {
       width: '375px',
       height: '812px',
       transformOrigin: 'top left',
-      transform: 'scale(0.96)',
-    } : undefined}>
+      transform: 'scale(0.815)',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+    } : {
+      width: '100%',
+      height: '100%'
+    }}>
               {/* Light background with flowing dark blue smoke */}
               <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-gray-100 to-white">
         <div className="absolute inset-0">
