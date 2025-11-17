@@ -78,7 +78,8 @@ function DashboardContent() {
     console.log('Content dimensions:', '1440x1039')
     console.log('Expected display width:', 1440 * 0.4167, 'px')
     console.log('Expected display height:', 1039 * 0.4167, 'px')
-    console.log('Target container size:', '600px x 432px')
+    console.log('Target iframe size:', '600px x 433px')
+    console.log('Mockup frame size:', '620px x 453px (with padding)')
 
     console.log('======================')
 
