@@ -329,16 +329,15 @@ export default function LandingPage() {
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 gap-12 mb-20">
-              {/* Guest Side - Phone with Live Preview */}
+            <div className="flex flex-col lg:flex-row gap-12 items-start justify-center mb-20">
+              {/* Guest Side - Phone Mockup with Live Preview */}
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                className="group relative"
+                className="group relative flex-shrink-0"
               >
-                <div className="absolute -inset-4 bg-gradient-to-r from-gold/20 to-gold/10 rounded-3xl opacity-0 group-hover:opacity-100 blur-2xl transition-all duration-500"></div>
-                <div className="relative backdrop-blur-xl bg-white/40 border border-white/40 rounded-3xl p-8 shadow-2xl hover:shadow-glow-gold transition-all">
+                <div className="backdrop-blur-xl bg-white/40 border border-white/40 rounded-3xl p-8 shadow-2xl">
                   <div className="flex items-center gap-4 mb-6">
                     <div className="w-14 h-14 bg-navy rounded-2xl flex items-center justify-center shadow-lg">
                       <MessageSquare className="w-7 h-7 text-white" />
@@ -349,17 +348,25 @@ export default function LandingPage() {
                     </div>
                   </div>
 
-                  {/* Live Preview */}
-                  <div className="relative mx-auto mb-6" style={{ height: '500px' }}>
-                    <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl border-2 border-gray-200">
-                      <iframe
-                        src="/guest?embed=true"
-                        className="w-full h-full border-0"
-                        style={{ pointerEvents: 'none' }}
-                        title="Guest App Preview"
-                      />
+                  {/* Phone Mockup */}
+                  <div className="relative mx-auto mb-6" style={{ width: '340px' }}>
+                    {/* Phone Frame */}
+                    <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-[3rem] p-3 shadow-2xl">
+                      {/* Notch */}
+                      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-7 bg-gray-900 rounded-b-3xl z-10"></div>
+
+                      {/* Screen */}
+                      <div className="relative bg-white rounded-[2.5rem] overflow-hidden" style={{ height: '680px' }}>
+                        <iframe
+                          src="/guest?embed=true"
+                          className="w-full h-full border-0"
+                          title="Guest App Preview"
+                        />
+                      </div>
+
+                      {/* Home Indicator */}
+                      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1.5 bg-gray-700 rounded-full"></div>
                     </div>
-                    <p className="text-center text-sm text-navy/60 mt-4 italic">Live preview • Interactive demo</p>
                   </div>
 
                   <ul className="space-y-3">
@@ -375,18 +382,19 @@ export default function LandingPage() {
                       </li>
                     ))}
                   </ul>
+
+                  <p className="text-center text-xs text-navy/60 mt-4 italic">Interactive demo • Try it yourself</p>
                 </div>
               </motion.div>
 
-              {/* Hotel Side - Dashboard with Live Preview */}
+              {/* Hotel Side - Laptop Mockup with Live Preview */}
               <motion.div
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                className="group relative"
+                className="group relative flex-1"
               >
-                <div className="absolute -inset-4 bg-gradient-to-r from-gold/10 to-gold/20 rounded-3xl opacity-0 group-hover:opacity-100 blur-2xl transition-all duration-500"></div>
-                <div className="relative backdrop-blur-xl bg-white/40 border border-white/40 rounded-3xl p-8 shadow-2xl hover:shadow-glow-gold transition-all">
+                <div className="backdrop-blur-xl bg-white/40 border border-white/40 rounded-3xl p-8 shadow-2xl">
                   <div className="flex items-center gap-4 mb-6">
                     <div className="w-14 h-14 bg-navy rounded-2xl flex items-center justify-center shadow-lg">
                       <BarChart3 className="w-7 h-7 text-white" />
@@ -397,17 +405,30 @@ export default function LandingPage() {
                     </div>
                   </div>
 
-                  {/* Live Preview */}
-                  <div className="relative mb-6" style={{ height: '500px' }}>
-                    <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl border-2 border-gray-200">
-                      <iframe
-                        src="/dashboard?embed=true"
-                        className="w-full h-full border-0"
-                        style={{ pointerEvents: 'none' }}
-                        title="Dashboard Preview"
-                      />
+                  {/* Laptop Mockup */}
+                  <div className="relative mb-6">
+                    {/* Laptop Screen */}
+                    <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-t-2xl p-3 shadow-2xl">
+                      {/* Webcam */}
+                      <div className="absolute top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-700 rounded-full z-10"></div>
+
+                      {/* Screen */}
+                      <div className="relative bg-white rounded-lg overflow-hidden" style={{ height: '500px' }}>
+                        <iframe
+                          src="/dashboard?embed=true"
+                          className="w-full h-full border-0"
+                          title="Dashboard Preview"
+                        />
+                      </div>
                     </div>
-                    <p className="text-center text-sm text-navy/60 mt-4 italic">Live preview • Real-time updates</p>
+
+                    {/* Laptop Base */}
+                    <div className="relative h-4 bg-gradient-to-b from-gray-700 to-gray-800 rounded-b-xl shadow-xl">
+                      <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-transparent via-gray-600 to-transparent"></div>
+                    </div>
+
+                    {/* Laptop Shadow/Stand */}
+                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-48 h-2 bg-gray-400/30 rounded-full blur-sm"></div>
                   </div>
 
                   <ul className="space-y-3">
@@ -423,6 +444,8 @@ export default function LandingPage() {
                       </li>
                     ))}
                   </ul>
+
+                  <p className="text-center text-xs text-navy/60 mt-4 italic">Interactive demo • Click to explore</p>
                 </div>
               </motion.div>
             </div>
