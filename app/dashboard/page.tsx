@@ -183,9 +183,9 @@ function DashboardContent() {
   return (
     <div className="relative overflow-hidden" style={isEmbed ? {
       width: '1440px',
-      height: '1069px',
+      height: '1039px',
       transformOrigin: 'top left',
-      transform: 'scale(0.6083, 0.608)',
+      transform: 'scale(0.52)',
     } : {
       minHeight: '100vh'
     }}>
@@ -213,9 +213,8 @@ function DashboardContent() {
         </div>
       </div>
 
-      {/* Top Nav - Transparent & Blurred (Hidden in embed mode) */}
-      {!isEmbed && (
-        <div className="sticky top-0 z-20 backdrop-blur-2xl bg-white/20 border-b border-white/20">
+      {/* Top Nav - Transparent & Blurred - Always show */}
+      <div className="sticky top-0 z-20 backdrop-blur-2xl bg-white/20 border-b border-white/20">
           <div className="px-12 h-20 flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="relative w-16 h-16">
@@ -255,7 +254,6 @@ function DashboardContent() {
             </div>
           </div>
         </div>
-      )}
 
       {/* Main Content */}
       <div className="relative z-10 p-12 space-y-8">

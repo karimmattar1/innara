@@ -104,13 +104,22 @@ export default function LandingPage() {
             }, window.location.origin)
           }, 800)
         } else if (action === 'VIEWING_REQUESTS') {
-          // Switch dashboard to analytics after a delay
+          // Show click indicator on Analytics tab first
+          setTimeout(() => {
+            const id = Date.now()
+            setClickIndicators(prev => [...prev, { id, x: 85, y: 12, target: 'dashboard' }])
+            setTimeout(() => {
+              setClickIndicators(prev => prev.filter(ind => ind.id !== id))
+            }, 1500)
+          }, 1500)
+
+          // Then switch dashboard to analytics after showing click
           setTimeout(() => {
             dashboardIframeRef.current?.contentWindow?.postMessage({
               type: 'SWITCH_VIEW',
               view: 'analytics'
             }, window.location.origin)
-          }, 3000)
+          }, 3500)
         }
       }
     }
@@ -452,14 +461,14 @@ export default function LandingPage() {
                   </div>
 
                   {/* Phone Mockup */}
-                  <div className="relative mx-auto mb-6" style={{ width: '390px' }}>
+                  <div className="relative mx-auto mb-6" style={{ width: '320px' }}>
                     {/* Phone Frame */}
                     <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-[3rem] p-3 shadow-2xl">
                       {/* Notch */}
-                      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-7 bg-gray-900 rounded-b-3xl z-10"></div>
+                      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-gray-900 rounded-b-3xl z-10"></div>
 
                       {/* Screen */}
-                      <div className="relative bg-white rounded-[2.5rem] overflow-hidden" style={{ height: '780px' }}>
+                      <div className="relative bg-white rounded-[2.5rem] overflow-hidden" style={{ height: '650px' }}>
                         <iframe
                           ref={guestIframeRef}
                           src="/guest?embed=true"
@@ -536,12 +545,12 @@ export default function LandingPage() {
                   {/* Laptop Mockup */}
                   <div className="relative mb-6">
                     {/* Laptop Screen */}
-                    <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-t-2xl p-3 shadow-2xl" style={{ width: '900px' }}>
+                    <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-t-2xl p-3 shadow-2xl" style={{ width: '750px' }}>
                       {/* Webcam */}
                       <div className="absolute top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-700 rounded-full z-10"></div>
 
                       {/* Screen */}
-                      <div className="relative bg-white rounded-lg overflow-hidden" style={{ height: '650px' }}>
+                      <div className="relative bg-white rounded-lg overflow-hidden" style={{ height: '540px' }}>
                         <iframe
                           ref={dashboardIframeRef}
                           src="/dashboard?embed=true"

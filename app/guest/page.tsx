@@ -23,31 +23,31 @@ function GuestAppContent() {
 
     const sequence = async () => {
       // Step 1: Start conversation (auto-advance to step 1 - user message)
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      await new Promise(resolve => setTimeout(resolve, 2000))
       setStep(1)
 
       // Step 2: Show typing indicator (auto-advance to step 2)
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      await new Promise(resolve => setTimeout(resolve, 2000))
       setStep(2)
 
       // Step 3 will auto-advance via existing useEffect in ConciergeView after 1200ms
       // Step 4: Auto-click "Now" button - this happens at step 3, give it time to render
-      await new Promise(resolve => setTimeout(resolve, 4000))
+      await new Promise(resolve => setTimeout(resolve, 5000))
       setStep(4) // Confirmation shown
 
       // Notify parent: housekeeping requested
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      await new Promise(resolve => setTimeout(resolve, 2000))
       window.parent.postMessage({
         type: 'DEMO_EVENT',
         action: 'HOUSEKEEPING_REQUESTED'
       }, window.location.origin)
 
       // Step 5: Navigate to room service after showing confirmation
-      await new Promise(resolve => setTimeout(resolve, 3000))
+      await new Promise(resolve => setTimeout(resolve, 4000))
       setView('room-service')
 
       // Step 6: Auto-add Caesar Salad to cart
-      await new Promise(resolve => setTimeout(resolve, 3000))
+      await new Promise(resolve => setTimeout(resolve, 4000))
       setCartItems([{
         name: 'Caesar Salad',
         price: 12,
@@ -55,11 +55,11 @@ function GuestAppContent() {
       }])
 
       // Step 7: Go to checkout
-      await new Promise(resolve => setTimeout(resolve, 3000))
+      await new Promise(resolve => setTimeout(resolve, 4000))
       setView('checkout')
 
       // Step 8: Wait to show checkout screen, then place order
-      await new Promise(resolve => setTimeout(resolve, 3000))
+      await new Promise(resolve => setTimeout(resolve, 4000))
       // Simulate clicking "Place Order" button
       const placeOrderBtn = document.querySelector('button[type="button"]')
       if (placeOrderBtn) {
@@ -67,7 +67,7 @@ function GuestAppContent() {
       }
 
       // Notify parent: food ordered
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      await new Promise(resolve => setTimeout(resolve, 2000))
       window.parent.postMessage({
         type: 'DEMO_EVENT',
         action: 'FOOD_ORDERED'
@@ -79,11 +79,11 @@ function GuestAppContent() {
       setStep(4) // Stay at confirmation step
 
       // Step 10: Navigate to requests view
-      await new Promise(resolve => setTimeout(resolve, 4000))
+      await new Promise(resolve => setTimeout(resolve, 5000))
       setView('requests')
 
       // Notify parent: viewing requests
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      await new Promise(resolve => setTimeout(resolve, 2000))
       window.parent.postMessage({
         type: 'DEMO_EVENT',
         action: 'VIEWING_REQUESTS'
@@ -190,7 +190,7 @@ function GuestAppContent() {
       width: '375px',
       height: '812px',
       transformOrigin: 'top left',
-      transform: 'scale(0.976, 0.96)',
+      transform: 'scale(0.853)',
       overflow: 'hidden',
     } : {
       width: '100%',
@@ -514,22 +514,20 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick, isEmbed }: 
       </div>
       </div>
 
-      {/* Bottom Fixed Chat Input (Hidden in embed mode) */}
-      {!isEmbed && (
-        <div className="flex-shrink-0 px-4 py-2 backdrop-blur-xl bg-white/10 border-t border-white/20">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="What do you need today?"
-              onClick={() => step === 0 && nextStep()}
-              className="w-full h-11 pl-4 pr-12 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-sm text-navy placeholder:text-navy/50 focus:outline-none focus:border-navy focus:bg-white/30 transition-all shadow-lg"
-            />
-            <button className="absolute right-1.5 top-1.5 w-8 h-8 rounded-full bg-gradient-to-br from-navy to-navy-dark flex items-center justify-center shadow-md hover:scale-110 transition-transform">
-              <Sparkles className="w-4 h-4 text-white" />
-            </button>
-          </div>
+      {/* Bottom Fixed Chat Input - Always show */}
+      <div className="flex-shrink-0 px-4 py-2 backdrop-blur-xl bg-white/10 border-t border-white/20">
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="What do you need today?"
+            onClick={() => step === 0 && nextStep()}
+            className="w-full h-11 pl-4 pr-12 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-sm text-navy placeholder:text-navy/50 focus:outline-none focus:border-navy focus:bg-white/30 transition-all shadow-lg"
+          />
+          <button className="absolute right-1.5 top-1.5 w-8 h-8 rounded-full bg-gradient-to-br from-navy to-navy-dark flex items-center justify-center shadow-md hover:scale-110 transition-transform">
+            <Sparkles className="w-4 h-4 text-white" />
+          </button>
         </div>
-      )}
+      </div>
 
       {/* Bottom Navigation - Glassy (Hidden in embed mode) */}
       {!isEmbed && (
