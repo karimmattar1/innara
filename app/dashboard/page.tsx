@@ -115,6 +115,13 @@ function DashboardContent() {
         DEBUG: isEmbed={isEmbed ? 'TRUE' : 'FALSE'} | URL={typeof window !== 'undefined' ? window.location.search : 'SSR'}
       </div>
 
+      {/* Scaling wrapper for embed mode */}
+      <div className="w-full h-full" style={isEmbed ? {
+        transform: 'scale(0.7)',
+        transformOrigin: 'top center',
+        height: '142.857%', // Compensate for 0.7 scale (1/0.7 = 1.4286)
+      } : {}}>
+
       {/* Light background with flowing dark blue smoke */}
       <div className="fixed inset-0 bg-gradient-to-br from-gray-50 via-gray-100 to-white">
         <div className="absolute inset-0">
@@ -392,6 +399,8 @@ function DashboardContent() {
           </div>
         </div>
       </div>
+
+      </div> {/* Close scaling wrapper */}
 
       <style jsx global>{`
         @keyframes blob {

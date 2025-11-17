@@ -35,11 +35,17 @@ function GuestAppContent() {
 
   // Render just the app content without phone frame when embedded
   const AppContent = () => (
-    <div className="relative w-full h-full overflow-hidden">
+    <div className={`relative w-full h-full ${isEmbed ? 'overflow-hidden' : 'overflow-hidden'}`}>
       {/* DEBUG OVERLAY - Remove after testing */}
       <div className="absolute top-0 left-0 z-50 bg-red-500 text-white text-xs p-2 opacity-90">
         DEBUG: isEmbed={isEmbed ? 'TRUE' : 'FALSE'} | URL={typeof window !== 'undefined' ? window.location.search : 'SSR'}
       </div>
+
+      {/* Scaling wrapper for embed mode */}
+      <div className={isEmbed ? 'w-full h-full flex items-center justify-center' : 'w-full h-full'} style={isEmbed ? {
+        transform: 'scale(0.9)',
+        transformOrigin: 'center center',
+      } : {}}>
               {/* Light background with flowing dark blue smoke */}
               <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-gray-100 to-white">
         <div className="absolute inset-0">
@@ -184,6 +190,7 @@ function GuestAppContent() {
                   </AnimatePresence>
                 </div>
               </div>
+      </div> {/* Close scaling wrapper */}
             </div>
   )
 
