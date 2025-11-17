@@ -460,17 +460,15 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick, isEmbed }: 
         {/* Chat Messages - Full screen when step >= 1 */}
         {step >= 1 && (
           <div className="flex-1 flex flex-col justify-start px-4 py-4 space-y-3">
-        {step >= 1 && (
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            className="flex justify-end"
-          >
-            <div className="backdrop-blur-xl bg-white/20 border border-white/20 text-navy px-4 py-3 rounded-2xl rounded-br-md max-w-[80%] shadow-lg">
-              I need my room cleaned
-            </div>
-          </motion.div>
-        )}
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              className="flex justify-end"
+            >
+              <div className="backdrop-blur-xl bg-white/20 border border-white/20 text-navy px-4 py-3 rounded-2xl rounded-br-md max-w-[80%] shadow-lg">
+                I need my room cleaned
+              </div>
+            </motion.div>
 
         {step >= 2 && (
           <>
@@ -540,6 +538,7 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick, isEmbed }: 
             </div>
           </motion.div>
         )}
+          </div>
         )}
       </div>
 
