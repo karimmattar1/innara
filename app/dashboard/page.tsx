@@ -17,6 +17,7 @@ const initialRequests = [
 function DashboardContent() {
   const searchParams = useSearchParams()
   const [isEmbed, setIsEmbed] = useState(false)
+  const [activeView, setActiveView] = useState<'dashboard' | 'analytics'>('dashboard')
 
   const [stats, setStats] = useState({
     total: 42,
@@ -152,7 +153,18 @@ function DashboardContent() {
             </div>
 
             <div className="flex items-center gap-8">
-              <button className="text-sm font-semibold text-gold border-b-2 border-gold pb-5 pt-6">Dashboard</button>
+              <button
+                onClick={() => setActiveView('dashboard')}
+                className={`text-sm font-semibold pb-5 pt-6 transition-colors ${activeView === 'dashboard' ? 'text-gold border-b-2 border-gold' : 'text-navy/60 hover:text-navy'}`}
+              >
+                Dashboard
+              </button>
+              <button
+                onClick={() => setActiveView('analytics')}
+                className={`text-sm font-semibold pb-5 pt-6 transition-colors ${activeView === 'analytics' ? 'text-gold border-b-2 border-gold' : 'text-navy/60 hover:text-navy'}`}
+              >
+                Analytics
+              </button>
               <button className="text-sm font-semibold text-navy/60 hover:text-navy pb-5 pt-6 transition-colors">Requests</button>
               <button className="text-sm font-semibold text-navy/60 hover:text-navy pb-5 pt-6 transition-colors">Rooms</button>
               <button className="text-sm font-semibold text-navy/60 hover:text-navy pb-5 pt-6 transition-colors">Reports</button>
@@ -175,6 +187,8 @@ function DashboardContent() {
 
       {/* Main Content */}
       <div className="relative z-10 p-12 space-y-8">
+        {activeView === 'dashboard' ? (
+          <>
         {/* Top Stats Row - Key Metrics */}
         <div className="grid grid-cols-5 gap-6">
           <MetricCard
@@ -393,6 +407,10 @@ function DashboardContent() {
             </div>
           </div>
         </div>
+          </>
+        ) : (
+          <AnalyticsView />
+        )}
       </div>
 
       </div> {/* Close scaling wrapper */}
@@ -727,6 +745,309 @@ function StaffAvatar({ initials, name }: any) {
   return (
     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-navy to-navy-dark flex items-center justify-center text-gold text-xs font-bold border-2 border-gold/20 shadow-lg hover:scale-110 transition-transform cursor-pointer">
       {initials}
+    </div>
+  )
+}
+
+function AnalyticsView() {
+  return (
+    <div className="space-y-8">
+      {/* Page Title */}
+      <div>
+        <h1 className="text-4xl font-light text-navy mb-2" style={{ fontFamily: 'Georgia, serif' }}>
+          In-Depth Analytics
+        </h1>
+        <p className="text-sm text-navy/60">Comprehensive performance metrics and insights</p>
+      </div>
+
+      {/* KPI Overview - 4 columns */}
+      <div className="grid grid-cols-4 gap-6">
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-3xl p-6 shadow-2xl"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <DollarSign className="w-10 h-10 text-gold" />
+            <TrendingUp className="w-5 h-5 text-green-500" />
+          </div>
+          <p className="text-xs uppercase text-navy/70 font-semibold tracking-wide mb-1">Total Revenue (30d)</p>
+          <p className="text-3xl font-bold text-navy mb-1">$247.8K</p>
+          <p className="text-xs text-green-500 font-medium">+18.2% vs last month</p>
+        </motion.div>
+
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.1 }}
+          className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-3xl p-6 shadow-2xl"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <Users className="w-10 h-10 text-gold" />
+            <TrendingUp className="w-5 h-5 text-green-500" />
+          </div>
+          <p className="text-xs uppercase text-navy/70 font-semibold tracking-wide mb-1">Guests Served</p>
+          <p className="text-3xl font-bold text-navy mb-1">2,847</p>
+          <p className="text-xs text-green-500 font-medium">+12.4% vs last month</p>
+        </motion.div>
+
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-3xl p-6 shadow-2xl"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <Star className="w-10 h-10 text-gold" />
+            <TrendingUp className="w-5 h-5 text-green-500" />
+          </div>
+          <p className="text-xs uppercase text-navy/70 font-semibold tracking-wide mb-1">Avg Satisfaction</p>
+          <p className="text-3xl font-bold text-navy mb-1">94.8%</p>
+          <p className="text-xs text-green-500 font-medium">+2.1% vs last month</p>
+        </motion.div>
+
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-3xl p-6 shadow-2xl"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <Target className="w-10 h-10 text-gold" />
+            <TrendingUp className="w-5 h-5 text-green-500" />
+          </div>
+          <p className="text-xs uppercase text-navy/70 font-semibold tracking-wide mb-1">First Call Resolution</p>
+          <p className="text-3xl font-bold text-navy mb-1">87.3%</p>
+          <p className="text-xs text-green-500 font-medium">+5.7% vs last month</p>
+        </motion.div>
+      </div>
+
+      {/* Service Category Breakdown */}
+      <div className="grid grid-cols-3 gap-6">
+        <motion.div
+          initial={{ x: -20, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-3xl p-8 shadow-2xl col-span-2"
+        >
+          <h3 className="text-xl font-semibold text-navy mb-6">Request Volume by Category</h3>
+          <div className="space-y-5">
+            {[
+              { category: 'Room Service', count: 847, percentage: 32, color: 'from-amber-400 to-orange-500', revenue: '$42.1K' },
+              { category: 'Housekeeping', count: 623, percentage: 23, color: 'from-blue-400 to-cyan-500', revenue: '$18.7K' },
+              { category: 'Concierge', count: 512, percentage: 19, color: 'from-purple-400 to-indigo-500', revenue: '$38.2K' },
+              { category: 'Spa & Wellness', count: 387, percentage: 15, color: 'from-pink-400 to-rose-500', revenue: '$67.4K' },
+              { category: 'Valet', count: 298, percentage: 11, color: 'from-green-400 to-emerald-500', revenue: '$8.9K' },
+            ].map((item, i) => (
+              <div key={i}>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${item.color}`} />
+                    <span className="text-sm font-medium text-navy">{item.category}</span>
+                  </div>
+                  <div className="flex items-center gap-6">
+                    <span className="text-xs text-navy/60">{item.count} requests</span>
+                    <span className="text-sm font-semibold text-gold">{item.revenue}</span>
+                    <span className="text-xs font-semibold text-navy/80 w-12 text-right">{item.percentage}%</span>
+                  </div>
+                </div>
+                <div className="relative h-2 bg-white/10 rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${item.percentage}%` }}
+                    transition={{ duration: 1.5, delay: i * 0.1 }}
+                    className={`h-full bg-gradient-to-r ${item.color} rounded-full`}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ x: 20, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-3xl p-8 shadow-2xl"
+        >
+          <h3 className="text-xl font-semibold text-navy mb-6">Peak Hours</h3>
+          <div className="space-y-4">
+            {[
+              { time: '8:00 AM - 10:00 AM', demand: 95, label: 'Breakfast Rush' },
+              { time: '12:00 PM - 2:00 PM', demand: 88, label: 'Lunch Peak' },
+              { time: '7:00 PM - 9:00 PM', demand: 92, label: 'Dinner Peak' },
+              { time: '10:00 PM - 12:00 AM', demand: 45, label: 'Evening Service' },
+            ].map((slot, i) => (
+              <div key={i}>
+                <div className="flex items-center justify-between mb-2">
+                  <div>
+                    <p className="text-sm font-semibold text-navy">{slot.time}</p>
+                    <p className="text-xs text-navy/60">{slot.label}</p>
+                  </div>
+                </div>
+                <div className="relative h-2 bg-white/10 rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${slot.demand}%` }}
+                    transition={{ duration: 1.5, delay: i * 0.1 }}
+                    className={`h-full bg-gradient-to-r ${
+                      slot.demand >= 85 ? 'from-red-500 to-red-600' :
+                      slot.demand >= 70 ? 'from-orange-500 to-orange-600' :
+                      'from-blue-500 to-blue-600'
+                    } rounded-full`}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Response Time & Staff Performance */}
+      <div className="grid grid-cols-2 gap-6">
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-3xl p-8 shadow-2xl"
+        >
+          <h3 className="text-xl font-semibold text-navy mb-6">Response Time Breakdown</h3>
+          <div className="space-y-6">
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-navy/80">Under 5 minutes</span>
+                <span className="text-sm font-semibold text-navy">67%</span>
+              </div>
+              <div className="relative h-3 bg-white/10 rounded-full overflow-hidden">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: '67%' }}
+                  transition={{ duration: 1.5 }}
+                  className="h-full bg-gradient-to-r from-green-500 to-green-600 rounded-full"
+                />
+              </div>
+            </div>
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-navy/80">5-10 minutes</span>
+                <span className="text-sm font-semibold text-navy">24%</span>
+              </div>
+              <div className="relative h-3 bg-white/10 rounded-full overflow-hidden">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: '24%' }}
+                  transition={{ duration: 1.5, delay: 0.2 }}
+                  className="h-full bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full"
+                />
+              </div>
+            </div>
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-navy/80">Over 10 minutes</span>
+                <span className="text-sm font-semibold text-navy">9%</span>
+              </div>
+              <div className="relative h-3 bg-white/10 rounded-full overflow-hidden">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: '9%' }}
+                  transition={{ duration: 1.5, delay: 0.4 }}
+                  className="h-full bg-gradient-to-r from-red-500 to-red-600 rounded-full"
+                />
+              </div>
+            </div>
+            <div className="pt-4 border-t border-white/20">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-semibold text-navy">Average Response Time</span>
+                <span className="text-2xl font-bold text-gold">6.2 min</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.1 }}
+          className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-3xl p-8 shadow-2xl"
+        >
+          <h3 className="text-xl font-semibold text-navy mb-6">Top Performing Staff</h3>
+          <div className="space-y-4">
+            {[
+              { rank: 1, name: 'Sarah Johnson', tasks: 147, rating: 4.9, avgTime: '4.2 min' },
+              { rank: 2, name: 'Michael Chen', tasks: 134, rating: 4.8, avgTime: '5.1 min' },
+              { rank: 3, name: 'Ahmed Ali', tasks: 128, rating: 4.8, avgTime: '5.3 min' },
+              { rank: 4, name: 'Emma Davis', tasks: 121, rating: 4.7, avgTime: '5.9 min' },
+              { rank: 5, name: 'James Wilson', tasks: 115, rating: 4.7, avgTime: '6.1 min' },
+            ].map((staff) => (
+              <motion.div
+                key={staff.rank}
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: staff.rank * 0.1 }}
+                className="flex items-center gap-4 backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4"
+              >
+                <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${
+                  staff.rank === 1 ? 'from-gold to-yellow-600' :
+                  staff.rank === 2 ? 'from-gray-300 to-gray-400' :
+                  staff.rank === 3 ? 'from-amber-600 to-amber-700' :
+                  'from-navy/20 to-navy/30'
+                } flex items-center justify-center font-bold text-white text-lg shadow-lg`}>
+                  {staff.rank}
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-navy">{staff.name}</p>
+                  <div className="flex items-center gap-3 mt-1">
+                    <span className="text-xs text-navy/60">{staff.tasks} tasks</span>
+                    <span className="text-xs text-navy/60">•</span>
+                    <div className="flex items-center gap-1">
+                      <Star className="w-3 h-3 text-gold fill-gold" />
+                      <span className="text-xs text-navy/70 font-semibold">{staff.rating}</span>
+                    </div>
+                    <span className="text-xs text-navy/60">•</span>
+                    <span className="text-xs text-navy/60">{staff.avgTime}</span>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Guest Satisfaction Insights */}
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-3xl p-8 shadow-2xl"
+      >
+        <h3 className="text-xl font-semibold text-navy mb-6">Guest Satisfaction Insights</h3>
+        <div className="grid grid-cols-4 gap-6">
+          <div className="text-center">
+            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
+              <span className="text-3xl font-bold text-white">94%</span>
+            </div>
+            <p className="text-sm font-semibold text-navy mb-1">Very Satisfied</p>
+            <p className="text-xs text-navy/60">2,674 guests</p>
+          </div>
+          <div className="text-center">
+            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+              <span className="text-3xl font-bold text-white">4%</span>
+            </div>
+            <p className="text-sm font-semibold text-navy mb-1">Satisfied</p>
+            <p className="text-xs text-navy/60">114 guests</p>
+          </div>
+          <div className="text-center">
+            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center">
+              <span className="text-3xl font-bold text-white">1.5%</span>
+            </div>
+            <p className="text-sm font-semibold text-navy mb-1">Neutral</p>
+            <p className="text-xs text-navy/60">43 guests</p>
+          </div>
+          <div className="text-center">
+            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center">
+              <span className="text-3xl font-bold text-white">0.5%</span>
+            </div>
+            <p className="text-sm font-semibold text-navy mb-1">Unsatisfied</p>
+            <p className="text-xs text-navy/60">16 guests</p>
+          </div>
+        </div>
+      </motion.div>
     </div>
   )
 }
