@@ -248,11 +248,13 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick, isEmbed }: 
 
   return (
     <div className="flex flex-col h-full">
-      {/* Welcome Section */}
-      <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0">
-        <h1 className="text-lg font-semibold text-navy mb-1">Welcome back, Ahmed</h1>
-        <p className="text-xs text-navy/60">How can we help you today?</p>
-      </div>
+      {/* Welcome Section (Hidden in embed mode) */}
+      {!isEmbed && (
+        <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0">
+          <h1 className="text-lg font-semibold text-navy mb-1">Welcome back, Ahmed</h1>
+          <p className="text-xs text-navy/60">How can we help you today?</p>
+        </div>
+      )}
 
       {/* Scrollable Content Area */}
       <div className="flex-1 overflow-y-auto flex flex-col">
@@ -413,21 +415,23 @@ function ExploreView({ onServiceClick, onNavClick, isEmbed }: any) {
 
   return (
     <div className="flex flex-col h-full">
-      {/* Header */}
-      <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0">
-        <h1 className="text-lg font-semibold text-navy mb-1">Explore Services</h1>
-        <p className="text-xs text-navy/60 mb-3">Browse all available amenities</p>
+      {/* Header (Hidden in embed mode) */}
+      {!isEmbed && (
+        <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0">
+          <h1 className="text-lg font-semibold text-navy mb-1">Explore Services</h1>
+          <p className="text-xs text-navy/60 mb-3">Browse all available amenities</p>
 
-        {/* Search Bar */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-navy/40" />
-          <input
-            type="text"
-            placeholder="Search services..."
-            className="w-full h-9 pl-9 pr-3 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-sm text-navy placeholder:text-navy/50 focus:outline-none focus:border-gold/50 focus:bg-white/30 transition-all"
-          />
+          {/* Search Bar */}
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-navy/40" />
+            <input
+              type="text"
+              placeholder="Search services..."
+              className="w-full h-9 pl-9 pr-3 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-sm text-navy placeholder:text-navy/50 focus:outline-none focus:border-gold/50 focus:bg-white/30 transition-all"
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Services Grid - Scrollable */}
       <div className="flex-1 overflow-y-auto flex flex-col">
@@ -445,25 +449,27 @@ function ExploreView({ onServiceClick, onNavClick, isEmbed }: any) {
         </div>
       </div>
 
-      {/* Bottom Navigation - Glassy */}
-      <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2">
-        <button onClick={() => onNavClick('concierge')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-          <Sparkles className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Concierge</span>
-        </button>
-        <button className="flex flex-col items-center gap-0.5 py-2 text-gold">
-          <Compass className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Explore</span>
-        </button>
-        <button onClick={() => onNavClick('requests')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-          <ClipboardList className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Requests</span>
-        </button>
-        <button onClick={() => onNavClick('profile')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-          <User className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Profile</span>
-        </button>
-      </div>
+      {/* Bottom Navigation - Glassy (Hidden in embed mode) */}
+      {!isEmbed && (
+        <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2">
+          <button onClick={() => onNavClick('concierge')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+            <Sparkles className="w-5 h-5" />
+            <span className="text-[10px] font-medium">Concierge</span>
+          </button>
+          <button className="flex flex-col items-center gap-0.5 py-2 text-gold">
+            <Compass className="w-5 h-5" />
+            <span className="text-[10px] font-medium">Explore</span>
+          </button>
+          <button onClick={() => onNavClick('requests')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+            <ClipboardList className="w-5 h-5" />
+            <span className="text-[10px] font-medium">Requests</span>
+          </button>
+          <button onClick={() => onNavClick('profile')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+            <User className="w-5 h-5" />
+            <span className="text-[10px] font-medium">Profile</span>
+          </button>
+        </div>
+      )}
     </div>
   )
 }
@@ -476,11 +482,13 @@ function RequestsView({ onNavClick, isEmbed }: any) {
 
   return (
     <div className="flex flex-col h-full">
-      {/* Header */}
-      <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0">
-        <h1 className="text-lg font-semibold text-navy mb-1">Your Requests</h1>
-        <p className="text-xs text-navy/60">Track all your service requests</p>
-      </div>
+      {/* Header (Hidden in embed mode) */}
+      {!isEmbed && (
+        <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0">
+          <h1 className="text-lg font-semibold text-navy mb-1">Your Requests</h1>
+          <p className="text-xs text-navy/60">Track all your service requests</p>
+        </div>
+      )}
 
       {/* Requests List - Scrollable */}
       <div className="flex-1 overflow-y-auto flex flex-col">
@@ -511,25 +519,27 @@ function RequestsView({ onNavClick, isEmbed }: any) {
         </div>
       </div>
 
-      {/* Bottom Navigation - Glassy */}
-      <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2">
-        <button onClick={() => onNavClick('concierge')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-          <Sparkles className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Concierge</span>
-        </button>
-        <button onClick={() => onNavClick('explore')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-          <Compass className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Explore</span>
-        </button>
-        <button className="flex flex-col items-center gap-0.5 py-2 text-gold">
-          <ClipboardList className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Requests</span>
-        </button>
-        <button onClick={() => onNavClick('profile')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-          <User className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Profile</span>
-        </button>
-      </div>
+      {/* Bottom Navigation - Glassy (Hidden in embed mode) */}
+      {!isEmbed && (
+        <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2">
+          <button onClick={() => onNavClick('concierge')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+            <Sparkles className="w-5 h-5" />
+            <span className="text-[10px] font-medium">Concierge</span>
+          </button>
+          <button onClick={() => onNavClick('explore')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+            <Compass className="w-5 h-5" />
+            <span className="text-[10px] font-medium">Explore</span>
+          </button>
+          <button className="flex flex-col items-center gap-0.5 py-2 text-gold">
+            <ClipboardList className="w-5 h-5" />
+            <span className="text-[10px] font-medium">Requests</span>
+          </button>
+          <button onClick={() => onNavClick('profile')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+            <User className="w-5 h-5" />
+            <span className="text-[10px] font-medium">Profile</span>
+          </button>
+        </div>
+      )}
     </div>
   )
 }
@@ -537,18 +547,20 @@ function RequestsView({ onNavClick, isEmbed }: any) {
 function ProfileView({ onNavClick, isEmbed }: any) {
   return (
     <div className="flex flex-col h-full">
-      {/* Header */}
-      <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0">
-        <div className="flex items-center gap-3">
-          <div className="w-16 h-16 rounded-full bg-navy flex items-center justify-center text-white text-xl font-semibold shadow-lg border-2 border-gold/30">
-            AA
-          </div>
-          <div>
-            <h1 className="text-lg font-semibold text-navy">Ahmed Ali</h1>
-            <p className="text-xs text-navy/60">Room 1204 • Premium Guest</p>
+      {/* Header (Hidden in embed mode) */}
+      {!isEmbed && (
+        <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="w-16 h-16 rounded-full bg-navy flex items-center justify-center text-white text-xl font-semibold shadow-lg border-2 border-gold/30">
+              AA
+            </div>
+            <div>
+              <h1 className="text-lg font-semibold text-navy">Ahmed Ali</h1>
+              <p className="text-xs text-navy/60">Room 1204 • Premium Guest</p>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Settings List - Scrollable */}
       <div className="flex-1 overflow-y-auto flex flex-col">
@@ -572,25 +584,27 @@ function ProfileView({ onNavClick, isEmbed }: any) {
         </div>
       </div>
 
-      {/* Bottom Navigation - Glassy */}
-      <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2">
-        <button onClick={() => onNavClick('concierge')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-          <Sparkles className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Concierge</span>
-        </button>
-        <button onClick={() => onNavClick('explore')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-          <Compass className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Explore</span>
-        </button>
-        <button onClick={() => onNavClick('requests')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-          <ClipboardList className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Requests</span>
-        </button>
-        <button className="flex flex-col items-center gap-0.5 py-2 text-gold">
-          <User className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Profile</span>
-        </button>
-      </div>
+      {/* Bottom Navigation - Glassy (Hidden in embed mode) */}
+      {!isEmbed && (
+        <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2">
+          <button onClick={() => onNavClick('concierge')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+            <Sparkles className="w-5 h-5" />
+            <span className="text-[10px] font-medium">Concierge</span>
+          </button>
+          <button onClick={() => onNavClick('explore')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+            <Compass className="w-5 h-5" />
+            <span className="text-[10px] font-medium">Explore</span>
+          </button>
+          <button onClick={() => onNavClick('requests')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+            <ClipboardList className="w-5 h-5" />
+            <span className="text-[10px] font-medium">Requests</span>
+          </button>
+          <button className="flex flex-col items-center gap-0.5 py-2 text-gold">
+            <User className="w-5 h-5" />
+            <span className="text-[10px] font-medium">Profile</span>
+          </button>
+        </div>
+      )}
     </div>
   )
 }
