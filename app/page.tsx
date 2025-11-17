@@ -136,12 +136,15 @@ export default function LandingPage() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting && !demoStarted) {
+            console.log('=== LANDING PAGE DEMO DEBUG ===')
+            console.log('Demo section is visible, starting demo...')
             setDemoStarted(true)
             // Start the demo after a short delay
             setTimeout(() => {
               guestIframeRef.current?.contentWindow?.postMessage({
                 type: 'START_DEMO'
               }, window.location.origin)
+              console.log('Sent START_DEMO message to guest iframe')
             }, 500)
           }
         })
@@ -152,6 +155,38 @@ export default function LandingPage() {
     observer.observe(demoSectionRef.current)
     return () => observer.disconnect()
   }, [demoStarted])
+
+  // Debug iframe dimensions
+  useEffect(() => {
+    setTimeout(() => {
+      console.log('=== IFRAME DIMENSIONS DEBUG ===')
+      if (guestIframeRef.current) {
+        const guestRect = guestIframeRef.current.getBoundingClientRect()
+        console.log('Guest iframe:', {
+          width: guestRect.width,
+          height: guestRect.height,
+          expectedScale: 0.8,
+          contentWidth: 375,
+          contentHeight: 812,
+          calculatedDisplayWidth: 375 * 0.8,
+          calculatedDisplayHeight: 812 * 0.8
+        })
+      }
+      if (dashboardIframeRef.current) {
+        const dashRect = dashboardIframeRef.current.getBoundingClientRect()
+        console.log('Dashboard iframe:', {
+          width: dashRect.width,
+          height: dashRect.height,
+          expectedScale: 0.451,
+          contentWidth: 1440,
+          contentHeight: 1039,
+          calculatedDisplayWidth: 1440 * 0.451,
+          calculatedDisplayHeight: 1039 * 0.451
+        })
+      }
+      console.log('================================')
+    }, 2000)
+  }, [])
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -461,14 +496,14 @@ export default function LandingPage() {
                   </div>
 
                   {/* Phone Mockup */}
-                  <div className="relative mx-auto mb-6" style={{ width: '320px' }}>
+                  <div className="relative mx-auto mb-6" style={{ width: '300px' }}>
                     {/* Phone Frame */}
                     <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-[3rem] p-3 shadow-2xl">
                       {/* Notch */}
                       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-gray-900 rounded-b-3xl z-10"></div>
 
                       {/* Screen */}
-                      <div className="relative bg-white rounded-[2.5rem] overflow-hidden" style={{ height: '650px' }}>
+                      <div className="relative bg-white rounded-[2.5rem] overflow-hidden" style={{ height: '620px' }}>
                         <iframe
                           ref={guestIframeRef}
                           src="/guest?embed=true"
@@ -545,12 +580,12 @@ export default function LandingPage() {
                   {/* Laptop Mockup */}
                   <div className="relative mb-6">
                     {/* Laptop Screen */}
-                    <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-t-2xl p-3 shadow-2xl" style={{ width: '750px' }}>
+                    <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-t-2xl p-3 shadow-2xl" style={{ width: '650px' }}>
                       {/* Webcam */}
                       <div className="absolute top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-700 rounded-full z-10"></div>
 
                       {/* Screen */}
-                      <div className="relative bg-white rounded-lg overflow-hidden" style={{ height: '540px' }}>
+                      <div className="relative bg-white rounded-lg overflow-hidden" style={{ height: '468px' }}>
                         <iframe
                           ref={dashboardIframeRef}
                           src="/dashboard?embed=true"

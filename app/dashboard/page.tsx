@@ -185,7 +185,7 @@ function DashboardContent() {
       width: '1440px',
       height: '1039px',
       transformOrigin: 'top left',
-      transform: 'scale(0.52)',
+      transform: 'scale(0.451)',
     } : {
       minHeight: '100vh'
     }}>

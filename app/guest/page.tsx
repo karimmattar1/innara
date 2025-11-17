@@ -190,7 +190,7 @@ function GuestAppContent() {
       width: '375px',
       height: '812px',
       transformOrigin: 'top left',
-      transform: 'scale(0.853)',
+      transform: 'scale(0.8)',
       overflow: 'hidden',
     } : {
       width: '100%',
@@ -269,21 +269,19 @@ function GuestAppContent() {
 
               {/* Content */}
               <div className="relative z-10 h-full flex flex-col">
-                {/* Top Bar - Transparent & Blurred (Hidden in embed mode) */}
-                {!isEmbed && (
-                  <div className="flex-shrink-0 h-[70px] backdrop-blur-2xl bg-white/20 border-b border-white/20 px-4 flex items-center justify-between pt-8">
-                    <div className="flex items-center gap-2">
-                      <Image src="/logo.png" alt="INNARA" width={40} height={40} className="rounded-full" />
-                      <span className="text-xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INNARA</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="text-xs text-navy font-semibold tracking-wide">Room 1204</span>
-                      <div className="w-9 h-9 rounded-full bg-navy flex items-center justify-center text-white text-xs font-semibold shadow-lg border-2 border-navy/30">
-                        AA
-                      </div>
+                {/* Top Bar - Transparent & Blurred - Always show */}
+                <div className="flex-shrink-0 h-[70px] backdrop-blur-2xl bg-white/20 border-b border-white/20 px-4 flex items-center justify-between pt-8">
+                  <div className="flex items-center gap-2">
+                    <Image src="/logo.png" alt="INNARA" width={40} height={40} className="rounded-full" />
+                    <span className="text-xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INNARA</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs text-navy font-semibold tracking-wide">Room 1204</span>
+                    <div className="w-9 h-9 rounded-full bg-navy flex items-center justify-center text-white text-xs font-semibold shadow-lg border-2 border-navy/30">
+                      AA
                     </div>
                   </div>
-                )}
+                </div>
 
                 {/* Main Content - Full Height */}
                 <div className="flex-1 flex flex-col">
@@ -423,7 +421,7 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick, isEmbed }: 
               onClick={() => onServiceClick(service.value)}
               className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 flex flex-col items-center justify-center gap-3 hover:bg-white/20 hover:border-gold/50 hover:scale-105 transition-all shadow-lg aspect-square"
             >
-              <service.icon className="w-8 h-8 text-navy" />
+              <service.icon className="w-8 h-8 text-gold" />
               <span className="text-xs text-navy text-center leading-tight font-medium">{service.label}</span>
             </button>
           ))}
@@ -597,7 +595,7 @@ function ExploreView({ onServiceClick, onNavClick, isEmbed }: any) {
               onClick={() => onServiceClick(service.value)}
               className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-white/20 hover:border-gold/50 hover:scale-105 transition-all shadow-lg"
             >
-              <service.icon className="w-7 h-7 text-navy" />
+              <service.icon className="w-7 h-7 text-gold" />
               <span className="text-xs text-navy text-center leading-tight font-medium">{service.label}</span>
             </button>
           ))}
@@ -651,7 +649,7 @@ function RequestsView({ onNavClick, isEmbed }: any) {
           {requests.map((request) => (
             <div key={request.id} className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 shadow-lg">
               <div className="flex items-start gap-4">
-                <request.icon className="w-8 h-8 text-navy flex-shrink-0" />
+                <request.icon className="w-8 h-8 text-gold flex-shrink-0" />
                 <div className="flex-1">
                   <h3 className="text-sm font-semibold text-navy">{request.service}</h3>
                   <p className="text-xs text-navy/60 mt-1">{request.status}</p>
@@ -991,7 +989,7 @@ function ActionButton({ icon: Icon, label, badge, highlight, onClick }: any) {
   return (
     <button onClick={onClick} className={`relative aspect-square p-2 rounded-2xl border flex flex-col items-center justify-center gap-1 transition-all backdrop-blur-xl shadow-lg ${highlight ? 'bg-navy/20 border-navy shadow-[0_0_30px_rgba(189,155,48,0.4)]' : 'bg-white/10 border-white/20 hover:bg-white/15 hover:border-navy hover:shadow-xl hover:-translate-y-1'}`}>
       {badge && <div className="absolute top-1 right-1 w-2 h-2 bg-green-400 rounded-full shadow-lg" />}
-      <Icon className="w-5 h-5 text-navy" />
+      <Icon className="w-5 h-5 text-gold" />
       <span className="text-[10px] text-navy text-center leading-tight font-medium">{label}</span>
     </button>
   )
