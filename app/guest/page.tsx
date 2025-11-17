@@ -137,6 +137,7 @@ function GuestAppContent() {
                       nextStep={nextStep}
                       onServiceClick={(service: string) => setView(service as any)}
                       onNavClick={(nav: string) => setView(nav as any)}
+                      isEmbed={isEmbed}
                     />
                   )}
 
@@ -144,18 +145,21 @@ function GuestAppContent() {
                     <ExploreView
                       onServiceClick={(service: string) => setView(service as any)}
                       onNavClick={(nav: string) => setView(nav as any)}
+                      isEmbed={isEmbed}
                     />
                   )}
 
                   {view === 'requests' && (
                     <RequestsView
                       onNavClick={(nav: string) => setView(nav as any)}
+                      isEmbed={isEmbed}
                     />
                   )}
 
                   {view === 'profile' && (
                     <ProfileView
                       onNavClick={(nav: string) => setView(nav as any)}
+                      isEmbed={isEmbed}
                     />
                   )}
 
@@ -224,7 +228,7 @@ export default function GuestApp() {
   )
 }
 
-function ConciergeView({ step, nextStep, onServiceClick, onNavClick }: any) {
+function ConciergeView({ step, nextStep, onServiceClick, onNavClick, isEmbed }: any) {
   // Auto-advance from step 2 (typing) to step 3 (AI response)
   useEffect(() => {
     if (step === 2) {
@@ -393,7 +397,7 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick }: any) {
   )
 }
 
-function ExploreView({ onServiceClick, onNavClick }: any) {
+function ExploreView({ onServiceClick, onNavClick, isEmbed }: any) {
   const allServices = [
     { icon: UtensilsCrossed, label: 'Room Service', value: 'room-service', color: 'from-amber-400 to-orange-500' },
     { icon: Flower2, label: 'Spa & Wellness', value: 'spa', color: 'from-pink-400 to-rose-500' },
@@ -464,7 +468,7 @@ function ExploreView({ onServiceClick, onNavClick }: any) {
   )
 }
 
-function RequestsView({ onNavClick }: any) {
+function RequestsView({ onNavClick, isEmbed }: any) {
   const requests = [
     { id: 1, service: 'Housekeeping', status: 'In Progress', time: '~18 min', icon: Wrench, color: 'from-blue-400 to-cyan-500' },
     { id: 2, service: 'Room Service', status: 'Delivered', time: 'Completed', icon: UtensilsCrossed, color: 'from-green-400 to-emerald-500' },
@@ -530,7 +534,7 @@ function RequestsView({ onNavClick }: any) {
   )
 }
 
-function ProfileView({ onNavClick }: any) {
+function ProfileView({ onNavClick, isEmbed }: any) {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
