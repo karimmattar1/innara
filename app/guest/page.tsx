@@ -178,17 +178,16 @@ function GuestAppContent() {
 
   // Render just the app content without phone frame when embedded
   const AppContent = () => (
-    <div data-app-container className="relative overflow-hidden" style={isEmbed ? {
+    <div data-app-container className="relative" style={isEmbed ? {
       width: '375px',
       height: '812px',
       transformOrigin: 'top left',
-      transform: 'scale(0.815)',
-      position: 'absolute',
-      top: 0,
-      left: 0,
+      transform: 'scale(0.96)',
+      overflow: 'hidden',
     } : {
       width: '100%',
-      height: '100%'
+      height: '100%',
+      overflow: 'hidden'
     }}>
               {/* Light background with flowing dark blue smoke */}
               <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-gray-100 to-white">

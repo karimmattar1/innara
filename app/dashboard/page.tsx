@@ -181,16 +181,14 @@ function DashboardContent() {
   }, [])
 
   return (
-    <div className="min-h-screen relative overflow-hidden" style={isEmbed ? {
+    <div className="relative overflow-hidden" style={isEmbed ? {
       width: '1440px',
-      minHeight: '1400px',
+      height: '1070px',
       transformOrigin: 'top left',
-      transform: 'scale(0.5)',
-      position: 'absolute',
-      top: 0,
-      left: '50%',
-      marginLeft: '-720px',
-    } : undefined}>
+      transform: 'scale(0.608)',
+    } : {
+      minHeight: '100vh'
+    }}>
 
       {/* Light background with flowing dark blue smoke */}
       <div className="fixed inset-0 bg-gradient-to-br from-gray-50 via-gray-100 to-white">
