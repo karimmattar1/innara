@@ -193,17 +193,50 @@ function GuestAppContent() {
       const appContainer = document.querySelector('[data-app-container]')
       if (appContainer) {
         const rect = appContainer.getBoundingClientRect()
+        const computed = window.getComputedStyle(appContainer as HTMLElement)
         console.log('App container rect:', {
           width: rect.width,
           height: rect.height,
           top: rect.top,
           left: rect.left
         })
+        console.log('App container computed:', {
+          width: computed.width,
+          height: computed.height,
+          transform: computed.transform,
+          transformOrigin: computed.transformOrigin
+        })
         console.log('App container scroll:', {
           scrollWidth: (appContainer as HTMLElement).scrollWidth,
           scrollHeight: (appContainer as HTMLElement).scrollHeight
         })
+        console.log('OVERFLOW CHECK:', {
+          isOverflowing: (appContainer as HTMLElement).scrollHeight > rect.height,
+          overflowAmount: (appContainer as HTMLElement).scrollHeight - rect.height
+        })
       }
+
+      // Check all major sections
+      const header = document.querySelector('.flex-shrink-0.h-14')
+      const chatInput = document.querySelector('.flex-shrink-0.px-4.py-2')
+      if (header) {
+        const headerRect = header.getBoundingClientRect()
+        console.log('Header visible:', {
+          top: headerRect.top,
+          height: headerRect.height,
+          isVisible: headerRect.top >= 0
+        })
+      }
+      if (chatInput) {
+        const chatRect = chatInput.getBoundingClientRect()
+        const containerRect = appContainer?.getBoundingClientRect()
+        console.log('Chat input visible:', {
+          bottom: chatRect.bottom,
+          containerHeight: containerRect?.height,
+          isVisible: containerRect ? chatRect.bottom <= containerRect.bottom : false
+        })
+      }
+
       console.log('Body overflow:', {
         overflowX: window.getComputedStyle(document.body).overflowX,
         overflowY: window.getComputedStyle(document.body).overflowY

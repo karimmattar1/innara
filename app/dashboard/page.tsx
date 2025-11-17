@@ -74,36 +74,51 @@ function DashboardContent() {
     }
 
     console.log('--- SCALING MATH ---')
-    console.log('Applied scale:', 0.375)
+    console.log('Applied scale:', 0.4167)
     console.log('Content dimensions:', '1440x1039')
-    console.log('Expected display width:', 1440 * 0.375, 'px')
-    console.log('Expected display height:', 1039 * 0.375, 'px')
+    console.log('Expected display width:', 1440 * 0.4167, 'px')
+    console.log('Expected display height:', 1039 * 0.4167, 'px')
+    console.log('Target container size:', '600px x 432px')
 
     console.log('======================')
 
     // Check dimensions after render
     setTimeout(() => {
       console.log('--- POST-RENDER DIMENSIONS (Dashboard) ---')
-      const scalingWrapper = document.querySelector('[data-scaling-wrapper]')
-      if (scalingWrapper) {
-        const rect = scalingWrapper.getBoundingClientRect()
-        const computed = window.getComputedStyle(scalingWrapper as Element)
-        console.log('Scaling wrapper rect:', {
+      const mainDiv = document.querySelector('.relative.overflow-hidden')
+      if (mainDiv) {
+        const rect = mainDiv.getBoundingClientRect()
+        const computed = window.getComputedStyle(mainDiv as Element)
+        console.log('Main container rect:', {
           width: rect.width,
           height: rect.height,
           top: rect.top,
           left: rect.left
         })
-        console.log('Scaling wrapper computed:', {
+        console.log('Main container computed:', {
           transform: computed.transform,
           width: computed.width,
-          height: computed.height
+          height: computed.height,
+          overflow: computed.overflow
         })
-        console.log('Scaling wrapper scroll:', {
-          scrollWidth: (scalingWrapper as HTMLElement).scrollWidth,
-          scrollHeight: (scalingWrapper as HTMLElement).scrollHeight
+        console.log('Main container scroll:', {
+          scrollWidth: (mainDiv as HTMLElement).scrollWidth,
+          scrollHeight: (mainDiv as HTMLElement).scrollHeight
+        })
+        console.log('OVERFLOW CHECK (Dashboard):', {
+          isOverflowing: (mainDiv as HTMLElement).scrollHeight > rect.height,
+          overflowAmount: (mainDiv as HTMLElement).scrollHeight - rect.height,
+          expectedHeight: 1039,
+          actualHeight: rect.height
         })
       }
+
+      // Check header
+      const header = document.querySelector('.sticky.top-0')
+      if (header) {
+        console.log('Dashboard header height:', header.getBoundingClientRect().height)
+      }
+
       console.log('Body overflow:', {
         overflowX: window.getComputedStyle(document.body).overflowX,
         overflowY: window.getComputedStyle(document.body).overflowY
@@ -185,7 +200,7 @@ function DashboardContent() {
       width: '1440px',
       height: '1039px',
       transformOrigin: 'top left',
-      transform: 'scale(0.375)',
+      transform: 'scale(0.4167)',
     } : {
       minHeight: '100vh'
     }}>

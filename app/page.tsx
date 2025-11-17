@@ -195,26 +195,26 @@ export default function LandingPage() {
       console.log('=== IFRAME DIMENSIONS DEBUG ===')
       if (guestIframeRef.current) {
         const guestRect = guestIframeRef.current.getBoundingClientRect()
-        console.log('Guest iframe:', {
-          width: guestRect.width,
-          height: guestRect.height,
+        console.log('Guest iframe (PHONE):', {
+          actualIframeWidth: guestRect.width,
+          actualIframeHeight: guestRect.height,
           expectedScale: 0.667,
-          contentWidth: 375,
-          contentHeight: 812,
+          contentDimensions: '375px x 812px',
           calculatedDisplayWidth: 375 * 0.667,
-          calculatedDisplayHeight: 812 * 0.667
+          calculatedDisplayHeight: 812 * 0.667,
+          mockupContainerSize: '250px x 542px'
         })
       }
       if (dashboardIframeRef.current) {
         const dashRect = dashboardIframeRef.current.getBoundingClientRect()
-        console.log('Dashboard iframe:', {
-          width: dashRect.width,
-          height: dashRect.height,
-          expectedScale: 0.375,
-          contentWidth: 1440,
-          contentHeight: 1039,
-          calculatedDisplayWidth: 1440 * 0.375,
-          calculatedDisplayHeight: 1039 * 0.375
+        console.log('Dashboard iframe (LAPTOP):', {
+          actualIframeWidth: dashRect.width,
+          actualIframeHeight: dashRect.height,
+          expectedScale: 0.4167,
+          contentDimensions: '1440px x 1039px',
+          calculatedDisplayWidth: 1440 * 0.4167,
+          calculatedDisplayHeight: 1039 * 0.4167,
+          mockupContainerSize: '600px x 432px'
         })
       }
       console.log('================================')
@@ -613,12 +613,12 @@ export default function LandingPage() {
                   {/* Laptop Mockup */}
                   <div className="relative mb-6">
                     {/* Laptop Screen */}
-                    <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-t-2xl p-2.5 shadow-2xl" style={{ width: '540px' }}>
+                    <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-t-2xl p-2.5 shadow-2xl" style={{ width: '600px' }}>
                       {/* Webcam */}
                       <div className="absolute top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-gray-700 rounded-full z-10"></div>
 
                       {/* Screen */}
-                      <div className="relative bg-white rounded-lg overflow-hidden" style={{ height: '390px' }}>
+                      <div className="relative bg-white rounded-lg overflow-hidden" style={{ height: '432px' }}>
                         <iframe
                           ref={dashboardIframeRef}
                           src="/dashboard?embed=true"
@@ -653,7 +653,7 @@ export default function LandingPage() {
                     </div>
 
                     {/* Laptop Base */}
-                    <div className="relative h-4 bg-gradient-to-b from-gray-700 to-gray-800 rounded-b-xl shadow-xl" style={{ width: '540px' }}>
+                    <div className="relative h-4 bg-gradient-to-b from-gray-700 to-gray-800 rounded-b-xl shadow-xl" style={{ width: '600px' }}>
                       <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-transparent via-gray-600 to-transparent"></div>
                     </div>
 
