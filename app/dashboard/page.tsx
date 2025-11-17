@@ -45,7 +45,60 @@ function DashboardContent() {
     console.log('Embed param value:', embedParam)
     console.log('isEmbed:', isEmbedMode)
     console.log('Will hide nav bar:', isEmbedMode)
+
+    // Dimension diagnostics
+    console.log('--- VIEWPORT DIAGNOSTICS ---')
+    console.log('window.innerWidth:', window.innerWidth)
+    console.log('window.innerHeight:', window.innerHeight)
+    console.log('document.body.clientWidth:', document.body.clientWidth)
+    console.log('document.body.clientHeight:', document.body.clientHeight)
+    console.log('document.body.scrollWidth:', document.body.scrollWidth)
+    console.log('document.body.scrollHeight:', document.body.scrollHeight)
+    console.log('devicePixelRatio:', window.devicePixelRatio)
+    console.log('Is in iframe:', window.self !== window.top)
+
+    if (window.self !== window.top) {
+      console.log('--- IFRAME CONTEXT ---')
+      console.log('Parent origin:', document.referrer)
+    }
+
+    console.log('--- SCALING MATH ---')
+    console.log('Current scale:', 0.7)
+    console.log('Height compensation:', '142.857%')
+    console.log('Expected content width at scale 0.7:', window.innerWidth * 0.7)
+    console.log('Expected visible height at scale 0.7:', window.innerHeight * 0.7)
+
     console.log('======================')
+
+    // Check dimensions after render
+    setTimeout(() => {
+      console.log('--- POST-RENDER DIMENSIONS (Dashboard) ---')
+      const scalingWrapper = document.querySelector('[data-scaling-wrapper]')
+      if (scalingWrapper) {
+        const rect = scalingWrapper.getBoundingClientRect()
+        const computed = window.getComputedStyle(scalingWrapper as Element)
+        console.log('Scaling wrapper rect:', {
+          width: rect.width,
+          height: rect.height,
+          top: rect.top,
+          left: rect.left
+        })
+        console.log('Scaling wrapper computed:', {
+          transform: computed.transform,
+          width: computed.width,
+          height: computed.height
+        })
+        console.log('Scaling wrapper scroll:', {
+          scrollWidth: (scalingWrapper as HTMLElement).scrollWidth,
+          scrollHeight: (scalingWrapper as HTMLElement).scrollHeight
+        })
+      }
+      console.log('Body overflow:', {
+        overflowX: window.getComputedStyle(document.body).overflowX,
+        overflowY: window.getComputedStyle(document.body).overflowY
+      })
+      console.log('=========================================')
+    }, 1000)
   }, [])
 
   useEffect(() => {
@@ -112,7 +165,7 @@ function DashboardContent() {
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Scaling wrapper for embed mode */}
-      <div className="w-full h-full" style={isEmbed ? {
+      <div data-scaling-wrapper className="w-full h-full" style={isEmbed ? {
         transform: 'scale(0.7)',
         transformOrigin: 'top center',
         height: '142.857%', // Compensate for 0.7 scale (1/0.7 = 1.4286)

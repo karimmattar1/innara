@@ -30,12 +30,53 @@ function GuestAppContent() {
     console.log('Embed param value:', embedParam)
     console.log('isEmbed:', isEmbedMode)
     console.log('Will render:', isEmbedMode ? 'EMBED MODE (no frame)' : 'FULL MODE (with frame)')
+
+    // Dimension diagnostics
+    console.log('--- VIEWPORT DIAGNOSTICS ---')
+    console.log('window.innerWidth:', window.innerWidth)
+    console.log('window.innerHeight:', window.innerHeight)
+    console.log('document.body.clientWidth:', document.body.clientWidth)
+    console.log('document.body.clientHeight:', document.body.clientHeight)
+    console.log('document.body.scrollWidth:', document.body.scrollWidth)
+    console.log('document.body.scrollHeight:', document.body.scrollHeight)
+    console.log('devicePixelRatio:', window.devicePixelRatio)
+    console.log('Is in iframe:', window.self !== window.top)
+
+    if (window.self !== window.top) {
+      console.log('--- IFRAME CONTEXT ---')
+      console.log('Parent origin:', document.referrer)
+    }
+
     console.log('======================')
+
+    // Check dimensions after render
+    setTimeout(() => {
+      console.log('--- POST-RENDER DIMENSIONS (Guest) ---')
+      const appContainer = document.querySelector('[data-app-container]')
+      if (appContainer) {
+        const rect = appContainer.getBoundingClientRect()
+        console.log('App container rect:', {
+          width: rect.width,
+          height: rect.height,
+          top: rect.top,
+          left: rect.left
+        })
+        console.log('App container scroll:', {
+          scrollWidth: (appContainer as HTMLElement).scrollWidth,
+          scrollHeight: (appContainer as HTMLElement).scrollHeight
+        })
+      }
+      console.log('Body overflow:', {
+        overflowX: window.getComputedStyle(document.body).overflowX,
+        overflowY: window.getComputedStyle(document.body).overflowY
+      })
+      console.log('=====================================')
+    }, 1000)
   }, [])
 
   // Render just the app content without phone frame when embedded
   const AppContent = () => (
-    <div className={`relative w-full h-full ${isEmbed ? 'overflow-hidden' : 'overflow-hidden'}`}>
+    <div data-app-container className={`relative w-full h-full ${isEmbed ? 'overflow-hidden' : 'overflow-hidden'}`}>
       {/* Scaling wrapper for embed mode */}
       <div className={isEmbed ? 'w-full h-full flex items-center justify-center' : 'w-full h-full'} style={isEmbed ? {
         transform: 'scale(0.9)',
