@@ -57,6 +57,39 @@ export default function LandingPage() {
       const { type, action, request } = event.data
 
       if (type === 'DEMO_EVENT') {
+        // Handle click indicators for guest app
+        if (action === 'CLICK_ROOM_SERVICE') {
+          const id = Date.now()
+          setClickIndicators(prev => [...prev, { id, x: 25, y: 55, target: 'guest' }])
+          setTimeout(() => {
+            setClickIndicators(prev => prev.filter(ind => ind.id !== id))
+          }, 1500)
+        } else if (action === 'CLICK_SALAD') {
+          const id = Date.now()
+          setClickIndicators(prev => [...prev, { id, x: 50, y: 45, target: 'guest' }])
+          setTimeout(() => {
+            setClickIndicators(prev => prev.filter(ind => ind.id !== id))
+          }, 1500)
+        } else if (action === 'CLICK_CHECKOUT') {
+          const id = Date.now()
+          setClickIndicators(prev => [...prev, { id, x: 85, y: 90, target: 'guest' }])
+          setTimeout(() => {
+            setClickIndicators(prev => prev.filter(ind => ind.id !== id))
+          }, 1500)
+        } else if (action === 'CLICK_PAY') {
+          const id = Date.now()
+          setClickIndicators(prev => [...prev, { id, x: 50, y: 88, target: 'guest' }])
+          setTimeout(() => {
+            setClickIndicators(prev => prev.filter(ind => ind.id !== id))
+          }, 1500)
+        } else if (action === 'CLICK_VIEW_REQUESTS') {
+          const id = Date.now()
+          setClickIndicators(prev => [...prev, { id, x: 50, y: 75, target: 'guest' }])
+          setTimeout(() => {
+            setClickIndicators(prev => prev.filter(ind => ind.id !== id))
+          }, 1500)
+        }
+
         // Show click indicator on dashboard when guest triggers actions
         if (action === 'HOUSEKEEPING_REQUESTED' || action === 'FOOD_ORDERED') {
           const id = Date.now()
@@ -165,11 +198,11 @@ export default function LandingPage() {
         console.log('Guest iframe:', {
           width: guestRect.width,
           height: guestRect.height,
-          expectedScale: 0.8,
+          expectedScale: 0.72,
           contentWidth: 375,
           contentHeight: 812,
-          calculatedDisplayWidth: 375 * 0.8,
-          calculatedDisplayHeight: 812 * 0.8
+          calculatedDisplayWidth: 375 * 0.72,
+          calculatedDisplayHeight: 812 * 0.72
         })
       }
       if (dashboardIframeRef.current) {
@@ -177,11 +210,11 @@ export default function LandingPage() {
         console.log('Dashboard iframe:', {
           width: dashRect.width,
           height: dashRect.height,
-          expectedScale: 0.451,
+          expectedScale: 0.403,
           contentWidth: 1440,
           contentHeight: 1039,
-          calculatedDisplayWidth: 1440 * 0.451,
-          calculatedDisplayHeight: 1039 * 0.451
+          calculatedDisplayWidth: 1440 * 0.403,
+          calculatedDisplayHeight: 1039 * 0.403
         })
       }
       console.log('================================')
@@ -496,14 +529,14 @@ export default function LandingPage() {
                   </div>
 
                   {/* Phone Mockup */}
-                  <div className="relative mx-auto mb-6" style={{ width: '300px' }}>
+                  <div className="relative mx-auto mb-6" style={{ width: '270px' }}>
                     {/* Phone Frame */}
-                    <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-[3rem] p-3 shadow-2xl">
+                    <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-[3rem] p-2.5 shadow-2xl">
                       {/* Notch */}
-                      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-gray-900 rounded-b-3xl z-10"></div>
+                      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-5 bg-gray-900 rounded-b-3xl z-10"></div>
 
                       {/* Screen */}
-                      <div className="relative bg-white rounded-[2.5rem] overflow-hidden" style={{ height: '620px' }}>
+                      <div className="relative bg-white rounded-[2.5rem] overflow-hidden" style={{ height: '580px' }}>
                         <iframe
                           ref={guestIframeRef}
                           src="/guest?embed=true"
@@ -580,12 +613,12 @@ export default function LandingPage() {
                   {/* Laptop Mockup */}
                   <div className="relative mb-6">
                     {/* Laptop Screen */}
-                    <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-t-2xl p-3 shadow-2xl" style={{ width: '650px' }}>
+                    <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-t-2xl p-2.5 shadow-2xl" style={{ width: '580px' }}>
                       {/* Webcam */}
-                      <div className="absolute top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-700 rounded-full z-10"></div>
+                      <div className="absolute top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-gray-700 rounded-full z-10"></div>
 
                       {/* Screen */}
-                      <div className="relative bg-white rounded-lg overflow-hidden" style={{ height: '468px' }}>
+                      <div className="relative bg-white rounded-lg overflow-hidden" style={{ height: '420px' }}>
                         <iframe
                           ref={dashboardIframeRef}
                           src="/dashboard?embed=true"

@@ -22,68 +22,96 @@ function GuestAppContent() {
     if (!demoMode || !isEmbed) return
 
     const sequence = async () => {
-      // Step 1: Start conversation (auto-advance to step 1 - user message)
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      // Step 1: User clicks chat input (2s delay)
+      await new Promise(resolve => setTimeout(resolve, 2500))
       setStep(1)
 
-      // Step 2: Show typing indicator (auto-advance to step 2)
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      // Step 2: Show typing indicator (2.5s)
+      await new Promise(resolve => setTimeout(resolve, 2500))
       setStep(2)
 
       // Step 3 will auto-advance via existing useEffect in ConciergeView after 1200ms
-      // Step 4: Auto-click "Now" button - this happens at step 3, give it time to render
-      await new Promise(resolve => setTimeout(resolve, 5000))
+      // Step 4: Wait for AI response and time selection (6s total)
+      await new Promise(resolve => setTimeout(resolve, 6000))
       setStep(4) // Confirmation shown
 
-      // Notify parent: housekeeping requested
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      // Notify parent: housekeeping requested (1.5s delay for dashboard animation)
+      await new Promise(resolve => setTimeout(resolve, 1500))
       window.parent.postMessage({
         type: 'DEMO_EVENT',
         action: 'HOUSEKEEPING_REQUESTED'
       }, window.location.origin)
 
-      // Step 5: Navigate to room service after showing confirmation
-      await new Promise(resolve => setTimeout(resolve, 4000))
+      // Step 5: Show click indicator for Room Service tile, then navigate (4s)
+      await new Promise(resolve => setTimeout(resolve, 4500))
+      window.parent.postMessage({
+        type: 'DEMO_EVENT',
+        action: 'CLICK_ROOM_SERVICE'
+      }, window.location.origin)
+
+      await new Promise(resolve => setTimeout(resolve, 1500))
       setView('room-service')
 
-      // Step 6: Auto-add Caesar Salad to cart
-      await new Promise(resolve => setTimeout(resolve, 4000))
+      // Step 6: Show click indicator for Caesar Salad, then add to cart (5s)
+      await new Promise(resolve => setTimeout(resolve, 5000))
+      window.parent.postMessage({
+        type: 'DEMO_EVENT',
+        action: 'CLICK_SALAD'
+      }, window.location.origin)
+
+      await new Promise(resolve => setTimeout(resolve, 1500))
       setCartItems([{
         name: 'Caesar Salad',
         price: 12,
         description: 'Romaine, croutons, parmesan'
       }])
 
-      // Step 7: Go to checkout
-      await new Promise(resolve => setTimeout(resolve, 4000))
+      // Step 7: Show click indicator for checkout (3s)
+      await new Promise(resolve => setTimeout(resolve, 3000))
+      window.parent.postMessage({
+        type: 'DEMO_EVENT',
+        action: 'CLICK_CHECKOUT'
+      }, window.location.origin)
+
+      await new Promise(resolve => setTimeout(resolve, 1500))
       setView('checkout')
 
-      // Step 8: Wait to show checkout screen, then place order
-      await new Promise(resolve => setTimeout(resolve, 4000))
+      // Step 8: Show click indicator for Pay button, then place order (5s)
+      await new Promise(resolve => setTimeout(resolve, 5000))
+      window.parent.postMessage({
+        type: 'DEMO_EVENT',
+        action: 'CLICK_PAY'
+      }, window.location.origin)
+
+      await new Promise(resolve => setTimeout(resolve, 1500))
       // Simulate clicking "Place Order" button
       const placeOrderBtn = document.querySelector('button[type="button"]')
       if (placeOrderBtn) {
         (placeOrderBtn as HTMLButtonElement).click()
       }
 
-      // Notify parent: food ordered
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      // Notify parent: food ordered (1s delay)
+      await new Promise(resolve => setTimeout(resolve, 1000))
       window.parent.postMessage({
         type: 'DEMO_EVENT',
         action: 'FOOD_ORDERED'
       }, window.location.origin)
 
-      // Step 9: Show order confirmation, then go back to concierge
+      // Step 9: Show order confirmation toast, stay on confirmation (5s)
       await new Promise(resolve => setTimeout(resolve, 5000))
-      setView('concierge')
-      setStep(4) // Stay at confirmation step
 
-      // Step 10: Navigate to requests view
-      await new Promise(resolve => setTimeout(resolve, 5000))
+      // Show "View Requests" button in confirmation (handled in CheckoutView)
+      // User clicks View Requests
+      window.parent.postMessage({
+        type: 'DEMO_EVENT',
+        action: 'CLICK_VIEW_REQUESTS'
+      }, window.location.origin)
+
+      await new Promise(resolve => setTimeout(resolve, 2000))
       setView('requests')
 
-      // Notify parent: viewing requests
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      // Notify parent: viewing requests (for analytics tab click)
+      await new Promise(resolve => setTimeout(resolve, 2500))
       window.parent.postMessage({
         type: 'DEMO_EVENT',
         action: 'VIEWING_REQUESTS'
@@ -190,7 +218,7 @@ function GuestAppContent() {
       width: '375px',
       height: '812px',
       transformOrigin: 'top left',
-      transform: 'scale(0.8)',
+      transform: 'scale(0.72)',
       overflow: 'hidden',
     } : {
       width: '100%',
@@ -270,14 +298,14 @@ function GuestAppContent() {
               {/* Content */}
               <div className="relative z-10 h-full flex flex-col">
                 {/* Top Bar - Transparent & Blurred - Always show */}
-                <div className="flex-shrink-0 h-[70px] backdrop-blur-2xl bg-white/20 border-b border-white/20 px-4 flex items-center justify-between pt-8">
+                <div className="flex-shrink-0 h-14 backdrop-blur-2xl bg-white/20 border-b border-white/20 px-4 flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src="/logo.png" alt="INNARA" width={40} height={40} className="rounded-full" />
-                    <span className="text-xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INNARA</span>
+                    <Image src="/logo.png" alt="INNARA" width={32} height={32} className="rounded-full" />
+                    <span className="text-lg font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INNARA</span>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2">
                     <span className="text-xs text-navy font-semibold tracking-wide">Room 1204</span>
-                    <div className="w-9 h-9 rounded-full bg-navy flex items-center justify-center text-white text-xs font-semibold shadow-lg border-2 border-navy/30">
+                    <div className="w-8 h-8 rounded-full bg-navy flex items-center justify-center text-white text-xs font-semibold shadow-lg border-2 border-navy/30">
                       AA
                     </div>
                   </div>
@@ -404,7 +432,7 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick, isEmbed }: 
   return (
     <div className="flex flex-col h-full">
       {/* Welcome Section (Hidden in embed mode) */}
-      {!isEmbed && (
+      {!isEmbed && step === 0 && (
         <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0">
           <h1 className="text-lg font-semibold text-navy mb-1">Welcome back, Ahmed</h1>
           <p className="text-xs text-navy/60">How can we help you today?</p>
@@ -413,22 +441,25 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick, isEmbed }: 
 
       {/* Scrollable Content Area */}
       <div className="flex-1 overflow-y-auto flex flex-col">
-        {/* Service Tiles - 2x3 Grid */}
-        <div className={`px-6 py-6 grid grid-cols-2 gap-4 ${step === 0 ? 'flex-1 content-center' : ''}`}>
-          {popularServices.map((service) => (
-            <button
-              key={service.value}
-              onClick={() => onServiceClick(service.value)}
-              className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 flex flex-col items-center justify-center gap-3 hover:bg-white/20 hover:border-gold/50 hover:scale-105 transition-all shadow-lg aspect-square"
-            >
-              <service.icon className="w-8 h-8 text-gold" />
-              <span className="text-xs text-navy text-center leading-tight font-medium">{service.label}</span>
-            </button>
-          ))}
-        </div>
+        {/* Service Tiles - 2x3 Grid - ONLY show when step === 0 */}
+        {step === 0 && (
+          <div className="px-6 py-6 grid grid-cols-2 gap-4 flex-1 content-center">
+            {popularServices.map((service) => (
+              <button
+                key={service.value}
+                onClick={() => onServiceClick(service.value)}
+                className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 flex flex-col items-center justify-center gap-3 hover:bg-white/20 hover:border-gold/50 hover:scale-105 transition-all shadow-lg aspect-square"
+              >
+                <service.icon className="w-8 h-8 text-gold" />
+                <span className="text-xs text-navy text-center leading-tight font-medium">{service.label}</span>
+              </button>
+            ))}
+          </div>
+        )}
 
-        {/* Chat Messages - Only show when active */}
-        <div className={`px-4 space-y-3 ${step >= 1 ? 'block' : 'hidden'} pb-4`}>
+        {/* Chat Messages - Full screen when step >= 1 */}
+        {step >= 1 && (
+          <div className="flex-1 flex flex-col justify-start px-4 py-4 space-y-3">
         {step >= 1 && (
           <motion.div
             initial={{ y: 20, opacity: 0 }}
@@ -509,7 +540,7 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick, isEmbed }: 
             </div>
           </motion.div>
         )}
-      </div>
+        )}
       </div>
 
       {/* Bottom Fixed Chat Input - Always show */}

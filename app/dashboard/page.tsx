@@ -74,10 +74,10 @@ function DashboardContent() {
     }
 
     console.log('--- SCALING MATH ---')
-    console.log('Current scale:', 0.7)
-    console.log('Height compensation:', '142.857%')
-    console.log('Expected content width at scale 0.7:', window.innerWidth * 0.7)
-    console.log('Expected visible height at scale 0.7:', window.innerHeight * 0.7)
+    console.log('Applied scale:', 0.403)
+    console.log('Content dimensions:', '1440x1039')
+    console.log('Expected display width:', 1440 * 0.403, 'px')
+    console.log('Expected display height:', 1039 * 0.403, 'px')
 
     console.log('======================')
 
@@ -185,7 +185,7 @@ function DashboardContent() {
       width: '1440px',
       height: '1039px',
       transformOrigin: 'top left',
-      transform: 'scale(0.451)',
+      transform: 'scale(0.403)',
     } : {
       minHeight: '100vh'
     }}>
@@ -256,7 +256,7 @@ function DashboardContent() {
         </div>
 
       {/* Main Content */}
-      <div className="relative z-10 p-12 space-y-8">
+      <div className="relative z-10 p-6 space-y-6">
         {activeView === 'dashboard' ? (
           <>
         {/* Top Stats Row - Key Metrics */}
