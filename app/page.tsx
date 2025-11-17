@@ -198,11 +198,11 @@ export default function LandingPage() {
         console.log('Guest iframe:', {
           width: guestRect.width,
           height: guestRect.height,
-          expectedScale: 0.72,
+          expectedScale: 0.667,
           contentWidth: 375,
           contentHeight: 812,
-          calculatedDisplayWidth: 375 * 0.72,
-          calculatedDisplayHeight: 812 * 0.72
+          calculatedDisplayWidth: 375 * 0.667,
+          calculatedDisplayHeight: 812 * 0.667
         })
       }
       if (dashboardIframeRef.current) {
@@ -210,11 +210,11 @@ export default function LandingPage() {
         console.log('Dashboard iframe:', {
           width: dashRect.width,
           height: dashRect.height,
-          expectedScale: 0.403,
+          expectedScale: 0.375,
           contentWidth: 1440,
           contentHeight: 1039,
-          calculatedDisplayWidth: 1440 * 0.403,
-          calculatedDisplayHeight: 1039 * 0.403
+          calculatedDisplayWidth: 1440 * 0.375,
+          calculatedDisplayHeight: 1039 * 0.375
         })
       }
       console.log('================================')
@@ -529,14 +529,14 @@ export default function LandingPage() {
                   </div>
 
                   {/* Phone Mockup */}
-                  <div className="relative mx-auto mb-6" style={{ width: '270px' }}>
+                  <div className="relative mx-auto mb-6" style={{ width: '250px' }}>
                     {/* Phone Frame */}
                     <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-[3rem] p-2.5 shadow-2xl">
                       {/* Notch */}
                       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-5 bg-gray-900 rounded-b-3xl z-10"></div>
 
                       {/* Screen */}
-                      <div className="relative bg-white rounded-[2.5rem] overflow-hidden" style={{ height: '580px' }}>
+                      <div className="relative bg-white rounded-[2.5rem] overflow-hidden" style={{ height: '542px' }}>
                         <iframe
                           ref={guestIframeRef}
                           src="/guest?embed=true"
@@ -613,12 +613,12 @@ export default function LandingPage() {
                   {/* Laptop Mockup */}
                   <div className="relative mb-6">
                     {/* Laptop Screen */}
-                    <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-t-2xl p-2.5 shadow-2xl" style={{ width: '580px' }}>
+                    <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-t-2xl p-2.5 shadow-2xl" style={{ width: '540px' }}>
                       {/* Webcam */}
                       <div className="absolute top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-gray-700 rounded-full z-10"></div>
 
                       {/* Screen */}
-                      <div className="relative bg-white rounded-lg overflow-hidden" style={{ height: '420px' }}>
+                      <div className="relative bg-white rounded-lg overflow-hidden" style={{ height: '390px' }}>
                         <iframe
                           ref={dashboardIframeRef}
                           src="/dashboard?embed=true"
@@ -653,7 +653,7 @@ export default function LandingPage() {
                     </div>
 
                     {/* Laptop Base */}
-                    <div className="relative h-4 bg-gradient-to-b from-gray-700 to-gray-800 rounded-b-xl shadow-xl">
+                    <div className="relative h-4 bg-gradient-to-b from-gray-700 to-gray-800 rounded-b-xl shadow-xl" style={{ width: '540px' }}>
                       <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-transparent via-gray-600 to-transparent"></div>
                     </div>
 

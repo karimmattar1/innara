@@ -218,7 +218,7 @@ function GuestAppContent() {
       width: '375px',
       height: '812px',
       transformOrigin: 'top left',
-      transform: 'scale(0.72)',
+      transform: 'scale(0.667)',
       overflow: 'hidden',
     } : {
       width: '100%',

@@ -74,10 +74,10 @@ function DashboardContent() {
     }
 
     console.log('--- SCALING MATH ---')
-    console.log('Applied scale:', 0.403)
+    console.log('Applied scale:', 0.375)
     console.log('Content dimensions:', '1440x1039')
-    console.log('Expected display width:', 1440 * 0.403, 'px')
-    console.log('Expected display height:', 1039 * 0.403, 'px')
+    console.log('Expected display width:', 1440 * 0.375, 'px')
+    console.log('Expected display height:', 1039 * 0.375, 'px')
 
     console.log('======================')
 
@@ -185,7 +185,7 @@ function DashboardContent() {
       width: '1440px',
       height: '1039px',
       transformOrigin: 'top left',
-      transform: 'scale(0.403)',
+      transform: 'scale(0.375)',
     } : {
       minHeight: '100vh'
     }}>
