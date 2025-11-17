@@ -23,6 +23,19 @@ function GuestAppContent() {
     const isEmbedMode = embedParam === 'true'
     setIsEmbed(isEmbedMode)
 
+    // Set viewport for embed mode - make content think it's 375px wide (iPhone size)
+    if (isEmbedMode) {
+      const metaViewport = document.querySelector('meta[name="viewport"]')
+      if (metaViewport) {
+        metaViewport.setAttribute('content', 'width=375, initial-scale=1, maximum-scale=1, user-scalable=no')
+      }
+      // Also set body to exact size to prevent overflow
+      document.body.style.width = '375px'
+      document.body.style.height = '812px' // iPhone X/11/12 height
+      document.body.style.overflow = 'hidden'
+      document.documentElement.style.overflow = 'hidden'
+    }
+
     console.log('=== GUEST APP DEBUG ===')
     console.log('Full URL:', window.location.href)
     console.log('Search string:', window.location.search)
@@ -76,12 +89,7 @@ function GuestAppContent() {
 
   // Render just the app content without phone frame when embedded
   const AppContent = () => (
-    <div data-app-container className={`relative w-full h-full ${isEmbed ? 'overflow-hidden' : 'overflow-hidden'}`}>
-      {/* Scaling wrapper for embed mode */}
-      <div className={isEmbed ? 'w-full h-full flex items-center justify-center' : 'w-full h-full'} style={isEmbed ? {
-        transform: 'scale(0.9)',
-        transformOrigin: 'center center',
-      } : {}}>
+    <div data-app-container className="relative w-full h-full overflow-hidden">
               {/* Light background with flowing dark blue smoke */}
               <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-gray-100 to-white">
         <div className="absolute inset-0">
@@ -226,7 +234,6 @@ function GuestAppContent() {
                   </AnimatePresence>
                 </div>
               </div>
-      </div> {/* Close scaling wrapper */}
             </div>
   )
 

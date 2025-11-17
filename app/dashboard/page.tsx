@@ -38,6 +38,19 @@ function DashboardContent() {
     const isEmbedMode = embedParam === 'true'
     setIsEmbed(isEmbedMode)
 
+    // Set viewport for embed mode - make content think it's 1440px wide (desktop size)
+    if (isEmbedMode) {
+      const metaViewport = document.querySelector('meta[name="viewport"]')
+      if (metaViewport) {
+        metaViewport.setAttribute('content', 'width=1440, initial-scale=1, maximum-scale=1, user-scalable=no')
+      }
+      // Also set body to exact size to prevent overflow
+      document.body.style.width = '1440px'
+      document.body.style.height = '900px' // Standard desktop height
+      document.body.style.overflow = 'hidden'
+      document.documentElement.style.overflow = 'hidden'
+    }
+
     console.log('=== DASHBOARD DEBUG ===')
     console.log('Full URL:', window.location.href)
     console.log('Search string:', window.location.search)
@@ -164,12 +177,6 @@ function DashboardContent() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Scaling wrapper for embed mode */}
-      <div data-scaling-wrapper className="w-full h-full" style={isEmbed ? {
-        transform: 'scale(0.7)',
-        transformOrigin: 'top center',
-        height: '142.857%', // Compensate for 0.7 scale (1/0.7 = 1.4286)
-      } : {}}>
 
       {/* Light background with flowing dark blue smoke */}
       <div className="fixed inset-0 bg-gradient-to-br from-gray-50 via-gray-100 to-white">
@@ -465,8 +472,6 @@ function DashboardContent() {
           <AnalyticsView />
         )}
       </div>
-
-      </div> {/* Close scaling wrapper */}
 
       <style jsx global>{`
         @keyframes blob {
