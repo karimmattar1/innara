@@ -177,7 +177,7 @@ function DashboardContent() {
                 </div>
                 <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center text-white text-xs font-bold border-2 border-white">2</div>
               </div>
-              <div className="w-11 h-11 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold cursor-pointer hover:scale-110 transition-transform shadow-lg">
+              <div className="w-11 h-11 bg-gradient-to-br from-navy to-navy-dark rounded-full flex items-center justify-center text-gold text-sm font-bold cursor-pointer hover:scale-110 transition-transform shadow-lg border-2 border-gold/30">
                 JM
               </div>
             </div>
