@@ -55,23 +55,31 @@ function GuestAppContent() {
       }])
 
       // Step 7: Go to checkout
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      await new Promise(resolve => setTimeout(resolve, 3000))
       setView('checkout')
 
+      // Step 8: Wait to show checkout screen, then place order
+      await new Promise(resolve => setTimeout(resolve, 3000))
+      // Simulate clicking "Place Order" button
+      const placeOrderBtn = document.querySelector('button[type="button"]')
+      if (placeOrderBtn) {
+        (placeOrderBtn as HTMLButtonElement).click()
+      }
+
       // Notify parent: food ordered
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      await new Promise(resolve => setTimeout(resolve, 1500))
       window.parent.postMessage({
         type: 'DEMO_EVENT',
         action: 'FOOD_ORDERED'
       }, window.location.origin)
 
-      // Step 8: Show order confirmation, then go back to concierge
-      await new Promise(resolve => setTimeout(resolve, 4000))
+      // Step 9: Show order confirmation, then go back to concierge
+      await new Promise(resolve => setTimeout(resolve, 5000))
       setView('concierge')
       setStep(4) // Stay at confirmation step
 
-      // Step 9: Navigate to requests view
-      await new Promise(resolve => setTimeout(resolve, 3000))
+      // Step 10: Navigate to requests view
+      await new Promise(resolve => setTimeout(resolve, 4000))
       setView('requests')
 
       // Notify parent: viewing requests
@@ -182,7 +190,7 @@ function GuestAppContent() {
       width: '375px',
       height: '812px',
       transformOrigin: 'top left',
-      transform: 'scale(0.96)',
+      transform: 'scale(0.976, 0.96)',
       overflow: 'hidden',
     } : {
       width: '100%',
@@ -269,8 +277,8 @@ function GuestAppContent() {
                       <span className="text-xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INNARA</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="text-xs text-gold font-semibold tracking-wide">Room 1204</span>
-                      <div className="w-9 h-9 rounded-full bg-navy flex items-center justify-center text-white text-xs font-semibold shadow-lg border-2 border-gold/30">
+                      <span className="text-xs text-navy font-semibold tracking-wide">Room 1204</span>
+                      <div className="w-9 h-9 rounded-full bg-navy flex items-center justify-center text-white text-xs font-semibold shadow-lg border-2 border-navy/30">
                         AA
                       </div>
                     </div>
@@ -415,7 +423,7 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick, isEmbed }: 
               onClick={() => onServiceClick(service.value)}
               className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 flex flex-col items-center justify-center gap-3 hover:bg-white/20 hover:border-gold/50 hover:scale-105 transition-all shadow-lg aspect-square"
             >
-              <service.icon className="w-8 h-8 text-gold" />
+              <service.icon className="w-8 h-8 text-navy" />
               <span className="text-xs text-navy text-center leading-tight font-medium">{service.label}</span>
             </button>
           ))}
@@ -445,10 +453,10 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick, isEmbed }: 
                 className="flex justify-start"
               >
                 <div className="relative">
-                  <div className="absolute -top-2 -left-2 backdrop-blur-xl bg-white/90 text-gold text-xs font-semibold px-2 py-0.5 rounded-full border border-gold shadow-lg">
+                  <div className="absolute -top-2 -left-2 backdrop-blur-xl bg-white/90 text-navy text-xs font-semibold px-2 py-0.5 rounded-full border border-navy shadow-lg">
                     AI
                   </div>
-                  <div className="bg-gradient-to-br from-gold-light to-gold text-white px-4 py-3 rounded-2xl rounded-bl-md max-w-[85%] shadow-2xl">
+                  <div className="bg-gradient-to-br from-navy to-navy-dark text-white px-4 py-3 rounded-2xl rounded-bl-md max-w-[85%] shadow-2xl">
                     <p>Of course, Ahmed! I'll send housekeeping to Room 1204 right away. 🧹</p>
                     <p className="mt-2">When would you like them to arrive?</p>
                   </div>
@@ -467,14 +475,14 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick, isEmbed }: 
           >
             <button
               onClick={() => nextStep()}
-              className="px-5 py-2.5 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-navy hover:bg-gold hover:text-white hover:border-gold hover:scale-105 transition-all text-sm font-semibold shadow-lg"
+              className="px-5 py-2.5 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-navy hover:bg-navy hover:text-white hover:border-navy hover:scale-105 transition-all text-sm font-semibold shadow-lg"
             >
               Now
             </button>
-            <button className="px-5 py-2.5 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-navy hover:bg-gold hover:text-white hover:border-gold hover:scale-105 transition-all text-sm font-semibold shadow-lg">
+            <button className="px-5 py-2.5 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-navy hover:bg-navy hover:text-white hover:border-navy hover:scale-105 transition-all text-sm font-semibold shadow-lg">
               In 30 min
             </button>
-            <button className="px-5 py-2.5 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-navy hover:bg-gold hover:text-white hover:border-gold hover:scale-105 transition-all text-sm font-semibold shadow-lg">
+            <button className="px-5 py-2.5 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-navy hover:bg-navy hover:text-white hover:border-navy hover:scale-105 transition-all text-sm font-semibold shadow-lg">
               In 1 hour
             </button>
           </motion.div>
@@ -487,7 +495,7 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick, isEmbed }: 
             className="flex justify-start"
           >
             <div className="relative">
-              <div className="absolute -top-2 -left-2 backdrop-blur-xl bg-white/90 text-gold text-xs font-semibold px-2 py-0.5 rounded-full border border-gold shadow-lg">
+              <div className="absolute -top-2 -left-2 backdrop-blur-xl bg-white/90 text-navy text-xs font-semibold px-2 py-0.5 rounded-full border border-navy shadow-lg">
                 AI
               </div>
               <div className="bg-gradient-to-br from-gold-light to-gold text-white px-4 py-3 rounded-2xl rounded-bl-md max-w-[85%] shadow-2xl">
@@ -514,9 +522,9 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick, isEmbed }: 
               type="text"
               placeholder="What do you need today?"
               onClick={() => step === 0 && nextStep()}
-              className="w-full h-11 pl-4 pr-12 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-sm text-navy placeholder:text-navy/50 focus:outline-none focus:border-gold focus:bg-white/30 transition-all shadow-lg"
+              className="w-full h-11 pl-4 pr-12 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-sm text-navy placeholder:text-navy/50 focus:outline-none focus:border-navy focus:bg-white/30 transition-all shadow-lg"
             />
-            <button className="absolute right-1.5 top-1.5 w-8 h-8 rounded-full bg-gradient-to-br from-gold-light to-gold flex items-center justify-center shadow-md hover:scale-110 transition-transform">
+            <button className="absolute right-1.5 top-1.5 w-8 h-8 rounded-full bg-gradient-to-br from-navy to-navy-dark flex items-center justify-center shadow-md hover:scale-110 transition-transform">
               <Sparkles className="w-4 h-4 text-white" />
             </button>
           </div>
@@ -526,7 +534,7 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick, isEmbed }: 
       {/* Bottom Navigation - Glassy (Hidden in embed mode) */}
       {!isEmbed && (
         <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2">
-          <button className="flex flex-col items-center gap-0.5 py-2 text-gold">
+          <button className="flex flex-col items-center gap-0.5 py-2 text-navy">
             <Sparkles className="w-5 h-5" />
             <span className="text-[10px] font-medium">Concierge</span>
           </button>
@@ -576,7 +584,7 @@ function ExploreView({ onServiceClick, onNavClick, isEmbed }: any) {
             <input
               type="text"
               placeholder="Search services..."
-              className="w-full h-9 pl-9 pr-3 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-sm text-navy placeholder:text-navy/50 focus:outline-none focus:border-gold/50 focus:bg-white/30 transition-all"
+              className="w-full h-9 pl-9 pr-3 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-sm text-navy placeholder:text-navy/50 focus:outline-none focus:border-navy/50 focus:bg-white/30 transition-all"
             />
           </div>
         </div>
@@ -591,7 +599,7 @@ function ExploreView({ onServiceClick, onNavClick, isEmbed }: any) {
               onClick={() => onServiceClick(service.value)}
               className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-white/20 hover:border-gold/50 hover:scale-105 transition-all shadow-lg"
             >
-              <service.icon className="w-7 h-7 text-gold" />
+              <service.icon className="w-7 h-7 text-navy" />
               <span className="text-xs text-navy text-center leading-tight font-medium">{service.label}</span>
             </button>
           ))}
@@ -605,7 +613,7 @@ function ExploreView({ onServiceClick, onNavClick, isEmbed }: any) {
             <Sparkles className="w-5 h-5" />
             <span className="text-[10px] font-medium">Concierge</span>
           </button>
-          <button className="flex flex-col items-center gap-0.5 py-2 text-gold">
+          <button className="flex flex-col items-center gap-0.5 py-2 text-navy">
             <Compass className="w-5 h-5" />
             <span className="text-[10px] font-medium">Explore</span>
           </button>
@@ -645,11 +653,11 @@ function RequestsView({ onNavClick, isEmbed }: any) {
           {requests.map((request) => (
             <div key={request.id} className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 shadow-lg">
               <div className="flex items-start gap-4">
-                <request.icon className="w-8 h-8 text-gold flex-shrink-0" />
+                <request.icon className="w-8 h-8 text-navy flex-shrink-0" />
                 <div className="flex-1">
                   <h3 className="text-sm font-semibold text-navy">{request.service}</h3>
                   <p className="text-xs text-navy/60 mt-1">{request.status}</p>
-                  <div className="mt-2 inline-block px-3 py-1 rounded-full bg-gold/20 border border-gold/30 text-xs font-semibold text-gold">
+                  <div className="mt-2 inline-block px-3 py-1 rounded-full bg-navy/20 border border-navy/30 text-xs font-semibold text-navy">
                     {request.time}
                   </div>
                 </div>
@@ -679,7 +687,7 @@ function RequestsView({ onNavClick, isEmbed }: any) {
             <Compass className="w-5 h-5" />
             <span className="text-[10px] font-medium">Explore</span>
           </button>
-          <button className="flex flex-col items-center gap-0.5 py-2 text-gold">
+          <button className="flex flex-col items-center gap-0.5 py-2 text-navy">
             <ClipboardList className="w-5 h-5" />
             <span className="text-[10px] font-medium">Requests</span>
           </button>
@@ -700,7 +708,7 @@ function ProfileView({ onNavClick, isEmbed }: any) {
       {!isEmbed && (
         <div className="px-5 py-4 border-b border-gray-200 flex-shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-16 h-16 rounded-full bg-navy flex items-center justify-center text-white text-xl font-semibold shadow-lg border-2 border-gold/30">
+            <div className="w-16 h-16 rounded-full bg-navy flex items-center justify-center text-white text-xl font-semibold shadow-lg border-2 border-navy/30">
               AA
             </div>
             <div>
@@ -748,7 +756,7 @@ function ProfileView({ onNavClick, isEmbed }: any) {
             <ClipboardList className="w-5 h-5" />
             <span className="text-[10px] font-medium">Requests</span>
           </button>
-          <button className="flex flex-col items-center gap-0.5 py-2 text-gold">
+          <button className="flex flex-col items-center gap-0.5 py-2 text-navy">
             <User className="w-5 h-5" />
             <span className="text-[10px] font-medium">Profile</span>
           </button>
@@ -920,7 +928,7 @@ function CheckoutView({ item, onPlaceOrder }: any) {
           <div className="flex-1">
             <h4 className="font-semibold text-white">{item.name}</h4>
             <p className="text-sm text-white/60">{item.description}</p>
-            <p className="text-gold font-semibold mt-1">${item.price}</p>
+            <p className="text-navy font-semibold mt-1">${item.price}</p>
           </div>
         </div>
 
@@ -930,7 +938,7 @@ function CheckoutView({ item, onPlaceOrder }: any) {
             <div className="flex-1">
               <p className="text-sm text-white">⏱️ Estimated delivery: <span className="font-bold">~32 minutes</span></p>
               <p className="text-xs text-white/60 mt-1">Kitchen is busy</p>
-              <span className="inline-block mt-2 text-xs border border-gold text-gold px-2 py-0.5 rounded-full">AI Predicted</span>
+              <span className="inline-block mt-2 text-xs border border-navy text-navy px-2 py-0.5 rounded-full">AI Predicted</span>
             </div>
           </div>
         </div>
@@ -945,14 +953,14 @@ function CheckoutView({ item, onPlaceOrder }: any) {
             <span className="text-white">$2</span>
           </div>
           <div className="flex justify-between text-xl font-bold pt-2 border-t border-white/10">
-            <span className="text-gold">Total</span>
-            <span className="text-gold">${item.price + 2}</span>
+            <span className="text-navy">Total</span>
+            <span className="text-navy">${item.price + 2}</span>
           </div>
         </div>
 
         <button
           onClick={handlePlaceOrder}
-          className="w-full h-14 bg-gradient-to-r from-gold-light to-gold text-white rounded-full font-semibold text-lg flex items-center justify-center gap-2 hover:scale-105 transition-transform shadow-2xl"
+          className="w-full h-14 bg-gradient-to-r from-navy to-navy-dark text-white rounded-full font-semibold text-lg flex items-center justify-center gap-2 hover:scale-105 transition-transform shadow-2xl"
         >
           Place Order
           <ArrowRight className="w-5 h-5" />
@@ -965,7 +973,7 @@ function CheckoutView({ item, onPlaceOrder }: any) {
 function TypingIndicator() {
   return (
     <div className="flex justify-start">
-      <div className="bg-gradient-to-br from-gold-light to-gold px-4 py-3 rounded-2xl rounded-bl-md">
+      <div className="bg-gradient-to-br from-navy to-navy-dark px-4 py-3 rounded-2xl rounded-bl-md">
         <div className="flex gap-1">
           {[0, 1, 2].map((i) => (
             <motion.div
@@ -983,9 +991,9 @@ function TypingIndicator() {
 
 function ActionButton({ icon: Icon, label, badge, highlight, onClick }: any) {
   return (
-    <button onClick={onClick} className={`relative aspect-square p-2 rounded-2xl border flex flex-col items-center justify-center gap-1 transition-all backdrop-blur-xl shadow-lg ${highlight ? 'bg-gold/20 border-gold shadow-[0_0_30px_rgba(189,155,48,0.4)]' : 'bg-white/10 border-white/20 hover:bg-white/15 hover:border-gold hover:shadow-xl hover:-translate-y-1'}`}>
+    <button onClick={onClick} className={`relative aspect-square p-2 rounded-2xl border flex flex-col items-center justify-center gap-1 transition-all backdrop-blur-xl shadow-lg ${highlight ? 'bg-navy/20 border-navy shadow-[0_0_30px_rgba(189,155,48,0.4)]' : 'bg-white/10 border-white/20 hover:bg-white/15 hover:border-navy hover:shadow-xl hover:-translate-y-1'}`}>
       {badge && <div className="absolute top-1 right-1 w-2 h-2 bg-green-400 rounded-full shadow-lg" />}
-      <Icon className="w-5 h-5 text-gold" />
+      <Icon className="w-5 h-5 text-navy" />
       <span className="text-[10px] text-navy text-center leading-tight font-medium">{label}</span>
     </button>
   )

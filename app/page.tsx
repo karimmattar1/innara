@@ -34,6 +34,7 @@ export default function LandingPage() {
   const dashboardIframeRef = useRef<HTMLIFrameElement>(null)
   const demoSectionRef = useRef<HTMLDivElement>(null)
   const [demoStarted, setDemoStarted] = useState(false)
+  const [clickIndicators, setClickIndicators] = useState<{id: number, x: number, y: number, target: 'guest' | 'dashboard'}[]>([])
 
   const handleWaitlistSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -56,6 +57,15 @@ export default function LandingPage() {
       const { type, action, request } = event.data
 
       if (type === 'DEMO_EVENT') {
+        // Show click indicator on dashboard when guest triggers actions
+        if (action === 'HOUSEKEEPING_REQUESTED' || action === 'FOOD_ORDERED') {
+          const id = Date.now()
+          setClickIndicators(prev => [...prev, { id, x: 50, y: 30, target: 'dashboard' }])
+          setTimeout(() => {
+            setClickIndicators(prev => prev.filter(ind => ind.id !== id))
+          }, 800)
+        }
+
         // Forward events to dashboard
         if (action === 'HOUSEKEEPING_REQUESTED') {
           setTimeout(() => {
@@ -456,6 +466,30 @@ export default function LandingPage() {
                           className="w-full h-full border-0"
                           title="Guest App Preview"
                         />
+                        {/* Click indicators for guest */}
+                        <AnimatePresence>
+                          {clickIndicators.filter(ind => ind.target === 'guest').map((indicator) => (
+                            <motion.div
+                              key={indicator.id}
+                              initial={{ scale: 0, opacity: 1 }}
+                              animate={{ scale: 2, opacity: 0 }}
+                              exit={{ opacity: 0 }}
+                              transition={{ duration: 0.8 }}
+                              className="absolute pointer-events-none"
+                              style={{
+                                left: `${indicator.x}%`,
+                                top: `${indicator.y}%`,
+                                width: '40px',
+                                height: '40px',
+                                marginLeft: '-20px',
+                                marginTop: '-20px',
+                                borderRadius: '50%',
+                                border: '3px solid rgba(29, 27, 56, 0.6)',
+                                background: 'radial-gradient(circle, rgba(29, 27, 56, 0.3) 0%, transparent 70%)'
+                              }}
+                            />
+                          ))}
+                        </AnimatePresence>
                       </div>
 
                       {/* Home Indicator */}
@@ -514,6 +548,30 @@ export default function LandingPage() {
                           className="w-full h-full border-0"
                           title="Dashboard Preview"
                         />
+                        {/* Click indicators for dashboard */}
+                        <AnimatePresence>
+                          {clickIndicators.filter(ind => ind.target === 'dashboard').map((indicator) => (
+                            <motion.div
+                              key={indicator.id}
+                              initial={{ scale: 0, opacity: 1 }}
+                              animate={{ scale: 2.5, opacity: 0 }}
+                              exit={{ opacity: 0 }}
+                              transition={{ duration: 0.8 }}
+                              className="absolute pointer-events-none"
+                              style={{
+                                left: `${indicator.x}%`,
+                                top: `${indicator.y}%`,
+                                width: '60px',
+                                height: '60px',
+                                marginLeft: '-30px',
+                                marginTop: '-30px',
+                                borderRadius: '50%',
+                                border: '4px solid rgba(29, 27, 56, 0.6)',
+                                background: 'radial-gradient(circle, rgba(29, 27, 56, 0.3) 0%, transparent 70%)'
+                              }}
+                            />
+                          ))}
+                        </AnimatePresence>
                       </div>
                     </div>
 

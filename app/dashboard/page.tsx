@@ -183,9 +183,9 @@ function DashboardContent() {
   return (
     <div className="relative overflow-hidden" style={isEmbed ? {
       width: '1440px',
-      height: '1070px',
+      height: '1069px',
       transformOrigin: 'top left',
-      transform: 'scale(0.608)',
+      transform: 'scale(0.6083, 0.608)',
     } : {
       minHeight: '100vh'
     }}>
