@@ -29,6 +29,12 @@ export default function LandingPage() {
   const [submitted, setSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  // Demo orchestration
+  const guestIframeRef = useRef<HTMLIFrameElement>(null)
+  const dashboardIframeRef = useRef<HTMLIFrameElement>(null)
+  const demoSectionRef = useRef<HTMLDivElement>(null)
+  const [demoStarted, setDemoStarted] = useState(false)
+
   const handleWaitlistSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
@@ -40,6 +46,93 @@ export default function LandingPage() {
       setEmail('')
     }, 3000)
   }
+
+  // Listen for messages from guest app
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      // Security: verify origin
+      if (event.origin !== window.location.origin) return
+
+      const { type, action, request } = event.data
+
+      if (type === 'DEMO_EVENT') {
+        // Forward events to dashboard
+        if (action === 'HOUSEKEEPING_REQUESTED') {
+          setTimeout(() => {
+            dashboardIframeRef.current?.contentWindow?.postMessage({
+              type: 'ADD_REQUEST',
+              request: {
+                id: Date.now(),
+                guest: 'Sarah Ahmed',
+                room: '1204',
+                item: 'Room Cleaning',
+                status: 'pending',
+                time: 'Just now',
+                staff: 'James',
+                staffInitials: 'JM',
+                isNew: true,
+                estimate: '~18 min'
+              }
+            }, window.location.origin)
+          }, 500)
+        } else if (action === 'FOOD_ORDERED') {
+          setTimeout(() => {
+            dashboardIframeRef.current?.contentWindow?.postMessage({
+              type: 'ADD_REQUEST',
+              request: {
+                id: Date.now() + 1,
+                guest: 'Sarah Ahmed',
+                room: '1204',
+                item: 'Caesar Salad',
+                status: 'pending',
+                time: 'Just now',
+                staff: 'Olivia',
+                staffInitials: 'OC',
+                isNew: true,
+                estimate: '~32 min'
+              }
+            }, window.location.origin)
+          }, 500)
+        } else if (action === 'VIEWING_REQUESTS') {
+          // Switch dashboard to analytics after a delay
+          setTimeout(() => {
+            dashboardIframeRef.current?.contentWindow?.postMessage({
+              type: 'SWITCH_VIEW',
+              view: 'analytics'
+            }, window.location.origin)
+          }, 2000)
+        }
+      }
+    }
+
+    window.addEventListener('message', handleMessage)
+    return () => window.removeEventListener('message', handleMessage)
+  }, [])
+
+  // Intersection Observer to start demo when section is visible
+  useEffect(() => {
+    if (!demoSectionRef.current) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !demoStarted) {
+            setDemoStarted(true)
+            // Start the demo after a short delay
+            setTimeout(() => {
+              guestIframeRef.current?.contentWindow?.postMessage({
+                type: 'START_DEMO'
+              }, window.location.origin)
+            }, 500)
+          }
+        })
+      },
+      { threshold: 0.3 } // Trigger when 30% visible
+    )
+
+    observer.observe(demoSectionRef.current)
+    return () => observer.disconnect()
+  }, [demoStarted])
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -313,7 +406,7 @@ export default function LandingPage() {
         </section>
 
         {/* Product Showcase */}
-        <section id="product" className="py-20 px-6">
+        <section ref={demoSectionRef} id="product" className="py-20 px-6">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0 }}
@@ -349,15 +442,16 @@ export default function LandingPage() {
                   </div>
 
                   {/* Phone Mockup */}
-                  <div className="relative mx-auto mb-6" style={{ width: '340px' }}>
+                  <div className="relative mx-auto mb-6" style={{ width: '390px' }}>
                     {/* Phone Frame */}
                     <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-[3rem] p-3 shadow-2xl">
                       {/* Notch */}
                       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-7 bg-gray-900 rounded-b-3xl z-10"></div>
 
                       {/* Screen */}
-                      <div className="relative bg-white rounded-[2.5rem] overflow-hidden" style={{ height: '680px' }}>
+                      <div className="relative bg-white rounded-[2.5rem] overflow-hidden" style={{ height: '780px' }}>
                         <iframe
+                          ref={guestIframeRef}
                           src="/guest?embed=true"
                           className="w-full h-full border-0"
                           title="Guest App Preview"
@@ -408,13 +502,14 @@ export default function LandingPage() {
                   {/* Laptop Mockup */}
                   <div className="relative mb-6">
                     {/* Laptop Screen */}
-                    <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-t-2xl p-3 shadow-2xl">
+                    <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-t-2xl p-3 shadow-2xl" style={{ width: '900px' }}>
                       {/* Webcam */}
                       <div className="absolute top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-700 rounded-full z-10"></div>
 
                       {/* Screen */}
-                      <div className="relative bg-white rounded-lg overflow-hidden" style={{ height: '500px' }}>
+                      <div className="relative bg-white rounded-lg overflow-hidden" style={{ height: '650px' }}>
                         <iframe
+                          ref={dashboardIframeRef}
                           src="/dashboard?embed=true"
                           className="w-full h-full border-0"
                           title="Dashboard Preview"

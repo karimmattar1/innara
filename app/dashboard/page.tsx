@@ -114,69 +114,81 @@ function DashboardContent() {
     }, 1000)
   }, [])
 
+  // Listen for messages from parent (orchestrated demo)
   useEffect(() => {
-    const timer1 = setTimeout(() => {
-      setRequests(prev => [{
-        id: 6,
-        guest: 'Sarah Ahmed',
-        room: '1204',
-        item: 'Room Cleaning',
-        status: 'pending',
-        time: 'Just now',
-        staff: 'James',
-        staffInitials: 'JM',
-        isNew: true,
-        estimate: '~18 min'
-      }, ...prev])
+    const handleMessage = (event: MessageEvent) => {
+      // Security: verify origin
+      if (event.origin !== window.location.origin) return
 
-      setStats(prev => ({
-        ...prev,
-        total: 43,
-        housekeeping: 15
-      }))
+      const { type, request, view } = event.data
 
-      setActivities(prev => [{
-        id: 'a2',
-        text: 'Room 1204 • Housekeeping requested',
-        time: 'Just now'
-      }, ...prev])
-    }, 3000)
+      if (type === 'ADD_REQUEST') {
+        // Add the request to the list
+        setRequests(prev => [request, ...prev])
 
-    const timer2 = setTimeout(() => {
-      setRequests(prev => [{
-        id: 7,
-        guest: 'Sarah Ahmed',
-        room: '1204',
-        item: 'Caesar Salad',
-        status: 'pending',
-        time: 'Just now',
-        staff: 'Olivia',
-        staffInitials: 'OC',
-        isNew: true,
-        estimate: '~32 min'
-      }, ...prev])
-
-      setStats(prev => ({
-        ...prev,
-        total: 44,
-        roomService: 10
-      }))
-
-      setActivities(prev => [{
-        id: 'a1',
-        text: 'Room 1204 • Caesar Salad ordered',
-        time: 'Just now'
-      }, ...prev])
-    }, 5500)
-
-    return () => {
-      clearTimeout(timer1)
-      clearTimeout(timer2)
+        // Update stats based on request type
+        if (request.item.toLowerCase().includes('cleaning') || request.item.toLowerCase().includes('housekeeping')) {
+          setStats(prev => ({
+            ...prev,
+            total: prev.total + 1,
+            housekeeping: prev.housekeeping + 1
+          }))
+          setActivities(prev => [{
+            id: `a-${Date.now()}`,
+            text: `Room ${request.room} • Housekeeping requested`,
+            time: 'Just now'
+          }, ...prev])
+        } else if (request.item.toLowerCase().includes('salad') || request.item.toLowerCase().includes('pizza') || request.item.toLowerCase().includes('food')) {
+          setStats(prev => ({
+            ...prev,
+            total: prev.total + 1,
+            roomService: prev.roomService + 1
+          }))
+          setActivities(prev => [{
+            id: `a-${Date.now()}`,
+            text: `Room ${request.room} • ${request.item} ordered`,
+            time: 'Just now'
+          }, ...prev])
+        } else {
+          setStats(prev => ({
+            ...prev,
+            total: prev.total + 1
+          }))
+          setActivities(prev => [{
+            id: `a-${Date.now()}`,
+            text: `Room ${request.room} • ${request.item}`,
+            time: 'Just now'
+          }, ...prev])
+        }
+      } else if (type === 'SWITCH_VIEW') {
+        setActiveView(view)
+      } else if (type === 'RESET_DEMO') {
+        setRequests(initialRequests)
+        setStats({
+          total: 42,
+          housekeeping: 14,
+          roomService: 9,
+          valet: 7,
+        })
+        setActivities([
+          { id: 'a3', text: 'Room 420 • Pizza delivered', time: '5 min ago' },
+          { id: 'a4', text: 'Room 305 • Towels delivered', time: '12 min ago' },
+        ])
+        setActiveView('dashboard')
+      }
     }
+
+    window.addEventListener('message', handleMessage)
+    return () => window.removeEventListener('message', handleMessage)
   }, [])
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden" style={isEmbed ? {
+      width: '1440px',
+      height: '900px',
+      transformOrigin: 'top left',
+      transform: 'scale(0.625)',
+    } : undefined}>
 
       {/* Light background with flowing dark blue smoke */}
       <div className="fixed inset-0 bg-gradient-to-br from-gray-50 via-gray-100 to-white">

@@ -13,8 +13,99 @@ function GuestAppContent() {
   const [view, setView] = useState<'concierge' | 'explore' | 'requests' | 'profile' | 'room-service' | 'spa' | 'laundry' | 'valet' | 'checkout'>('concierge')
   const [step, setStep] = useState(0)
   const [cartItems, setCartItems] = useState<any[]>([])
+  const [demoMode, setDemoMode] = useState(false)
 
   const nextStep = () => setStep(s => s + 1)
+
+  // Auto-demo sequence
+  useEffect(() => {
+    if (!demoMode || !isEmbed) return
+
+    const sequence = async () => {
+      // Step 1: Start conversation (auto-advance to step 1 - user message)
+      await new Promise(resolve => setTimeout(resolve, 800))
+      setStep(1)
+
+      // Step 2: Show typing indicator (auto-advance to step 2)
+      await new Promise(resolve => setTimeout(resolve, 800))
+      setStep(2)
+
+      // Step 3 will auto-advance via existing useEffect in ConciergeView after 1200ms
+      // Step 4: Auto-click "Now" button - this happens at step 3, give it time to render
+      await new Promise(resolve => setTimeout(resolve, 2500))
+      setStep(4) // Confirmation shown
+
+      // Notify parent: housekeeping requested
+      await new Promise(resolve => setTimeout(resolve, 500))
+      window.parent.postMessage({
+        type: 'DEMO_EVENT',
+        action: 'HOUSEKEEPING_REQUESTED'
+      }, window.location.origin)
+
+      // Step 5: Navigate to room service after showing confirmation
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      setView('room-service')
+
+      // Step 6: Auto-add Caesar Salad to cart
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      setCartItems([{
+        name: 'Caesar Salad',
+        price: 12,
+        description: 'Romaine, croutons, parmesan'
+      }])
+
+      // Step 7: Go to checkout
+      await new Promise(resolve => setTimeout(resolve, 800))
+      setView('checkout')
+
+      // Notify parent: food ordered
+      await new Promise(resolve => setTimeout(resolve, 500))
+      window.parent.postMessage({
+        type: 'DEMO_EVENT',
+        action: 'FOOD_ORDERED'
+      }, window.location.origin)
+
+      // Step 8: Show order confirmation, then go back to concierge
+      await new Promise(resolve => setTimeout(resolve, 3000))
+      setView('concierge')
+      setStep(4) // Stay at confirmation step
+
+      // Step 9: Navigate to requests view
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      setView('requests')
+
+      // Notify parent: viewing requests
+      await new Promise(resolve => setTimeout(resolve, 500))
+      window.parent.postMessage({
+        type: 'DEMO_EVENT',
+        action: 'VIEWING_REQUESTS'
+      }, window.location.origin)
+    }
+
+    sequence()
+  }, [demoMode, isEmbed])
+
+  // Listen for messages from parent
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      // Security: verify origin
+      if (event.origin !== window.location.origin) return
+
+      const { type } = event.data
+
+      if (type === 'START_DEMO') {
+        setDemoMode(true)
+      } else if (type === 'RESET_DEMO') {
+        setDemoMode(false)
+        setView('concierge')
+        setStep(0)
+        setCartItems([])
+      }
+    }
+
+    window.addEventListener('message', handleMessage)
+    return () => window.removeEventListener('message', handleMessage)
+  }, [])
 
   // Check for embed parameter using window.location for better iframe compatibility
   useEffect(() => {
@@ -89,7 +180,12 @@ function GuestAppContent() {
 
   // Render just the app content without phone frame when embedded
   const AppContent = () => (
-    <div data-app-container className="relative w-full h-full overflow-hidden">
+    <div data-app-container className="relative w-full h-full overflow-hidden" style={isEmbed ? {
+      width: '375px',
+      height: '812px',
+      transformOrigin: 'top left',
+      transform: 'scale(0.96)',
+    } : undefined}>
               {/* Light background with flowing dark blue smoke */}
               <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-gray-100 to-white">
         <div className="absolute inset-0">
