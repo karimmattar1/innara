@@ -15,6 +15,7 @@ function GuestAppContent() {
   const [cartItems, setCartItems] = useState<any[]>([])
   const [demoMode, setDemoMode] = useState(false)
   const [selectedTime, setSelectedTime] = useState('')
+  const [typingText, setTypingText] = useState('')
 
   const nextStep = () => setStep(s => s + 1)
 
@@ -27,6 +28,29 @@ function GuestAppContent() {
       await new Promise(resolve => setTimeout(resolve, 1500))
 
       // Show click on chat input
+      const container = document.querySelector('[data-app-container]')
+      if (container) {
+        const containerRect = container.getBoundingClientRect()
+        console.log('=== CONTAINER DIMENSIONS ===')
+        console.log('Width:', containerRect.width, 'Height:', containerRect.height)
+        console.log('Scale:', 0.667)
+        console.log('Actual display width:', containerRect.width * 0.667)
+        console.log('Actual display height:', containerRect.height * 0.667)
+
+        const input = document.querySelector('input[type="text"]')
+        if (input) {
+          const inputRect = input.getBoundingClientRect()
+          const inputCenterX = inputRect.left + inputRect.width / 2
+          const inputCenterY = inputRect.top + inputRect.height / 2
+          const percentX = (inputCenterX / containerRect.width) * 100
+          const percentY = (inputCenterY / containerRect.height) * 100
+          console.log('=== INPUT FIELD ===')
+          console.log('Position:', { left: inputRect.left, top: inputRect.top })
+          console.log('Center:', { x: inputCenterX, y: inputCenterY })
+          console.log('Percentage:', { x: percentX.toFixed(2), y: percentY.toFixed(2) })
+        }
+      }
+
       window.parent.postMessage({
         type: 'DEMO_EVENT',
         action: 'CLICK_INPUT'
@@ -34,7 +58,27 @@ function GuestAppContent() {
 
       await new Promise(resolve => setTimeout(resolve, 800))
 
+      // Show typing in input field
+      setTypingText('I need my room cleaned')
+
+      await new Promise(resolve => setTimeout(resolve, 1200))
+
       // Show click on send button
+      if (container) {
+        const containerRect = container.getBoundingClientRect()
+        const sendBtn = Array.from(document.querySelectorAll('button')).find(btn => btn.querySelector('.lucide-sparkles'))
+        if (sendBtn) {
+          const btnRect = sendBtn.getBoundingClientRect()
+          const btnCenterX = btnRect.left + btnRect.width / 2
+          const btnCenterY = btnRect.top + btnRect.height / 2
+          const percentX = (btnCenterX / containerRect.width) * 100
+          const percentY = (btnCenterY / containerRect.height) * 100
+          console.log('=== SEND BUTTON ===')
+          console.log('Center:', { x: btnCenterX, y: btnCenterY })
+          console.log('Percentage:', { x: percentX.toFixed(2), y: percentY.toFixed(2) })
+        }
+      }
+
       window.parent.postMessage({
         type: 'DEMO_EVENT',
         action: 'CLICK_SEND'
@@ -42,7 +86,8 @@ function GuestAppContent() {
 
       await new Promise(resolve => setTimeout(resolve, 600))
 
-      // Step 1: Show user message
+      // Clear typing text and show message
+      setTypingText('')
       setStep(1)
 
       // Step 2: Show typing indicator (1.5s)
@@ -324,14 +369,13 @@ function GuestAppContent() {
       transformOrigin: 'top left',
       transform: 'scale(0.667)',
       overflow: 'hidden',
-      paddingTop: '20px',
     } : {
       width: '100%',
       height: '100%',
       overflow: 'hidden'
     }}>
               {/* Light background with flowing dark blue smoke */}
-              <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-gray-100 to-white">
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-gray-100 to-white" style={isEmbed ? { top: '20px' } : {}}>
         <div className="absolute inset-0">
           {/* Dark blue smoke clouds - very subtle */}
           <motion.div
@@ -401,7 +445,7 @@ function GuestAppContent() {
               </div>
 
               {/* Content */}
-              <div className="relative z-10 h-full flex flex-col">
+              <div className="relative z-10 h-full flex flex-col" style={isEmbed ? { paddingTop: '20px' } : {}}>
                 {/* Top Bar - Transparent & Blurred - Always show */}
                 <div className="flex-shrink-0 h-16 backdrop-blur-2xl bg-white/20 border-b border-white/20 px-4 flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -424,6 +468,7 @@ function GuestAppContent() {
                       step={step}
                       nextStep={nextStep}
                       selectedTime={selectedTime}
+                      typingText={typingText}
                       onTimeSelect={(time: string) => {
                         setSelectedTime(time)
                         nextStep()
@@ -521,7 +566,7 @@ export default function GuestApp() {
   )
 }
 
-function ConciergeView({ step, nextStep, selectedTime, onTimeSelect, onServiceClick, onNavClick, isEmbed }: any) {
+function ConciergeView({ step, nextStep, selectedTime, typingText, onTimeSelect, onServiceClick, onNavClick, isEmbed }: any) {
   // Auto-advance from step 2 (typing) to step 3 (AI response)
   useEffect(() => {
     if (step === 2) {
@@ -675,6 +720,8 @@ function ConciergeView({ step, nextStep, selectedTime, onTimeSelect, onServiceCl
         <div className="relative">
           <input
             type="text"
+            value={typingText}
+            readOnly
             placeholder="What do you need today?"
             onClick={() => step === 0 && nextStep()}
             className="w-full h-11 pl-4 pr-12 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-sm text-navy placeholder:text-navy/50 focus:outline-none focus:border-navy focus:bg-white/30 transition-all shadow-lg"
