@@ -560,6 +560,7 @@ export default function LandingPage() {
                           src="/guest?embed=true"
                           className="w-full h-full border-0"
                           title="Guest App Preview"
+                          style={{ pointerEvents: demoStarted ? 'none' : 'auto' }}
                         />
                         {/* Click indicators for guest */}
                         <AnimatePresence>
@@ -642,6 +643,7 @@ export default function LandingPage() {
                           src="/dashboard?embed=true"
                           className="w-full h-full border-0"
                           title="Dashboard Preview"
+                          style={{ pointerEvents: demoStarted ? 'none' : 'auto' }}
                         />
                         {/* Click indicators for dashboard */}
                         <AnimatePresence>

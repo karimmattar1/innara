@@ -584,7 +584,7 @@ function GuestAppContent() {
               </div>
 
               {/* Content */}
-              <div className="relative z-10 h-full flex flex-col" style={isEmbed ? { paddingTop: '20px' } : {}}>
+              <div className="relative z-10 h-full flex flex-col">
                 {/* Top Bar - Transparent & Blurred - Always show */}
                 <div className="flex-shrink-0 h-16 backdrop-blur-2xl bg-white/20 border-b border-white/20 px-4 flex items-center justify-between">
                   <div className="flex items-center gap-2">
