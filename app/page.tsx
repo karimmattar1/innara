@@ -291,14 +291,13 @@ export default function LandingPage() {
         >
           <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Image src="/logo.png" alt="Innara" width={48} height={48} className="rounded-full" />
-              <span className="text-3xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>Innara</span>
+              <Image src="/logo.png" alt="INNARA" width={48} height={48} className="rounded-full" />
+              <span className="text-3xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INNARA</span>
             </div>
 
             <div className="hidden md:flex items-center gap-8">
-              <a href="#product" className="text-navy/70 hover:text-navy transition-colors font-medium">Product</a>
-              <a href="#metrics" className="text-navy/70 hover:text-navy transition-colors font-medium">Metrics</a>
               <a href="#demo" className="text-navy/70 hover:text-navy transition-colors font-medium">Demo</a>
+              <a href="#metrics" className="text-navy/70 hover:text-navy transition-colors font-medium">Metrics</a>
               <motion.a
                 href="#waitlist"
                 whileHover={{ scale: 1.05 }}
@@ -498,7 +497,7 @@ export default function LandingPage() {
         </section>
 
         {/* Product Showcase */}
-        <section ref={demoSectionRef} id="product" className="py-20 px-6">
+        <section ref={demoSectionRef} id="demo" className="py-20 px-6">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0 }}
@@ -684,54 +683,6 @@ export default function LandingPage() {
                 </div>
               </motion.div>
             </div>
-          </div>
-        </section>
-
-        {/* Live Demo Section */}
-        <section id="demo" className="py-20 px-6">
-          <div className="max-w-5xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="backdrop-blur-xl bg-gradient-to-br from-navy/90 to-navy-dark/90 border border-white/20 rounded-3xl p-12 shadow-2xl text-center"
-            >
-              <Sparkles className="w-16 h-16 text-gold mx-auto mb-6" />
-              <h2 className="text-4xl md:text-5xl font-light text-white mb-6" style={{ fontFamily: 'Georgia, serif' }}>
-                Experience Innara <span className="italic">Live</span>
-              </h2>
-              <p className="text-xl text-white/70 mb-10 max-w-2xl mx-auto">
-                See how Innara transforms the guest experience in real-time
-              </p>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                <motion.div whileHover={{ scale: 1.05, y: -5 }} className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-8">
-                  <MessageSquare className="w-12 h-12 text-gold mb-4" />
-                  <h3 className="text-xl font-semibold text-white mb-3">Guest App</h3>
-                  <p className="text-white/70 text-sm mb-6">Experience AI chat, room service, and more</p>
-                  <Link
-                    href="/guest"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-white text-navy rounded-full font-semibold hover:bg-white/90 transition-all"
-                  >
-                    Try Guest App
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </motion.div>
-
-                <motion.div whileHover={{ scale: 1.05, y: -5 }} className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-8">
-                  <BarChart3 className="w-12 h-12 text-gold mb-4" />
-                  <h3 className="text-xl font-semibold text-white mb-3">Staff Dashboard</h3>
-                  <p className="text-white/70 text-sm mb-6">See real-time analytics and insights</p>
-                  <Link
-                    href="/dashboard"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-white text-navy rounded-full font-semibold hover:bg-white/90 transition-all"
-                  >
-                    Try Dashboard
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </motion.div>
-              </div>
-            </motion.div>
           </div>
         </section>
 
