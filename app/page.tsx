@@ -58,15 +58,27 @@ export default function LandingPage() {
 
       if (type === 'DEMO_EVENT') {
         // Handle click indicators for guest app
-        if (action === 'CLICK_ROOM_SERVICE') {
+        if (action === 'CLICK_TIME_BUTTON') {
           const id = Date.now()
-          setClickIndicators(prev => [...prev, { id, x: 25, y: 55, target: 'guest' }])
+          setClickIndicators(prev => [...prev, { id, x: 50, y: 52, target: 'guest' }])
           setTimeout(() => {
             setClickIndicators(prev => prev.filter(ind => ind.id !== id))
           }, 1500)
-        } else if (action === 'CLICK_SALAD') {
+        } else if (action === 'CLICK_EXPLORE_TAB') {
           const id = Date.now()
-          setClickIndicators(prev => [...prev, { id, x: 50, y: 45, target: 'guest' }])
+          setClickIndicators(prev => [...prev, { id, x: 42, y: 96, target: 'guest' }])
+          setTimeout(() => {
+            setClickIndicators(prev => prev.filter(ind => ind.id !== id))
+          }, 1500)
+        } else if (action === 'CLICK_ROOM_SERVICE_TILE') {
+          const id = Date.now()
+          setClickIndicators(prev => [...prev, { id, x: 25, y: 35, target: 'guest' }])
+          setTimeout(() => {
+            setClickIndicators(prev => prev.filter(ind => ind.id !== id))
+          }, 1500)
+        } else if (action === 'CLICK_ADD_SALAD') {
+          const id = Date.now()
+          setClickIndicators(prev => [...prev, { id, x: 88, y: 30, target: 'guest' }])
           setTimeout(() => {
             setClickIndicators(prev => prev.filter(ind => ind.id !== id))
           }, 1500)
@@ -131,7 +143,7 @@ export default function LandingPage() {
           // Show click indicator on Analytics tab first
           setTimeout(() => {
             const id = Date.now()
-            setClickIndicators(prev => [...prev, { id, x: 85, y: 12, target: 'dashboard' }])
+            setClickIndicators(prev => [...prev, { id, x: 60, y: 8, target: 'dashboard' }])
             setTimeout(() => {
               setClickIndicators(prev => prev.filter(ind => ind.id !== id))
             }, 1500)
@@ -529,7 +541,7 @@ export default function LandingPage() {
                       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-5 bg-gray-900 rounded-b-3xl z-10"></div>
 
                       {/* Screen */}
-                      <div className="relative bg-white rounded-[2.5rem] overflow-hidden" style={{ height: '542px' }}>
+                      <div className="relative bg-white rounded-[2.5rem] overflow-hidden" style={{ height: '580px' }}>
                         <iframe
                           ref={guestIframeRef}
                           src="/guest?embed=true"

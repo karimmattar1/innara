@@ -7,8 +7,8 @@ import { ClipboardList, Home, UtensilsCrossed, Car, Bell, SlidersHorizontal, Spa
 import Image from 'next/image'
 
 const initialRequests = [
-  { id: 1, guest: 'Benjamin Turner', room: '305', item: 'Towels', status: 'in_progress', time: '10 min. ago', staff: 'James', staffInitials: 'JM' },
-  { id: 2, guest: 'Emma Johnson', room: '420', item: 'Margherita Pizza', status: 'pending', time: '20 min. ago', staff: 'Olivia', staffInitials: 'OC' },
+  { id: 1, guest: 'Benjamin Turner', room: '305', item: 'Towels', status: 'completed', time: '10 min. ago', staff: 'James', staffInitials: 'JM' },
+  { id: 2, guest: 'Emma Johnson', room: '420', item: 'Margherita Pizza', status: 'completed', time: '20 min. ago', staff: 'Olivia', staffInitials: 'OC' },
   { id: 3, guest: 'William Harris', room: '512', item: 'Car Retrieval', status: 'pending', time: '30 min. ago', staff: 'Ahmed', staffInitials: 'AA' },
   { id: 4, guest: 'Olivia Martinez', room: '203', item: 'Room Cleaning', status: 'pending', time: '30 min. ago', staff: 'Michael', staffInitials: 'MB' },
   { id: 5, guest: 'Michael Brown', room: '210', item: 'Extra Pillows', status: 'in_progress', time: '45 min. ago', staff: 'Sarah', staffInitials: 'SJ' },

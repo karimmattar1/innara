@@ -23,67 +23,84 @@ function GuestAppContent() {
     if (!demoMode || !isEmbed) return
 
     const sequence = async () => {
-      // Step 1: User clicks chat input (2s delay)
-      await new Promise(resolve => setTimeout(resolve, 2500))
+      // Step 1: User clicks chat input (1.5s delay)
+      await new Promise(resolve => setTimeout(resolve, 1500))
       setStep(1)
 
-      // Step 2: Show typing indicator (2.5s)
-      await new Promise(resolve => setTimeout(resolve, 2500))
+      // Step 2: Show typing indicator (1.5s)
+      await new Promise(resolve => setTimeout(resolve, 1500))
       setStep(2)
 
       // Step 3 will auto-advance via existing useEffect in ConciergeView after 1200ms
-      // Step 4: Wait for AI response with time options (3s total)
-      await new Promise(resolve => setTimeout(resolve, 3000))
+      // Step 4: Wait for AI response with time options (1.8s total)
+      await new Promise(resolve => setTimeout(resolve, 1800))
       setStep(3)
 
-      // Step 5: User selects time (show as message) (3s delay)
-      await new Promise(resolve => setTimeout(resolve, 3000))
+      // Step 5: User selects time (show as message) (1.8s delay)
+      await new Promise(resolve => setTimeout(resolve, 1800))
+      // Show click indicator for time button
+      window.parent.postMessage({
+        type: 'DEMO_EVENT',
+        action: 'CLICK_TIME_BUTTON'
+      }, window.location.origin)
+
+      await new Promise(resolve => setTimeout(resolve, 800))
       setSelectedTime('In 30 min')
       setStep(4)
 
-      // Step 6: AI confirmation (2.5s delay)
-      await new Promise(resolve => setTimeout(resolve, 2500))
+      // Step 6: AI confirmation (1.5s delay)
+      await new Promise(resolve => setTimeout(resolve, 1500))
       setStep(5)
 
-      // Notify parent: housekeeping requested (1.5s delay for dashboard animation)
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      // Notify parent: housekeeping requested (1s delay for dashboard animation)
+      await new Promise(resolve => setTimeout(resolve, 1000))
       window.parent.postMessage({
         type: 'DEMO_EVENT',
         action: 'HOUSEKEEPING_REQUESTED'
       }, window.location.origin)
 
-      // Step 7: Show click indicator for Room Service tile, then navigate (4s)
-      await new Promise(resolve => setTimeout(resolve, 4500))
+      // Navigate to Explore view
+      await new Promise(resolve => setTimeout(resolve, 2500))
       window.parent.postMessage({
         type: 'DEMO_EVENT',
-        action: 'CLICK_ROOM_SERVICE'
+        action: 'CLICK_EXPLORE_TAB'
+      }, window.location.origin)
+
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      setView('explore')
+
+      // Show click indicator for Room Service tile, then navigate
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      window.parent.postMessage({
+        type: 'DEMO_EVENT',
+        action: 'CLICK_ROOM_SERVICE_TILE'
       }, window.location.origin)
 
       await new Promise(resolve => setTimeout(resolve, 1500))
       setView('room-service')
 
-      // Step 6: Show click indicator for Caesar Salad, then add to cart (5s)
-      await new Promise(resolve => setTimeout(resolve, 5000))
+      // Show click indicator for + button on Caesar Salad
+      await new Promise(resolve => setTimeout(resolve, 2500))
       window.parent.postMessage({
         type: 'DEMO_EVENT',
-        action: 'CLICK_SALAD'
+        action: 'CLICK_ADD_SALAD'
       }, window.location.origin)
 
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      await new Promise(resolve => setTimeout(resolve, 1000))
       setCartItems([{
         name: 'Caesar Salad',
         price: 12,
         description: 'Romaine, croutons, parmesan'
       }])
 
-      // Step 7: Show click indicator for checkout button (3s)
-      await new Promise(resolve => setTimeout(resolve, 3000))
+      // Show click indicator for checkout button (2s)
+      await new Promise(resolve => setTimeout(resolve, 2000))
       window.parent.postMessage({
         type: 'DEMO_EVENT',
         action: 'CLICK_CHECKOUT'
       }, window.location.origin)
 
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      await new Promise(resolve => setTimeout(resolve, 1000))
       // Click the checkout button
       console.log('[DEMO] Looking for checkout button...')
       const checkoutBtn = Array.from(document.querySelectorAll('button')).find(btn =>
@@ -95,14 +112,14 @@ function GuestAppContent() {
         console.log('[DEMO] Clicked checkout button')
       }
 
-      // Step 8: Show click indicator for Pay button, then place order (5s)
-      await new Promise(resolve => setTimeout(resolve, 5000))
+      // Show click indicator for Pay button, then place order (3s)
+      await new Promise(resolve => setTimeout(resolve, 3000))
       window.parent.postMessage({
         type: 'DEMO_EVENT',
         action: 'CLICK_PAY'
       }, window.location.origin)
 
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      await new Promise(resolve => setTimeout(resolve, 1000))
       // Simulate clicking "Place Order" button
       console.log('[DEMO] Looking for Place Order button...')
       const placeOrderBtn = Array.from(document.querySelectorAll('button')).find(btn =>
@@ -121,8 +138,8 @@ function GuestAppContent() {
         action: 'FOOD_ORDERED'
       }, window.location.origin)
 
-      // Step 9: Show order confirmation toast, stay on confirmation (5s)
-      await new Promise(resolve => setTimeout(resolve, 5000))
+      // Show order confirmation toast, stay on confirmation (3s)
+      await new Promise(resolve => setTimeout(resolve, 3000))
 
       // Show "View Requests" button in confirmation (handled in CheckoutView)
       // User clicks View Requests
@@ -131,7 +148,7 @@ function GuestAppContent() {
         action: 'CLICK_VIEW_REQUESTS'
       }, window.location.origin)
 
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      await new Promise(resolve => setTimeout(resolve, 1500))
       // Click the View Requests button
       console.log('[DEMO] Looking for View Requests button...')
       const viewRequestsBtn = Array.from(document.querySelectorAll('button')).find(btn =>
@@ -144,7 +161,7 @@ function GuestAppContent() {
       }
 
       // Notify parent: viewing requests (for analytics tab click)
-      await new Promise(resolve => setTimeout(resolve, 2500))
+      await new Promise(resolve => setTimeout(resolve, 1500))
       window.parent.postMessage({
         type: 'DEMO_EVENT',
         action: 'VIEWING_REQUESTS'
@@ -1051,54 +1068,60 @@ function CheckoutView({ item, onPlaceOrder, onViewRequests }: any) {
         initial={{ y: '100%' }}
         animate={{ y: 0 }}
         transition={{ duration: 0.4 }}
-        className="backdrop-blur-2xl bg-white/10 border-t border-white/20 rounded-t-[32px] w-full p-6 shadow-2xl"
-        style={{ maxHeight: '60%' }}
+        className="backdrop-blur-2xl bg-white/10 border-t border-white/20 rounded-t-[32px] w-full shadow-2xl flex flex-col"
+        style={{ maxHeight: '70%' }}
       >
-        <div className="w-10 h-1 bg-white/30 rounded-full mx-auto mb-4" />
-        <h3 className="text-xl font-semibold mb-4 text-white">Your Order</h3>
-
-        <div className="flex gap-4 mb-4 backdrop-blur-xl bg-white/10 border border-white/10 rounded-2xl p-3 shadow-lg">
-          <img src="https://images.unsplash.com/photo-1546793665-c74683f339c1?w=100&q=80" alt={item.name} className="w-16 h-16 rounded-xl object-cover" />
-          <div className="flex-1">
-            <h4 className="font-semibold text-white">{item.name}</h4>
-            <p className="text-sm text-white/60">{item.description}</p>
-            <p className="text-navy font-semibold mt-1">${item.price}</p>
-          </div>
+        <div className="p-4 flex-shrink-0">
+          <div className="w-10 h-1 bg-white/30 rounded-full mx-auto mb-3" />
+          <h3 className="text-xl font-semibold mb-3 text-white">Your Order</h3>
         </div>
 
-        <div className="backdrop-blur-xl bg-blue-500/20 border-l-4 border-blue-400 p-3 rounded-lg mb-4 shadow-lg">
-          <div className="flex items-start gap-2">
-            <Clock className="w-4 h-4 text-blue-300 flex-shrink-0 mt-0.5" />
+        <div className="flex-1 overflow-y-auto px-4">
+          <div className="flex gap-3 mb-3 backdrop-blur-xl bg-white/10 border border-white/10 rounded-2xl p-3 shadow-lg">
+            <img src="https://images.unsplash.com/photo-1546793665-c74683f339c1?w=100&q=80" alt={item.name} className="w-14 h-14 rounded-xl object-cover" />
             <div className="flex-1">
-              <p className="text-sm text-white">⏱️ Estimated delivery: <span className="font-bold">~32 minutes</span></p>
-              <p className="text-xs text-white/60 mt-1">Kitchen is busy</p>
-              <span className="inline-block mt-2 text-xs border border-navy text-navy px-2 py-0.5 rounded-full">AI Predicted</span>
+              <h4 className="font-semibold text-white text-sm">{item.name}</h4>
+              <p className="text-xs text-white/60">{item.description}</p>
+              <p className="text-navy font-semibold mt-1 text-sm">${item.price}</p>
+            </div>
+          </div>
+
+          <div className="backdrop-blur-xl bg-blue-500/20 border-l-4 border-blue-400 p-2.5 rounded-lg mb-3 shadow-lg">
+            <div className="flex items-start gap-2">
+              <Clock className="w-4 h-4 text-blue-300 flex-shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <p className="text-xs text-white">⏱️ Estimated delivery: <span className="font-bold">~32 minutes</span></p>
+                <p className="text-xs text-white/60 mt-0.5">Kitchen is busy</p>
+                <span className="inline-block mt-1.5 text-xs border border-navy text-navy px-2 py-0.5 rounded-full">AI Predicted</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-3 mb-3 space-y-1.5 shadow-lg">
+            <div className="flex justify-between text-sm">
+              <span className="text-white/60">Subtotal</span>
+              <span className="text-white">${item.price}</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-white/60">Service fee</span>
+              <span className="text-white">$2</span>
+            </div>
+            <div className="flex justify-between text-lg font-bold pt-1.5 border-t border-white/10">
+              <span className="text-navy">Total</span>
+              <span className="text-navy">${item.price + 2}</span>
             </div>
           </div>
         </div>
 
-        <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 mb-4 space-y-2 shadow-lg">
-          <div className="flex justify-between text-sm">
-            <span className="text-white/60">Subtotal</span>
-            <span className="text-white">${item.price}</span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-white/60">Service fee</span>
-            <span className="text-white">$2</span>
-          </div>
-          <div className="flex justify-between text-xl font-bold pt-2 border-t border-white/10">
-            <span className="text-navy">Total</span>
-            <span className="text-navy">${item.price + 2}</span>
-          </div>
+        <div className="p-4 flex-shrink-0">
+          <button
+            onClick={handlePlaceOrder}
+            className="w-full h-12 bg-gradient-to-r from-navy to-navy-dark text-white rounded-full font-semibold text-base flex items-center justify-center gap-2 hover:scale-105 transition-transform shadow-2xl"
+          >
+            Place Order
+            <ArrowRight className="w-5 h-5" />
+          </button>
         </div>
-
-        <button
-          onClick={handlePlaceOrder}
-          className="w-full h-14 bg-gradient-to-r from-navy to-navy-dark text-white rounded-full font-semibold text-lg flex items-center justify-center gap-2 hover:scale-105 transition-transform shadow-2xl"
-        >
-          Place Order
-          <ArrowRight className="w-5 h-5" />
-        </button>
       </motion.div>
     </motion.div>
   )
