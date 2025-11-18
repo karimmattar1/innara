@@ -214,27 +214,23 @@ function GuestAppContent() {
       const containerForSalad = document.querySelector('[data-app-container]')
       if (containerForSalad) {
         const containerRect = containerForSalad.getBoundingClientRect()
-        // Find the FoodCard with "Caesar Salad" and its + button
-        const allButtons = Array.from(document.querySelectorAll('button'))
-        const addButton = allButtons.find(btn => {
-          const parent = btn.closest('.backdrop-blur-xl')
-          return parent?.textContent?.includes('Caesar Salad') && btn.querySelector('.lucide-plus')
-        })
-        console.log('=== CAESAR SALAD + BUTTON DEBUG ===')
-        console.log('Container found:', !!containerForSalad)
-        console.log('Button found:', !!addButton)
-        console.log('Total buttons:', allButtons.length)
-        if (addButton) {
-          const btnRect = addButton.getBoundingClientRect()
-          const btnCenterX = btnRect.left + btnRect.width / 2
-          const btnCenterY = btnRect.top + btnRect.height / 2
-          const percentX = (btnCenterX / containerRect.width) * 100
-          const percentY = (btnCenterY / containerRect.height) * 100
-          console.log('=== CAESAR SALAD + BUTTON ===')
-          console.log('Center:', { x: btnCenterX, y: btnCenterY })
-          console.log('Percentage:', { x: percentX.toFixed(2), y: percentY.toFixed(2) })
-        } else {
-          console.log('Caesar Salad button NOT FOUND - trying alternate selectors')
+        // Find all food cards (divs with backdrop-blur-xl class)
+        const foodCards = Array.from(document.querySelectorAll('.space-y-4 > .backdrop-blur-xl'))
+        const caesarCard = foodCards.find(card => card.textContent?.includes('Caesar Salad'))
+
+        if (caesarCard) {
+          // Find the round button (w-10 h-10) within this card
+          const addButton = caesarCard.querySelector('button.w-10.h-10.rounded-full')
+          if (addButton) {
+            const btnRect = addButton.getBoundingClientRect()
+            const btnCenterX = btnRect.left + btnRect.width / 2
+            const btnCenterY = btnRect.top + btnRect.height / 2
+            const percentX = (btnCenterX / containerRect.width) * 100
+            const percentY = (btnCenterY / containerRect.height) * 100
+            console.log('=== CAESAR SALAD + BUTTON ===')
+            console.log('Center:', { x: btnCenterX, y: btnCenterY })
+            console.log('Percentage:', { x: percentX.toFixed(2), y: percentY.toFixed(2) })
+          }
         }
       }
 
