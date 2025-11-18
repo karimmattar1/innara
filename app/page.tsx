@@ -279,8 +279,8 @@ export default function LandingPage() {
         >
           <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Image src="/logo.png" alt="INNARA" width={48} height={48} className="rounded-full" />
-              <span className="text-3xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INNARA</span>
+              <Image src="/logo.png" alt="Innara" width={48} height={48} className="rounded-full" />
+              <span className="text-3xl font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>Innara</span>
             </div>
 
             <div className="hidden md:flex items-center gap-8">
@@ -686,10 +686,10 @@ export default function LandingPage() {
             >
               <Sparkles className="w-16 h-16 text-gold mx-auto mb-6" />
               <h2 className="text-4xl md:text-5xl font-light text-white mb-6" style={{ fontFamily: 'Georgia, serif' }}>
-                Experience INNARA <span className="italic">Live</span>
+                Experience Innara <span className="italic">Live</span>
               </h2>
               <p className="text-xl text-white/70 mb-10 max-w-2xl mx-auto">
-                See how INNARA transforms the guest experience in real-time
+                See how Innara transforms the guest experience in real-time
               </p>
 
               <div className="grid md:grid-cols-2 gap-6">
