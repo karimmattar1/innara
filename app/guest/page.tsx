@@ -23,8 +23,26 @@ function GuestAppContent() {
     if (!demoMode || !isEmbed) return
 
     const sequence = async () => {
-      // Step 1: User clicks chat input (1.5s delay)
+      // Initial delay
       await new Promise(resolve => setTimeout(resolve, 1500))
+
+      // Show click on chat input
+      window.parent.postMessage({
+        type: 'DEMO_EVENT',
+        action: 'CLICK_INPUT'
+      }, window.location.origin)
+
+      await new Promise(resolve => setTimeout(resolve, 800))
+
+      // Show click on send button
+      window.parent.postMessage({
+        type: 'DEMO_EVENT',
+        action: 'CLICK_SEND'
+      }, window.location.origin)
+
+      await new Promise(resolve => setTimeout(resolve, 600))
+
+      // Step 1: Show user message
       setStep(1)
 
       // Step 2: Show typing indicator (1.5s)
@@ -112,11 +130,13 @@ function GuestAppContent() {
         console.log('[DEMO] Clicked checkout button')
       }
 
-      // Show click indicator for Pay button, then place order (3s)
+      // Wait for checkout modal to appear (3s)
       await new Promise(resolve => setTimeout(resolve, 3000))
+
+      // Show click indicator for Place Order button
       window.parent.postMessage({
         type: 'DEMO_EVENT',
-        action: 'CLICK_PAY'
+        action: 'CLICK_PLACE_ORDER'
       }, window.location.origin)
 
       await new Promise(resolve => setTimeout(resolve, 1000))
@@ -304,6 +324,7 @@ function GuestAppContent() {
       transformOrigin: 'top left',
       transform: 'scale(0.667)',
       overflow: 'hidden',
+      paddingTop: '20px',
     } : {
       width: '100%',
       height: '100%',
@@ -382,7 +403,7 @@ function GuestAppContent() {
               {/* Content */}
               <div className="relative z-10 h-full flex flex-col">
                 {/* Top Bar - Transparent & Blurred - Always show */}
-                <div className="flex-shrink-0 h-14 backdrop-blur-2xl bg-white/20 border-b border-white/20 px-4 flex items-center justify-between">
+                <div className="flex-shrink-0 h-16 backdrop-blur-2xl bg-white/20 border-b border-white/20 px-4 flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Image src="/logo.png" alt="INNARA" width={32} height={32} className="rounded-full" />
                     <span className="text-lg font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INNARA</span>
@@ -767,7 +788,7 @@ function ExploreView({ onServiceClick, onNavClick, isEmbed }: any) {
 function RequestsView({ onNavClick, isEmbed }: any) {
   const requests = [
     { id: 1, service: 'Housekeeping', status: 'In Progress', time: '~18 min', icon: Wrench, color: 'from-blue-400 to-cyan-500' },
-    { id: 2, service: 'Room Service', status: 'Delivered', time: 'Completed', icon: UtensilsCrossed, color: 'from-green-400 to-emerald-500' },
+    { id: 2, service: 'Room Service', status: 'Pending', time: '~32 min', icon: UtensilsCrossed, color: 'from-amber-400 to-orange-500' },
   ]
 
   return (
@@ -1177,7 +1198,7 @@ function FoodCard({ name, description, price, image, aiPick, added, onAdd }: any
         className="w-10 h-10 rounded-full backdrop-blur-xl bg-white/30 border border-white/40 flex items-center justify-center hover:scale-110 active:scale-95 transition-transform shadow-lg"
       >
         {added ? (
-          <Check className="w-5 h-5 text-navy" />
+          <span className="text-lg font-bold text-navy">1</span>
         ) : (
           <Plus className="w-5 h-5 text-navy" />
         )}

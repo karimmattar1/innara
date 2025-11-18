@@ -59,37 +59,49 @@ export default function LandingPage() {
 
       if (type === 'DEMO_EVENT') {
         // Handle click indicators for guest app
-        if (action === 'CLICK_TIME_BUTTON') {
+        if (action === 'CLICK_INPUT') {
           const id = Date.now()
-          setClickIndicators(prev => [...prev, { id, x: 50, y: 52, target: 'guest' }])
+          setClickIndicators(prev => [...prev, { id, x: 50, y: 94, target: 'guest' }])
+          setTimeout(() => {
+            setClickIndicators(prev => prev.filter(ind => ind.id !== id))
+          }, 1500)
+        } else if (action === 'CLICK_SEND') {
+          const id = Date.now()
+          setClickIndicators(prev => [...prev, { id, x: 88, y: 94, target: 'guest' }])
+          setTimeout(() => {
+            setClickIndicators(prev => prev.filter(ind => ind.id !== id))
+          }, 1500)
+        } else if (action === 'CLICK_TIME_BUTTON') {
+          const id = Date.now()
+          setClickIndicators(prev => [...prev, { id, x: 50, y: 58, target: 'guest' }])
           setTimeout(() => {
             setClickIndicators(prev => prev.filter(ind => ind.id !== id))
           }, 1500)
         } else if (action === 'CLICK_EXPLORE_TAB') {
           const id = Date.now()
-          setClickIndicators(prev => [...prev, { id, x: 42, y: 96, target: 'guest' }])
+          setClickIndicators(prev => [...prev, { id, x: 50, y: 96, target: 'guest' }])
           setTimeout(() => {
             setClickIndicators(prev => prev.filter(ind => ind.id !== id))
           }, 1500)
         } else if (action === 'CLICK_ROOM_SERVICE_TILE') {
           const id = Date.now()
-          setClickIndicators(prev => [...prev, { id, x: 25, y: 35, target: 'guest' }])
+          setClickIndicators(prev => [...prev, { id, x: 30, y: 38, target: 'guest' }])
           setTimeout(() => {
             setClickIndicators(prev => prev.filter(ind => ind.id !== id))
           }, 1500)
         } else if (action === 'CLICK_ADD_SALAD') {
           const id = Date.now()
-          setClickIndicators(prev => [...prev, { id, x: 88, y: 30, target: 'guest' }])
+          setClickIndicators(prev => [...prev, { id, x: 90, y: 35, target: 'guest' }])
           setTimeout(() => {
             setClickIndicators(prev => prev.filter(ind => ind.id !== id))
           }, 1500)
         } else if (action === 'CLICK_CHECKOUT') {
           const id = Date.now()
-          setClickIndicators(prev => [...prev, { id, x: 85, y: 90, target: 'guest' }])
+          setClickIndicators(prev => [...prev, { id, x: 50, y: 96, target: 'guest' }])
           setTimeout(() => {
             setClickIndicators(prev => prev.filter(ind => ind.id !== id))
           }, 1500)
-        } else if (action === 'CLICK_PAY') {
+        } else if (action === 'CLICK_PLACE_ORDER') {
           const id = Date.now()
           setClickIndicators(prev => [...prev, { id, x: 50, y: 88, target: 'guest' }])
           setTimeout(() => {
@@ -97,7 +109,7 @@ export default function LandingPage() {
           }, 1500)
         } else if (action === 'CLICK_VIEW_REQUESTS') {
           const id = Date.now()
-          setClickIndicators(prev => [...prev, { id, x: 50, y: 75, target: 'guest' }])
+          setClickIndicators(prev => [...prev, { id, x: 50, y: 78, target: 'guest' }])
           setTimeout(() => {
             setClickIndicators(prev => prev.filter(ind => ind.id !== id))
           }, 1500)
@@ -110,7 +122,7 @@ export default function LandingPage() {
               type: 'ADD_REQUEST',
               request: {
                 id: Date.now(),
-                guest: 'Sarah Ahmed',
+                guest: 'Ahmed Ali',
                 room: '1204',
                 item: 'Room Cleaning',
                 status: 'pending',
@@ -128,7 +140,7 @@ export default function LandingPage() {
               type: 'ADD_REQUEST',
               request: {
                 id: Date.now() + 1,
-                guest: 'Sarah Ahmed',
+                guest: 'Ahmed Ali',
                 room: '1204',
                 item: 'Caesar Salad',
                 status: 'pending',
