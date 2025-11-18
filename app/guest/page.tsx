@@ -106,8 +106,9 @@ function GuestAppContent() {
       await new Promise(resolve => setTimeout(resolve, 1800))
 
       // Calculate and log time button position
-      if (container) {
-        const containerRect = container.getBoundingClientRect()
+      const containerForTime = document.querySelector('[data-app-container]')
+      if (containerForTime) {
+        const containerRect = containerForTime.getBoundingClientRect()
         const timeButton = Array.from(document.querySelectorAll('button')).find(btn =>
           btn.textContent?.includes('In 30 min')
         )
@@ -148,8 +149,9 @@ function GuestAppContent() {
       await new Promise(resolve => setTimeout(resolve, 2500))
 
       // Calculate and log Explore tab position
-      if (container) {
-        const containerRect = container.getBoundingClientRect()
+      const containerForExplore = document.querySelector('[data-app-container]')
+      if (containerForExplore) {
+        const containerRect = containerForExplore.getBoundingClientRect()
         const exploreTab = Array.from(document.querySelectorAll('button')).find(btn => {
           const text = btn.textContent?.trim()
           return text === 'Explore' && btn.querySelector('.lucide-compass')
@@ -178,8 +180,9 @@ function GuestAppContent() {
       await new Promise(resolve => setTimeout(resolve, 2000))
 
       // Calculate and log Room Service tile position
-      if (container) {
-        const containerRect = container.getBoundingClientRect()
+      const containerForRoom = document.querySelector('[data-app-container]')
+      if (containerForRoom) {
+        const containerRect = containerForRoom.getBoundingClientRect()
         const roomServiceTile = Array.from(document.querySelectorAll('button')).find(btn => {
           const text = btn.textContent?.trim()
           return text === 'Room Service' && btn.querySelector('.lucide-utensils-crossed')
@@ -208,8 +211,9 @@ function GuestAppContent() {
       await new Promise(resolve => setTimeout(resolve, 2500))
 
       // Calculate and log Caesar Salad + button position
-      if (container) {
-        const containerRect = container.getBoundingClientRect()
+      const containerForSalad = document.querySelector('[data-app-container]')
+      if (containerForSalad) {
+        const containerRect = containerForSalad.getBoundingClientRect()
         // Find the FoodCard with "Caesar Salad" and its + button
         const allButtons = Array.from(document.querySelectorAll('button'))
         const addButton = allButtons.find(btn => {
@@ -244,8 +248,9 @@ function GuestAppContent() {
       await new Promise(resolve => setTimeout(resolve, 2000))
 
       // Calculate and log Checkout button position
-      if (container) {
-        const containerRect = container.getBoundingClientRect()
+      const containerForCheckout = document.querySelector('[data-app-container]')
+      if (containerForCheckout) {
+        const containerRect = containerForCheckout.getBoundingClientRect()
         const checkoutBtn = Array.from(document.querySelectorAll('button')).find(btn =>
           btn.textContent?.includes('Checkout')
         )
@@ -282,8 +287,9 @@ function GuestAppContent() {
       await new Promise(resolve => setTimeout(resolve, 3000))
 
       // Calculate and log Place Order button position
-      if (container) {
-        const containerRect = container.getBoundingClientRect()
+      const containerForPlaceOrder = document.querySelector('[data-app-container]')
+      if (containerForPlaceOrder) {
+        const containerRect = containerForPlaceOrder.getBoundingClientRect()
         const placeOrderBtn = Array.from(document.querySelectorAll('button')).find(btn =>
           btn.textContent?.includes('Place Order')
         )
@@ -328,8 +334,9 @@ function GuestAppContent() {
       await new Promise(resolve => setTimeout(resolve, 3000))
 
       // Calculate and log View Requests button position
-      if (container) {
-        const containerRect = container.getBoundingClientRect()
+      const containerForViewRequests = document.querySelector('[data-app-container]')
+      if (containerForViewRequests) {
+        const containerRect = containerForViewRequests.getBoundingClientRect()
         const viewRequestsBtn = Array.from(document.querySelectorAll('button')).find(btn =>
           btn.textContent?.includes('View Requests')
         )
