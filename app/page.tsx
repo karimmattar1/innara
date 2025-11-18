@@ -61,7 +61,7 @@ export default function LandingPage() {
         // Handle click indicators for guest app
         if (action === 'CLICK_INPUT') {
           const id = Date.now()
-          setClickIndicators(prev => [...prev, { id, x: 50, y: 94, target: 'guest' }])
+          setClickIndicators(prev => [...prev, { id, x: 50, y: 96.31, target: 'guest' }])
           setTimeout(() => {
             setClickIndicators(prev => prev.filter(ind => ind.id !== id))
           }, 1500)
@@ -156,7 +156,7 @@ export default function LandingPage() {
           // Show click indicator on Analytics tab first
           setTimeout(() => {
             const id = Date.now()
-            setClickIndicators(prev => [...prev, { id, x: 60, y: 8, target: 'dashboard' }])
+            setClickIndicators(prev => [...prev, { id, x: 49.21, y: 3.85, target: 'dashboard' }])
             setTimeout(() => {
               setClickIndicators(prev => prev.filter(ind => ind.id !== id))
             }, 1500)
