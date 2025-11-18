@@ -85,9 +85,14 @@ function GuestAppContent() {
 
       await new Promise(resolve => setTimeout(resolve, 1500))
       // Click the checkout button
-      const checkoutBtn = document.querySelector('button:has(.lucide-shopping-cart)')
+      console.log('[DEMO] Looking for checkout button...')
+      const checkoutBtn = Array.from(document.querySelectorAll('button')).find(btn =>
+        btn.textContent?.includes('Checkout')
+      )
+      console.log('[DEMO] Checkout button found:', !!checkoutBtn)
       if (checkoutBtn) {
         (checkoutBtn as HTMLButtonElement).click()
+        console.log('[DEMO] Clicked checkout button')
       }
 
       // Step 8: Show click indicator for Pay button, then place order (5s)
@@ -99,9 +104,14 @@ function GuestAppContent() {
 
       await new Promise(resolve => setTimeout(resolve, 1500))
       // Simulate clicking "Place Order" button
-      const placeOrderBtn = document.querySelector('button[type="button"]')
+      console.log('[DEMO] Looking for Place Order button...')
+      const placeOrderBtn = Array.from(document.querySelectorAll('button')).find(btn =>
+        btn.textContent?.includes('Place Order')
+      )
+      console.log('[DEMO] Place Order button found:', !!placeOrderBtn)
       if (placeOrderBtn) {
         (placeOrderBtn as HTMLButtonElement).click()
+        console.log('[DEMO] Clicked Place Order button')
       }
 
       // Notify parent: food ordered (1s delay)
@@ -123,9 +133,14 @@ function GuestAppContent() {
 
       await new Promise(resolve => setTimeout(resolve, 2000))
       // Click the View Requests button
-      const viewRequestsBtn = document.querySelector('button:has(.lucide-clipboard-list)')
+      console.log('[DEMO] Looking for View Requests button...')
+      const viewRequestsBtn = Array.from(document.querySelectorAll('button')).find(btn =>
+        btn.textContent?.includes('View Requests')
+      )
+      console.log('[DEMO] View Requests button found:', !!viewRequestsBtn)
       if (viewRequestsBtn) {
         (viewRequestsBtn as HTMLButtonElement).click()
+        console.log('[DEMO] Clicked View Requests button')
       }
 
       // Notify parent: viewing requests (for analytics tab click)
@@ -996,7 +1011,7 @@ function CheckoutView({ item, onPlaceOrder, onViewRequests }: any) {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="fixed inset-0 bg-black/70 backdrop-blur-lg z-50 flex items-center justify-center"
+        className="absolute inset-0 bg-black/70 backdrop-blur-lg z-50 flex items-center justify-center"
       >
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
@@ -1030,13 +1045,14 @@ function CheckoutView({ item, onPlaceOrder, onViewRequests }: any) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black/70 backdrop-blur-lg z-50 flex items-end"
+      className="absolute inset-0 bg-black/70 backdrop-blur-lg z-50 flex items-end"
     >
       <motion.div
         initial={{ y: '100%' }}
         animate={{ y: 0 }}
         transition={{ duration: 0.4 }}
-        className="backdrop-blur-2xl bg-white/10 border-t border-white/20 rounded-t-[32px] w-full h-[60vh] p-6 shadow-2xl"
+        className="backdrop-blur-2xl bg-white/10 border-t border-white/20 rounded-t-[32px] w-full p-6 shadow-2xl"
+        style={{ maxHeight: '60%' }}
       >
         <div className="w-10 h-1 bg-white/30 rounded-full mx-auto mb-4" />
         <h3 className="text-xl font-semibold mb-4 text-white">Your Order</h3>
