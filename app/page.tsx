@@ -554,7 +554,7 @@ export default function LandingPage() {
                       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-5 bg-gray-900 rounded-b-3xl z-10"></div>
 
                       {/* Screen */}
-                      <div className="relative bg-white rounded-[2.5rem] overflow-hidden" style={{ height: '580px' }}>
+                      <div className="relative bg-white rounded-[2.5rem] overflow-hidden" style={{ height: '542px' }}>
                         <iframe
                           ref={guestIframeRef}
                           src="/guest?embed=true"
