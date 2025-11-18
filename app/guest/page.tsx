@@ -63,9 +63,10 @@ function GuestAppContent() {
 
       await new Promise(resolve => setTimeout(resolve, 1200))
 
-      // Show click on send button
-      if (container) {
-        const containerRect = container.getBoundingClientRect()
+      // Show click on send button - re-query container to ensure fresh reference
+      const containerForSend = document.querySelector('[data-app-container]')
+      if (containerForSend) {
+        const containerRect = containerForSend.getBoundingClientRect()
         const sendBtn = Array.from(document.querySelectorAll('button')).find(btn => btn.querySelector('.lucide-sparkles'))
         if (sendBtn) {
           const btnRect = sendBtn.getBoundingClientRect()
@@ -74,6 +75,8 @@ function GuestAppContent() {
           const percentX = (btnCenterX / containerRect.width) * 100
           const percentY = (btnCenterY / containerRect.height) * 100
           console.log('=== SEND BUTTON ===')
+          console.log('Container:', { width: containerRect.width, height: containerRect.height })
+          console.log('Button rect:', { left: btnRect.left, top: btnRect.top, width: btnRect.width, height: btnRect.height })
           console.log('Center:', { x: btnCenterX, y: btnCenterY })
           console.log('Percentage:', { x: percentX.toFixed(2), y: percentY.toFixed(2) })
         }
@@ -511,7 +514,7 @@ function GuestAppContent() {
       overflow: 'hidden'
     }}>
               {/* Light background with flowing dark blue smoke */}
-              <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-gray-100 to-white" style={isEmbed ? { top: '20px' } : {}}>
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-gray-100 to-white">
         <div className="absolute inset-0">
           {/* Dark blue smoke clouds - very subtle */}
           <motion.div
