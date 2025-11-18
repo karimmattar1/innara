@@ -18,7 +18,8 @@ import {
   Rocket,
   Award,
   Building2,
-  LineChart
+  LineChart,
+  Mail
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -296,8 +297,9 @@ export default function LandingPage() {
             </div>
 
             <div className="hidden md:flex items-center gap-8">
-              <a href="#demo" className="text-navy/70 hover:text-navy transition-colors font-medium">Demo</a>
               <a href="#metrics" className="text-navy/70 hover:text-navy transition-colors font-medium">Metrics</a>
+              <a href="#demo" className="text-navy/70 hover:text-navy transition-colors font-medium">Demo</a>
+              <a href="#contact" className="text-navy/70 hover:text-navy transition-colors font-medium">Contact</a>
               <motion.a
                 href="#waitlist"
                 whileHover={{ scale: 1.05 }}
@@ -683,6 +685,53 @@ export default function LandingPage() {
                 </div>
               </motion.div>
             </div>
+          </div>
+        </section>
+
+        {/* Contact Section */}
+        <section id="contact" className="py-20 px-6">
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-5xl md:text-6xl font-light text-navy mb-6" style={{ fontFamily: 'Georgia, serif' }}>
+                Get in <span className="italic">Touch</span>
+              </h2>
+              <p className="text-xl text-navy/70 max-w-2xl mx-auto font-light">
+                Questions about bringing INNARA to your hotel? We'd love to hear from you.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="backdrop-blur-xl bg-white/40 border border-white/40 rounded-3xl p-12 shadow-2xl"
+            >
+              <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-navy rounded-2xl flex items-center justify-center shadow-lg">
+                    <Mail className="w-8 h-8 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-navy/60 mb-1">Email us at</p>
+                    <a href="mailto:hello@innara.ai" className="text-2xl font-semibold text-navy hover:text-gold transition-colors">
+                      hello@innara.ai
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-8 pt-8 border-t border-white/40 text-center">
+                <p className="text-navy/70 text-sm">
+                  Whether you're a hotel interested in a pilot program or a guest excited about the future of hospitality, we're here to help.
+                </p>
+              </div>
+            </motion.div>
           </div>
         </section>
 
