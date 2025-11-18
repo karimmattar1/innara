@@ -878,27 +878,25 @@ function ConciergeView({ step, nextStep, selectedTime, typingText, onTimeSelect,
         </div>
       </div>
 
-      {/* Bottom Navigation - Glassy (Hidden in embed mode) */}
-      {!isEmbed && (
-        <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2">
-          <button className="flex flex-col items-center gap-0.5 py-2 text-navy">
-            <Sparkles className="w-5 h-5" />
-            <span className="text-[10px] font-medium">Concierge</span>
-          </button>
-          <button onClick={() => onNavClick('explore')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-            <Compass className="w-5 h-5" />
-            <span className="text-[10px] font-medium">Explore</span>
-          </button>
-          <button onClick={() => onNavClick('requests')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-            <ClipboardList className="w-5 h-5" />
-            <span className="text-[10px] font-medium">Requests</span>
-          </button>
-          <button onClick={() => onNavClick('profile')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-            <User className="w-5 h-5" />
-            <span className="text-[10px] font-medium">Profile</span>
-          </button>
-        </div>
-      )}
+      {/* Bottom Navigation - Glassy */}
+      <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2">
+        <button className="flex flex-col items-center gap-0.5 py-2 text-navy">
+          <Sparkles className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Concierge</span>
+        </button>
+        <button onClick={() => onNavClick('explore')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <Compass className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Explore</span>
+        </button>
+        <button onClick={() => onNavClick('requests')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <ClipboardList className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Requests</span>
+        </button>
+        <button onClick={() => onNavClick('profile')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <User className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Profile</span>
+        </button>
+      </div>
     </div>
   )
 }
@@ -953,27 +951,25 @@ function ExploreView({ onServiceClick, onNavClick, isEmbed }: any) {
         </div>
       </div>
 
-      {/* Bottom Navigation - Glassy (Hidden in embed mode) */}
-      {!isEmbed && (
-        <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2">
-          <button onClick={() => onNavClick('concierge')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-            <Sparkles className="w-5 h-5" />
-            <span className="text-[10px] font-medium">Concierge</span>
-          </button>
-          <button className="flex flex-col items-center gap-0.5 py-2 text-navy">
-            <Compass className="w-5 h-5" />
-            <span className="text-[10px] font-medium">Explore</span>
-          </button>
-          <button onClick={() => onNavClick('requests')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-            <ClipboardList className="w-5 h-5" />
-            <span className="text-[10px] font-medium">Requests</span>
-          </button>
-          <button onClick={() => onNavClick('profile')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-            <User className="w-5 h-5" />
-            <span className="text-[10px] font-medium">Profile</span>
-          </button>
-        </div>
-      )}
+      {/* Bottom Navigation - Glassy */}
+      <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2">
+        <button onClick={() => onNavClick('concierge')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <Sparkles className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Concierge</span>
+        </button>
+        <button className="flex flex-col items-center gap-0.5 py-2 text-navy">
+          <Compass className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Explore</span>
+        </button>
+        <button onClick={() => onNavClick('requests')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <ClipboardList className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Requests</span>
+        </button>
+        <button onClick={() => onNavClick('profile')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <User className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Profile</span>
+        </button>
+      </div>
     </div>
   )
 }
@@ -1023,27 +1019,25 @@ function RequestsView({ onNavClick, isEmbed }: any) {
         </div>
       </div>
 
-      {/* Bottom Navigation - Glassy (Hidden in embed mode) */}
-      {!isEmbed && (
-        <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2">
-          <button onClick={() => onNavClick('concierge')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-            <Sparkles className="w-5 h-5" />
-            <span className="text-[10px] font-medium">Concierge</span>
-          </button>
-          <button onClick={() => onNavClick('explore')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-            <Compass className="w-5 h-5" />
-            <span className="text-[10px] font-medium">Explore</span>
-          </button>
-          <button className="flex flex-col items-center gap-0.5 py-2 text-navy">
-            <ClipboardList className="w-5 h-5" />
-            <span className="text-[10px] font-medium">Requests</span>
-          </button>
-          <button onClick={() => onNavClick('profile')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-            <User className="w-5 h-5" />
-            <span className="text-[10px] font-medium">Profile</span>
-          </button>
-        </div>
-      )}
+      {/* Bottom Navigation - Glassy */}
+      <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2">
+        <button onClick={() => onNavClick('concierge')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <Sparkles className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Concierge</span>
+        </button>
+        <button onClick={() => onNavClick('explore')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <Compass className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Explore</span>
+        </button>
+        <button className="flex flex-col items-center gap-0.5 py-2 text-navy">
+          <ClipboardList className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Requests</span>
+        </button>
+        <button onClick={() => onNavClick('profile')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <User className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Profile</span>
+        </button>
+      </div>
     </div>
   )
 }
@@ -1088,27 +1082,25 @@ function ProfileView({ onNavClick, isEmbed }: any) {
         </div>
       </div>
 
-      {/* Bottom Navigation - Glassy (Hidden in embed mode) */}
-      {!isEmbed && (
-        <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2">
-          <button onClick={() => onNavClick('concierge')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-            <Sparkles className="w-5 h-5" />
-            <span className="text-[10px] font-medium">Concierge</span>
-          </button>
-          <button onClick={() => onNavClick('explore')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-            <Compass className="w-5 h-5" />
-            <span className="text-[10px] font-medium">Explore</span>
-          </button>
-          <button onClick={() => onNavClick('requests')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
-            <ClipboardList className="w-5 h-5" />
-            <span className="text-[10px] font-medium">Requests</span>
-          </button>
-          <button className="flex flex-col items-center gap-0.5 py-2 text-navy">
-            <User className="w-5 h-5" />
-            <span className="text-[10px] font-medium">Profile</span>
-          </button>
-        </div>
-      )}
+      {/* Bottom Navigation - Glassy */}
+      <div className="flex-shrink-0 h-16 backdrop-blur-xl bg-white/20 border-t border-white/20 flex items-center justify-around px-2">
+        <button onClick={() => onNavClick('concierge')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <Sparkles className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Concierge</span>
+        </button>
+        <button onClick={() => onNavClick('explore')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <Compass className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Explore</span>
+        </button>
+        <button onClick={() => onNavClick('requests')} className="flex flex-col items-center gap-0.5 py-2 text-navy/60 hover:text-navy">
+          <ClipboardList className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Requests</span>
+        </button>
+        <button className="flex flex-col items-center gap-0.5 py-2 text-navy">
+          <User className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Profile</span>
+        </button>
+      </div>
     </div>
   )
 }
