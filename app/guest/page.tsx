@@ -14,6 +14,7 @@ function GuestAppContent() {
   const [step, setStep] = useState(0)
   const [cartItems, setCartItems] = useState<any[]>([])
   const [demoMode, setDemoMode] = useState(false)
+  const [selectedTime, setSelectedTime] = useState('')
 
   const nextStep = () => setStep(s => s + 1)
 
@@ -31,9 +32,18 @@ function GuestAppContent() {
       setStep(2)
 
       // Step 3 will auto-advance via existing useEffect in ConciergeView after 1200ms
-      // Step 4: Wait for AI response and time selection (6s total)
-      await new Promise(resolve => setTimeout(resolve, 6000))
-      setStep(4) // Confirmation shown
+      // Step 4: Wait for AI response with time options (3s total)
+      await new Promise(resolve => setTimeout(resolve, 3000))
+      setStep(3)
+
+      // Step 5: User selects time (show as message) (3s delay)
+      await new Promise(resolve => setTimeout(resolve, 3000))
+      setSelectedTime('In 30 min')
+      setStep(4)
+
+      // Step 6: AI confirmation (2.5s delay)
+      await new Promise(resolve => setTimeout(resolve, 2500))
+      setStep(5)
 
       // Notify parent: housekeeping requested (1.5s delay for dashboard animation)
       await new Promise(resolve => setTimeout(resolve, 1500))
@@ -42,7 +52,7 @@ function GuestAppContent() {
         action: 'HOUSEKEEPING_REQUESTED'
       }, window.location.origin)
 
-      // Step 5: Show click indicator for Room Service tile, then navigate (4s)
+      // Step 7: Show click indicator for Room Service tile, then navigate (4s)
       await new Promise(resolve => setTimeout(resolve, 4500))
       window.parent.postMessage({
         type: 'DEMO_EVENT',
@@ -144,6 +154,7 @@ function GuestAppContent() {
         setView('concierge')
         setStep(0)
         setCartItems([])
+        setSelectedTime('')
       }
     }
 
@@ -359,6 +370,11 @@ function GuestAppContent() {
                     <ConciergeView
                       step={step}
                       nextStep={nextStep}
+                      selectedTime={selectedTime}
+                      onTimeSelect={(time: string) => {
+                        setSelectedTime(time)
+                        nextStep()
+                      }}
                       onServiceClick={(service: string) => setView(service as any)}
                       onNavClick={(nav: string) => setView(nav as any)}
                       isEmbed={isEmbed}
@@ -452,7 +468,7 @@ export default function GuestApp() {
   )
 }
 
-function ConciergeView({ step, nextStep, onServiceClick, onNavClick, isEmbed }: any) {
+function ConciergeView({ step, nextStep, selectedTime, onTimeSelect, onServiceClick, onNavClick, isEmbed }: any) {
   // Auto-advance from step 2 (typing) to step 3 (AI response)
   useEffect(() => {
     if (step === 2) {
@@ -534,7 +550,7 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick, isEmbed }: 
           </>
         )}
 
-        {step >= 3 && (
+        {step === 3 && (
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -542,21 +558,39 @@ function ConciergeView({ step, nextStep, onServiceClick, onNavClick, isEmbed }: 
             className="flex gap-2"
           >
             <button
-              onClick={() => nextStep()}
+              onClick={() => onTimeSelect('Now')}
               className="px-5 py-2.5 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-navy hover:bg-navy hover:text-white hover:border-navy hover:scale-105 transition-all text-sm font-semibold shadow-lg"
             >
               Now
             </button>
-            <button className="px-5 py-2.5 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-navy hover:bg-navy hover:text-white hover:border-navy hover:scale-105 transition-all text-sm font-semibold shadow-lg">
+            <button
+              onClick={() => onTimeSelect('In 30 min')}
+              className="px-5 py-2.5 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-navy hover:bg-navy hover:text-white hover:border-navy hover:scale-105 transition-all text-sm font-semibold shadow-lg"
+            >
               In 30 min
             </button>
-            <button className="px-5 py-2.5 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-navy hover:bg-navy hover:text-white hover:border-navy hover:scale-105 transition-all text-sm font-semibold shadow-lg">
+            <button
+              onClick={() => onTimeSelect('In 1 hour')}
+              className="px-5 py-2.5 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-navy hover:bg-navy hover:text-white hover:border-navy hover:scale-105 transition-all text-sm font-semibold shadow-lg"
+            >
               In 1 hour
             </button>
           </motion.div>
         )}
 
-        {step >= 4 && (
+        {step >= 4 && selectedTime && (
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            className="flex justify-end"
+          >
+            <div className="backdrop-blur-xl bg-white/20 border border-white/20 text-navy px-4 py-3 rounded-2xl rounded-br-md max-w-[80%] shadow-lg">
+              {selectedTime}
+            </div>
+          </motion.div>
+        )}
+
+        {step >= 5 && (
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
