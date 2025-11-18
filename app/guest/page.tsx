@@ -66,7 +66,7 @@ function GuestAppContent() {
         description: 'Romaine, croutons, parmesan'
       }])
 
-      // Step 7: Show click indicator for checkout (3s)
+      // Step 7: Show click indicator for checkout button (3s)
       await new Promise(resolve => setTimeout(resolve, 3000))
       window.parent.postMessage({
         type: 'DEMO_EVENT',
@@ -74,7 +74,11 @@ function GuestAppContent() {
       }, window.location.origin)
 
       await new Promise(resolve => setTimeout(resolve, 1500))
-      setView('checkout')
+      // Click the checkout button
+      const checkoutBtn = document.querySelector('button:has(.lucide-shopping-cart)')
+      if (checkoutBtn) {
+        (checkoutBtn as HTMLButtonElement).click()
+      }
 
       // Step 8: Show click indicator for Pay button, then place order (5s)
       await new Promise(resolve => setTimeout(resolve, 5000))
@@ -108,7 +112,11 @@ function GuestAppContent() {
       }, window.location.origin)
 
       await new Promise(resolve => setTimeout(resolve, 2000))
-      setView('requests')
+      // Click the View Requests button
+      const viewRequestsBtn = document.querySelector('button:has(.lucide-clipboard-list)')
+      if (viewRequestsBtn) {
+        (viewRequestsBtn as HTMLButtonElement).click()
+      }
 
       // Notify parent: viewing requests (for analytics tab click)
       await new Promise(resolve => setTimeout(resolve, 2500))
@@ -384,17 +392,17 @@ function GuestAppContent() {
                       onBack={() => setView('concierge')}
                       onAddToCart={(item: any) => {
                         setCartItems([item])
-                        setTimeout(() => setView('checkout'), 800)
                       }}
+                      onCheckout={() => setView('checkout')}
+                      cartCount={cartItems.length}
                     />
                   )}
 
                   {view === 'checkout' && (
                     <CheckoutView
                       item={cartItems[0]}
-                      onPlaceOrder={() => {
-                        setTimeout(() => setView('concierge'), 3000)
-                      }}
+                      onPlaceOrder={() => {}}
+                      onViewRequests={() => setView('requests')}
                     />
                   )}
                   </AnimatePresence>
@@ -825,7 +833,7 @@ function ProfileView({ onNavClick, isEmbed }: any) {
   )
 }
 
-function RoomServiceView({ onBack, onAddToCart }: any) {
+function RoomServiceView({ onBack, onAddToCart, onCheckout, cartCount }: any) {
   const [added, setAdded] = useState(false)
 
   const handleAdd = () => {
@@ -895,12 +903,22 @@ function RoomServiceView({ onBack, onAddToCart }: any) {
         </div>
       </div>
 
-      {/* Add to Cart Button */}
+      {/* Checkout Button */}
       <div className="flex-shrink-0 px-4 py-3 backdrop-blur-xl bg-white/10 border-t border-white/20">
-        <button className="w-full h-12 backdrop-blur-xl bg-white/30 border border-white/40 text-navy rounded-full font-semibold text-sm flex items-center justify-center gap-2 hover:scale-105 transition-all shadow-lg">
-          <ShoppingCart className="w-5 h-5" />
-          Add to Cart
-        </button>
+        {cartCount > 0 ? (
+          <button
+            onClick={onCheckout}
+            className="w-full h-12 bg-gradient-to-r from-navy to-navy-dark text-white rounded-full font-semibold text-sm flex items-center justify-center gap-2 hover:scale-105 transition-all shadow-lg"
+          >
+            <ShoppingCart className="w-5 h-5" />
+            Checkout ({cartCount})
+          </button>
+        ) : (
+          <button className="w-full h-12 backdrop-blur-xl bg-white/30 border border-white/40 text-navy rounded-full font-semibold text-sm flex items-center justify-center gap-2 opacity-50 cursor-not-allowed">
+            <ShoppingCart className="w-5 h-5" />
+            Add items to cart
+          </button>
+        )}
       </div>
 
       {/* Bottom Navigation - Glassy */}
@@ -926,7 +944,7 @@ function RoomServiceView({ onBack, onAddToCart }: any) {
   )
 }
 
-function CheckoutView({ item, onPlaceOrder }: any) {
+function CheckoutView({ item, onPlaceOrder, onViewRequests }: any) {
   const [orderPlaced, setOrderPlaced] = useState(false)
 
   const handlePlaceOrder = () => {
@@ -960,7 +978,14 @@ function CheckoutView({ item, onPlaceOrder }: any) {
             <Check className="w-10 h-10 text-white" />
           </motion.div>
           <h3 className="text-2xl font-semibold mb-2 text-white">Order Placed! 🎉</h3>
-          <p className="text-white/70">We'll deliver in ~32 minutes</p>
+          <p className="text-white/70 mb-6">We'll deliver in ~32 minutes</p>
+          <button
+            onClick={onViewRequests}
+            className="w-full h-12 bg-gradient-to-r from-navy to-navy-dark text-white rounded-full font-semibold text-sm flex items-center justify-center gap-2 hover:scale-105 transition-all shadow-lg"
+          >
+            <ClipboardList className="w-5 h-5" />
+            View Requests
+          </button>
         </motion.div>
       </motion.div>
     )

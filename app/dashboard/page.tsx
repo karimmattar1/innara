@@ -74,12 +74,12 @@ function DashboardContent() {
     }
 
     console.log('--- SCALING MATH ---')
-    console.log('Applied scale:', 0.472)
+    console.log('Applied scale:', 0.521)
     console.log('Content dimensions:', '1440x1039')
-    console.log('Expected display width:', 1440 * 0.472, 'px')
-    console.log('Expected display height:', 1039 * 0.472, 'px')
-    console.log('Target iframe size:', '680px x 490px')
-    console.log('Mockup frame size:', '700px x 510px (with padding)')
+    console.log('Expected display width:', 1440 * 0.521, 'px')
+    console.log('Expected display height:', 1039 * 0.521, 'px')
+    console.log('Target iframe size:', '750px x 542px')
+    console.log('Mockup frame size:', '770px x 562px (with padding)')
 
     console.log('======================')
 
@@ -201,7 +201,7 @@ function DashboardContent() {
       width: '1440px',
       height: '1039px',
       transformOrigin: 'top left',
-      transform: 'scale(0.472)',
+      transform: 'scale(0.521)',
     } : {
       minHeight: '100vh'
     }}>
