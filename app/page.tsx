@@ -61,31 +61,31 @@ export default function LandingPage() {
         // Handle click indicators for guest app
         if (action === 'CLICK_INPUT') {
           const id = Date.now()
-          setClickIndicators(prev => [...prev, { id, x: 50, y: 96.31, target: 'guest' }])
+          setClickIndicators(prev => [...prev, { id, x: 50, y: 88.42, target: 'guest' }])
           setTimeout(() => {
             setClickIndicators(prev => prev.filter(ind => ind.id !== id))
           }, 1500)
         } else if (action === 'CLICK_SEND') {
           const id = Date.now()
-          setClickIndicators(prev => [...prev, { id, x: 88, y: 94, target: 'guest' }])
+          setClickIndicators(prev => [...prev, { id, x: 89.87, y: 88.42, target: 'guest' }])
           setTimeout(() => {
             setClickIndicators(prev => prev.filter(ind => ind.id !== id))
           }, 1500)
         } else if (action === 'CLICK_TIME_BUTTON') {
           const id = Date.now()
-          setClickIndicators(prev => [...prev, { id, x: 50, y: 58, target: 'guest' }])
+          setClickIndicators(prev => [...prev, { id, x: 39.71, y: 40.27, target: 'guest' }])
           setTimeout(() => {
             setClickIndicators(prev => prev.filter(ind => ind.id !== id))
           }, 1500)
         } else if (action === 'CLICK_EXPLORE_TAB') {
           const id = Date.now()
-          setClickIndicators(prev => [...prev, { id, x: 50, y: 96, target: 'guest' }])
+          setClickIndicators(prev => [...prev, { id, x: 39.92, y: 96.12, target: 'guest' }])
           setTimeout(() => {
             setClickIndicators(prev => prev.filter(ind => ind.id !== id))
           }, 1500)
         } else if (action === 'CLICK_ROOM_SERVICE_TILE') {
           const id = Date.now()
-          setClickIndicators(prev => [...prev, { id, x: 30, y: 38, target: 'guest' }])
+          setClickIndicators(prev => [...prev, { id, x: 26.33, y: 26.11, target: 'guest' }])
           setTimeout(() => {
             setClickIndicators(prev => prev.filter(ind => ind.id !== id))
           }, 1500)
@@ -97,19 +97,19 @@ export default function LandingPage() {
           }, 1500)
         } else if (action === 'CLICK_CHECKOUT') {
           const id = Date.now()
-          setClickIndicators(prev => [...prev, { id, x: 50, y: 96, target: 'guest' }])
+          setClickIndicators(prev => [...prev, { id, x: 50, y: 89.90, target: 'guest' }])
           setTimeout(() => {
             setClickIndicators(prev => prev.filter(ind => ind.id !== id))
           }, 1500)
         } else if (action === 'CLICK_PLACE_ORDER') {
           const id = Date.now()
-          setClickIndicators(prev => [...prev, { id, x: 50, y: 88, target: 'guest' }])
+          setClickIndicators(prev => [...prev, { id, x: 50, y: 95.07, target: 'guest' }])
           setTimeout(() => {
             setClickIndicators(prev => prev.filter(ind => ind.id !== id))
           }, 1500)
         } else if (action === 'CLICK_VIEW_REQUESTS') {
           const id = Date.now()
-          setClickIndicators(prev => [...prev, { id, x: 50, y: 78, target: 'guest' }])
+          setClickIndicators(prev => [...prev, { id, x: 50, y: 61.33, target: 'guest' }])
           setTimeout(() => {
             setClickIndicators(prev => prev.filter(ind => ind.id !== id))
           }, 1500)

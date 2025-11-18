@@ -220,6 +220,10 @@ function GuestAppContent() {
           const parent = btn.closest('.backdrop-blur-xl')
           return parent?.textContent?.includes('Caesar Salad') && btn.querySelector('.lucide-plus')
         })
+        console.log('=== CAESAR SALAD + BUTTON DEBUG ===')
+        console.log('Container found:', !!containerForSalad)
+        console.log('Button found:', !!addButton)
+        console.log('Total buttons:', allButtons.length)
         if (addButton) {
           const btnRect = addButton.getBoundingClientRect()
           const btnCenterX = btnRect.left + btnRect.width / 2
@@ -229,6 +233,8 @@ function GuestAppContent() {
           console.log('=== CAESAR SALAD + BUTTON ===')
           console.log('Center:', { x: btnCenterX, y: btnCenterY })
           console.log('Percentage:', { x: percentX.toFixed(2), y: percentY.toFixed(2) })
+        } else {
+          console.log('Caesar Salad button NOT FOUND - trying alternate selectors')
         }
       }
 
