@@ -101,6 +101,25 @@ function GuestAppContent() {
 
       // Step 5: User selects time (show as message) (1.8s delay)
       await new Promise(resolve => setTimeout(resolve, 1800))
+
+      // Calculate and log time button position
+      if (container) {
+        const containerRect = container.getBoundingClientRect()
+        const timeButton = Array.from(document.querySelectorAll('button')).find(btn =>
+          btn.textContent?.includes('In 30 min')
+        )
+        if (timeButton) {
+          const btnRect = timeButton.getBoundingClientRect()
+          const btnCenterX = btnRect.left + btnRect.width / 2
+          const btnCenterY = btnRect.top + btnRect.height / 2
+          const percentX = (btnCenterX / containerRect.width) * 100
+          const percentY = (btnCenterY / containerRect.height) * 100
+          console.log('=== TIME BUTTON (30 min) ===')
+          console.log('Center:', { x: btnCenterX, y: btnCenterY })
+          console.log('Percentage:', { x: percentX.toFixed(2), y: percentY.toFixed(2) })
+        }
+      }
+
       // Show click indicator for time button
       window.parent.postMessage({
         type: 'DEMO_EVENT',
@@ -124,6 +143,26 @@ function GuestAppContent() {
 
       // Navigate to Explore view
       await new Promise(resolve => setTimeout(resolve, 2500))
+
+      // Calculate and log Explore tab position
+      if (container) {
+        const containerRect = container.getBoundingClientRect()
+        const exploreTab = Array.from(document.querySelectorAll('button')).find(btn => {
+          const text = btn.textContent?.trim()
+          return text === 'Explore' && btn.querySelector('.lucide-compass')
+        })
+        if (exploreTab) {
+          const btnRect = exploreTab.getBoundingClientRect()
+          const btnCenterX = btnRect.left + btnRect.width / 2
+          const btnCenterY = btnRect.top + btnRect.height / 2
+          const percentX = (btnCenterX / containerRect.width) * 100
+          const percentY = (btnCenterY / containerRect.height) * 100
+          console.log('=== EXPLORE TAB ===')
+          console.log('Center:', { x: btnCenterX, y: btnCenterY })
+          console.log('Percentage:', { x: percentX.toFixed(2), y: percentY.toFixed(2) })
+        }
+      }
+
       window.parent.postMessage({
         type: 'DEMO_EVENT',
         action: 'CLICK_EXPLORE_TAB'
@@ -134,6 +173,26 @@ function GuestAppContent() {
 
       // Show click indicator for Room Service tile, then navigate
       await new Promise(resolve => setTimeout(resolve, 2000))
+
+      // Calculate and log Room Service tile position
+      if (container) {
+        const containerRect = container.getBoundingClientRect()
+        const roomServiceTile = Array.from(document.querySelectorAll('button')).find(btn => {
+          const text = btn.textContent?.trim()
+          return text === 'Room Service' && btn.querySelector('.lucide-utensils-crossed')
+        })
+        if (roomServiceTile) {
+          const btnRect = roomServiceTile.getBoundingClientRect()
+          const btnCenterX = btnRect.left + btnRect.width / 2
+          const btnCenterY = btnRect.top + btnRect.height / 2
+          const percentX = (btnCenterX / containerRect.width) * 100
+          const percentY = (btnCenterY / containerRect.height) * 100
+          console.log('=== ROOM SERVICE TILE ===')
+          console.log('Center:', { x: btnCenterX, y: btnCenterY })
+          console.log('Percentage:', { x: percentX.toFixed(2), y: percentY.toFixed(2) })
+        }
+      }
+
       window.parent.postMessage({
         type: 'DEMO_EVENT',
         action: 'CLICK_ROOM_SERVICE_TILE'
@@ -144,6 +203,28 @@ function GuestAppContent() {
 
       // Show click indicator for + button on Caesar Salad
       await new Promise(resolve => setTimeout(resolve, 2500))
+
+      // Calculate and log Caesar Salad + button position
+      if (container) {
+        const containerRect = container.getBoundingClientRect()
+        // Find the FoodCard with "Caesar Salad" and its + button
+        const allButtons = Array.from(document.querySelectorAll('button'))
+        const addButton = allButtons.find(btn => {
+          const parent = btn.closest('.backdrop-blur-xl')
+          return parent?.textContent?.includes('Caesar Salad') && btn.querySelector('.lucide-plus')
+        })
+        if (addButton) {
+          const btnRect = addButton.getBoundingClientRect()
+          const btnCenterX = btnRect.left + btnRect.width / 2
+          const btnCenterY = btnRect.top + btnRect.height / 2
+          const percentX = (btnCenterX / containerRect.width) * 100
+          const percentY = (btnCenterY / containerRect.height) * 100
+          console.log('=== CAESAR SALAD + BUTTON ===')
+          console.log('Center:', { x: btnCenterX, y: btnCenterY })
+          console.log('Percentage:', { x: percentX.toFixed(2), y: percentY.toFixed(2) })
+        }
+      }
+
       window.parent.postMessage({
         type: 'DEMO_EVENT',
         action: 'CLICK_ADD_SALAD'
@@ -158,6 +239,25 @@ function GuestAppContent() {
 
       // Show click indicator for checkout button (2s)
       await new Promise(resolve => setTimeout(resolve, 2000))
+
+      // Calculate and log Checkout button position
+      if (container) {
+        const containerRect = container.getBoundingClientRect()
+        const checkoutBtn = Array.from(document.querySelectorAll('button')).find(btn =>
+          btn.textContent?.includes('Checkout')
+        )
+        if (checkoutBtn) {
+          const btnRect = checkoutBtn.getBoundingClientRect()
+          const btnCenterX = btnRect.left + btnRect.width / 2
+          const btnCenterY = btnRect.top + btnRect.height / 2
+          const percentX = (btnCenterX / containerRect.width) * 100
+          const percentY = (btnCenterY / containerRect.height) * 100
+          console.log('=== CHECKOUT BUTTON ===')
+          console.log('Center:', { x: btnCenterX, y: btnCenterY })
+          console.log('Percentage:', { x: percentX.toFixed(2), y: percentY.toFixed(2) })
+        }
+      }
+
       window.parent.postMessage({
         type: 'DEMO_EVENT',
         action: 'CLICK_CHECKOUT'
@@ -177,6 +277,24 @@ function GuestAppContent() {
 
       // Wait for checkout modal to appear (3s)
       await new Promise(resolve => setTimeout(resolve, 3000))
+
+      // Calculate and log Place Order button position
+      if (container) {
+        const containerRect = container.getBoundingClientRect()
+        const placeOrderBtn = Array.from(document.querySelectorAll('button')).find(btn =>
+          btn.textContent?.includes('Place Order')
+        )
+        if (placeOrderBtn) {
+          const btnRect = placeOrderBtn.getBoundingClientRect()
+          const btnCenterX = btnRect.left + btnRect.width / 2
+          const btnCenterY = btnRect.top + btnRect.height / 2
+          const percentX = (btnCenterX / containerRect.width) * 100
+          const percentY = (btnCenterY / containerRect.height) * 100
+          console.log('=== PLACE ORDER BUTTON ===')
+          console.log('Center:', { x: btnCenterX, y: btnCenterY })
+          console.log('Percentage:', { x: percentX.toFixed(2), y: percentY.toFixed(2) })
+        }
+      }
 
       // Show click indicator for Place Order button
       window.parent.postMessage({
@@ -205,6 +323,24 @@ function GuestAppContent() {
 
       // Show order confirmation toast, stay on confirmation (3s)
       await new Promise(resolve => setTimeout(resolve, 3000))
+
+      // Calculate and log View Requests button position
+      if (container) {
+        const containerRect = container.getBoundingClientRect()
+        const viewRequestsBtn = Array.from(document.querySelectorAll('button')).find(btn =>
+          btn.textContent?.includes('View Requests')
+        )
+        if (viewRequestsBtn) {
+          const btnRect = viewRequestsBtn.getBoundingClientRect()
+          const btnCenterX = btnRect.left + btnRect.width / 2
+          const btnCenterY = btnRect.top + btnRect.height / 2
+          const percentX = (btnCenterX / containerRect.width) * 100
+          const percentY = (btnCenterY / containerRect.height) * 100
+          console.log('=== VIEW REQUESTS BUTTON ===')
+          console.log('Center:', { x: btnCenterX, y: btnCenterY })
+          console.log('Percentage:', { x: percentX.toFixed(2), y: percentY.toFixed(2) })
+        }
+      }
 
       // Show "View Requests" button in confirmation (handled in CheckoutView)
       // User clicks View Requests

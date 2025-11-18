@@ -175,6 +175,30 @@ function DashboardContent() {
           }, ...prev])
         }
       } else if (type === 'SWITCH_VIEW') {
+        // Calculate and log Analytics tab position before switching view
+        if (view === 'analytics') {
+          setTimeout(() => {
+            const container = document.querySelector('.relative.overflow-hidden')
+            if (container) {
+              const containerRect = container.getBoundingClientRect()
+              const analyticsBtn = Array.from(document.querySelectorAll('button')).find(btn =>
+                btn.textContent?.trim() === 'Analytics' && btn.classList.contains('text-sm')
+              )
+              if (analyticsBtn) {
+                const btnRect = analyticsBtn.getBoundingClientRect()
+                const btnCenterX = btnRect.left + btnRect.width / 2
+                const btnCenterY = btnRect.top + btnRect.height / 2
+                const percentX = (btnCenterX / containerRect.width) * 100
+                const percentY = (btnCenterY / containerRect.height) * 100
+                console.log('=== ANALYTICS TAB (Dashboard) ===')
+                console.log('Container dimensions:', { width: containerRect.width, height: containerRect.height })
+                console.log('Button position:', { left: btnRect.left, top: btnRect.top, width: btnRect.width, height: btnRect.height })
+                console.log('Center:', { x: btnCenterX, y: btnCenterY })
+                console.log('Percentage:', { x: percentX.toFixed(2), y: percentY.toFixed(2) })
+              }
+            }
+          }, 100)
+        }
         setActiveView(view)
       } else if (type === 'RESET_DEMO') {
         setRequests(initialRequests)
