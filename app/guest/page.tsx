@@ -1218,7 +1218,7 @@ function RoomServiceView({ onBack, onAddToCart, onCheckout, cartCount, added }: 
               name="Caesar Salad"
               description="Romaine, croutons, parmesan"
               price={12}
-              image="https://images.unsplash.com/photo-1546793665-c74683f339c1?w=400&q=80"
+              image="https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=400&q=80"
               aiPick
               added={added}
               onAdd={handleAdd}
@@ -1227,14 +1227,14 @@ function RoomServiceView({ onBack, onAddToCart, onCheckout, cartCount, added }: 
               name="Margherita Pizza"
               description="Tomato, mozzarella, basil"
               price={18}
-              image="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&q=80"
+              image="https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?w=400&q=80"
               onAdd={() => {}}
             />
             <FoodCard
               name="Grilled Salmon"
               description="Asparagus, herb butter"
               price={24}
-              image="https://images.unsplash.com/photo-1485921325833-c519f76c4927?w=400&q=80"
+              image="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80"
               onAdd={() => {}}
             />
           </div>
@@ -1350,7 +1350,7 @@ function CheckoutView({ item, onPlaceOrder, onViewRequests }: any) {
 
         <div className="flex-1 overflow-y-auto px-4">
           <div className="flex gap-3 mb-3 backdrop-blur-xl bg-white/10 border border-white/10 rounded-2xl p-3 shadow-lg">
-            <img src="https://images.unsplash.com/photo-1546793665-c74683f339c1?w=100&q=80" alt={item.name} className="w-14 h-14 rounded-xl object-cover" />
+            <img src="https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=100&q=80" alt={item.name} className="w-14 h-14 rounded-xl object-cover" />
             <div className="flex-1">
               <h4 className="font-semibold text-white text-sm">{item.name}</h4>
               <p className="text-xs text-white/60">{item.description}</p>
@@ -1372,15 +1372,15 @@ function CheckoutView({ item, onPlaceOrder, onViewRequests }: any) {
           <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-3 mb-3 space-y-1.5 shadow-lg">
             <div className="flex justify-between text-sm">
               <span className="text-white/60">Subtotal</span>
-              <span className="text-white">${item.price}</span>
+              <span className="text-white">${item.price.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-white/60">Service fee</span>
-              <span className="text-white">$2</span>
+              <span className="text-white/60">Service fee (2%)</span>
+              <span className="text-white">${(item.price * 0.02).toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-lg font-bold pt-1.5 border-t border-white/10">
               <span className="text-navy">Total</span>
-              <span className="text-navy">${item.price + 2}</span>
+              <span className="text-navy">${(item.price * 1.02).toFixed(2)}</span>
             </div>
           </div>
         </div>
