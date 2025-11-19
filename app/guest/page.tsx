@@ -925,7 +925,12 @@ function ConciergeView({ step, nextStep, selectedTime, typingText, onTimeSelect,
             readOnly
             placeholder="What do you need today?"
             onClick={() => step === 0 && nextStep()}
-            className="w-full h-11 pl-4 pr-12 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-sm text-navy placeholder:text-navy/50 focus:outline-none focus:border-navy focus:bg-white/30 transition-all shadow-lg"
+            className="w-full h-11 pl-4 pr-12 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-sm text-navy placeholder:text-navy/50 focus:outline-none focus:border-navy focus:bg-white/30 transition-colors shadow-lg"
+            style={{
+              WebkitFontSmoothing: 'antialiased',
+              backfaceVisibility: 'hidden',
+              transform: 'translateZ(0)'
+            }}
           />
           <button className="absolute right-1.5 top-1.5 w-8 h-8 rounded-full bg-gradient-to-br from-navy to-navy-dark flex items-center justify-center shadow-md hover:scale-110 transition-transform">
             <Sparkles className="w-4 h-4 text-white" />

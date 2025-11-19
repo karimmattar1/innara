@@ -581,7 +581,11 @@ export default function LandingPage() {
                                 marginTop: '-20px',
                                 borderRadius: '50%',
                                 border: '3px solid rgba(29, 27, 56, 0.6)',
-                                background: 'radial-gradient(circle, rgba(29, 27, 56, 0.3) 0%, transparent 70%)'
+                                background: 'radial-gradient(circle, rgba(29, 27, 56, 0.3) 0%, transparent 70%)',
+                                willChange: 'transform',
+                                transform: 'translateZ(0)',
+                                backfaceVisibility: 'hidden',
+                                WebkitFontSmoothing: 'antialiased'
                               }}
                             />
                           ))}
@@ -664,7 +668,11 @@ export default function LandingPage() {
                                 marginTop: '-30px',
                                 borderRadius: '50%',
                                 border: '4px solid rgba(29, 27, 56, 0.6)',
-                                background: 'radial-gradient(circle, rgba(29, 27, 56, 0.3) 0%, transparent 70%)'
+                                background: 'radial-gradient(circle, rgba(29, 27, 56, 0.3) 0%, transparent 70%)',
+                                willChange: 'transform',
+                                transform: 'translateZ(0)',
+                                backfaceVisibility: 'hidden',
+                                WebkitFontSmoothing: 'antialiased'
                               }}
                             />
                           ))}
