@@ -615,14 +615,14 @@ function GuestAppContent() {
 
                 {/* Main Content - Full Height */}
                 <div className="flex-1 flex flex-col">
-                  <AnimatePresence mode="wait">
+                  <AnimatePresence>
                   {view === 'concierge' && (
                     <motion.div
                       key="concierge"
-                      initial={{ opacity: 0 }}
+                      initial={{ opacity: 1 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.15 }}
                       className="h-full"
                     >
                       <ConciergeView
@@ -644,10 +644,10 @@ function GuestAppContent() {
                   {view === 'explore' && (
                     <motion.div
                       key="explore"
-                      initial={{ opacity: 0 }}
+                      initial={{ opacity: 1 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.15 }}
                       className="h-full"
                     >
                       <ExploreView
@@ -661,10 +661,10 @@ function GuestAppContent() {
                   {view === 'requests' && (
                     <motion.div
                       key="requests"
-                      initial={{ opacity: 0 }}
+                      initial={{ opacity: 1 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.15 }}
                       className="h-full"
                     >
                       <RequestsView
@@ -677,10 +677,10 @@ function GuestAppContent() {
                   {view === 'profile' && (
                     <motion.div
                       key="profile"
-                      initial={{ opacity: 0 }}
+                      initial={{ opacity: 1 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.15 }}
                       className="h-full"
                     >
                       <ProfileView
@@ -693,10 +693,10 @@ function GuestAppContent() {
                   {view === 'room-service' && (
                     <motion.div
                       key="room-service"
-                      initial={{ opacity: 0 }}
+                      initial={{ opacity: 1 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.15 }}
                       className="h-full"
                     >
                       <RoomServiceView
