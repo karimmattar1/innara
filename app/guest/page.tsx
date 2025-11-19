@@ -615,14 +615,14 @@ function GuestAppContent() {
 
                 {/* Main Content - Full Height */}
                 <div className="flex-1 flex flex-col">
-                  <AnimatePresence>
+                  <AnimatePresence mode="wait">
                   {view === 'concierge' && (
                     <motion.div
                       key="concierge"
-                      initial={{ opacity: 1 }}
+                      initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.15 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
                       className="h-full"
                     >
                       <ConciergeView
@@ -644,10 +644,10 @@ function GuestAppContent() {
                   {view === 'explore' && (
                     <motion.div
                       key="explore"
-                      initial={{ opacity: 1 }}
+                      initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.15 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
                       className="h-full"
                     >
                       <ExploreView
@@ -661,10 +661,10 @@ function GuestAppContent() {
                   {view === 'requests' && (
                     <motion.div
                       key="requests"
-                      initial={{ opacity: 1 }}
+                      initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.15 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
                       className="h-full"
                     >
                       <RequestsView
@@ -677,10 +677,10 @@ function GuestAppContent() {
                   {view === 'profile' && (
                     <motion.div
                       key="profile"
-                      initial={{ opacity: 1 }}
+                      initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.15 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
                       className="h-full"
                     >
                       <ProfileView
@@ -693,10 +693,10 @@ function GuestAppContent() {
                   {view === 'room-service' && (
                     <motion.div
                       key="room-service"
-                      initial={{ opacity: 1 }}
+                      initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.15 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
                       className="h-full"
                     >
                       <RoomServiceView
@@ -1300,17 +1300,19 @@ function CheckoutView({ item, onPlaceOrder, onViewRequests }: any) {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
         className="absolute inset-0 bg-black/70 backdrop-blur-lg z-50 flex items-center justify-center"
       >
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
           className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-3xl p-8 text-center max-w-sm mx-4 shadow-2xl"
         >
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            transition={{ delay: 0.2, type: 'spring' }}
+            transition={{ delay: 0.3, duration: 0.5, type: 'spring', bounce: 0.4 }}
             className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center mx-auto mb-4 shadow-2xl"
           >
             <Check className="w-10 h-10 text-white" />
@@ -1334,12 +1336,13 @@ function CheckoutView({ item, onPlaceOrder, onViewRequests }: any) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
       className="absolute inset-0 bg-black/70 backdrop-blur-lg z-50 flex items-end"
     >
       <motion.div
         initial={{ y: '100%' }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.4 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
         className="backdrop-blur-2xl bg-white/10 border-t border-white/20 rounded-t-[32px] w-full shadow-2xl flex flex-col"
         style={{ maxHeight: '70%' }}
       >
