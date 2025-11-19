@@ -615,30 +615,22 @@ function GuestAppContent() {
 
                 {/* Main Content - Full Height */}
                 <div className="flex-1 flex flex-col">
-                  <AnimatePresence mode="wait">
+                  <AnimatePresence>
                   {view === 'concierge' && (
-                    <motion.div
+                    <ConciergeView
                       key="concierge"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
-                      className="h-full"
-                    >
-                      <ConciergeView
-                        step={step}
-                        nextStep={nextStep}
-                        selectedTime={selectedTime}
-                        typingText={typingText}
-                        onTimeSelect={(time: string) => {
-                          setSelectedTime(time)
-                          nextStep()
-                        }}
-                        onServiceClick={(service: string) => setView(service as any)}
-                        onNavClick={(nav: string) => setView(nav as any)}
-                        isEmbed={isEmbed}
-                      />
-                    </motion.div>
+                      step={step}
+                      nextStep={nextStep}
+                      selectedTime={selectedTime}
+                      typingText={typingText}
+                      onTimeSelect={(time: string) => {
+                        setSelectedTime(time)
+                        nextStep()
+                      }}
+                      onServiceClick={(service: string) => setView(service as any)}
+                      onNavClick={(nav: string) => setView(nav as any)}
+                      isEmbed={isEmbed}
+                    />
                   )}
 
                   {view === 'explore' && (
@@ -647,7 +639,7 @@ function GuestAppContent() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      transition={{ duration: 0.25 }}
                       className="h-full"
                     >
                       <ExploreView
@@ -664,7 +656,7 @@ function GuestAppContent() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      transition={{ duration: 0.25 }}
                       className="h-full"
                     >
                       <RequestsView
@@ -680,7 +672,7 @@ function GuestAppContent() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      transition={{ duration: 0.25 }}
                       className="h-full"
                     >
                       <ProfileView
@@ -696,7 +688,7 @@ function GuestAppContent() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      transition={{ duration: 0.25 }}
                       className="h-full"
                     >
                       <RoomServiceView
