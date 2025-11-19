@@ -91,7 +91,7 @@ export default function LandingPage() {
           }, 1500)
         } else if (action === 'CLICK_ADD_SALAD') {
           const id = Date.now()
-          setClickIndicators(prev => [...prev, { id, x: 90, y: 35, target: 'guest' }])
+          setClickIndicators(prev => [...prev, { id, x: 84.80, y: 37.44, target: 'guest' }])
           setTimeout(() => {
             setClickIndicators(prev => prev.filter(ind => ind.id !== id))
           }, 1500)
