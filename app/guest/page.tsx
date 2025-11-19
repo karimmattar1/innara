@@ -616,52 +616,97 @@ function GuestAppContent() {
                 <div className="flex-1 flex flex-col">
                   <AnimatePresence mode="wait">
                   {view === 'concierge' && (
-                    <ConciergeView
-                      step={step}
-                      nextStep={nextStep}
-                      selectedTime={selectedTime}
-                      typingText={typingText}
-                      onTimeSelect={(time: string) => {
-                        setSelectedTime(time)
-                        nextStep()
-                      }}
-                      onServiceClick={(service: string) => setView(service as any)}
-                      onNavClick={(nav: string) => setView(nav as any)}
-                      isEmbed={isEmbed}
-                    />
+                    <motion.div
+                      key="concierge"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="h-full"
+                    >
+                      <ConciergeView
+                        step={step}
+                        nextStep={nextStep}
+                        selectedTime={selectedTime}
+                        typingText={typingText}
+                        onTimeSelect={(time: string) => {
+                          setSelectedTime(time)
+                          nextStep()
+                        }}
+                        onServiceClick={(service: string) => setView(service as any)}
+                        onNavClick={(nav: string) => setView(nav as any)}
+                        isEmbed={isEmbed}
+                      />
+                    </motion.div>
                   )}
 
                   {view === 'explore' && (
-                    <ExploreView
-                      onServiceClick={(service: string) => setView(service as any)}
-                      onNavClick={(nav: string) => setView(nav as any)}
-                      isEmbed={isEmbed}
-                    />
+                    <motion.div
+                      key="explore"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="h-full"
+                    >
+                      <ExploreView
+                        onServiceClick={(service: string) => setView(service as any)}
+                        onNavClick={(nav: string) => setView(nav as any)}
+                        isEmbed={isEmbed}
+                      />
+                    </motion.div>
                   )}
 
                   {view === 'requests' && (
-                    <RequestsView
-                      onNavClick={(nav: string) => setView(nav as any)}
-                      isEmbed={isEmbed}
-                    />
+                    <motion.div
+                      key="requests"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="h-full"
+                    >
+                      <RequestsView
+                        onNavClick={(nav: string) => setView(nav as any)}
+                        isEmbed={isEmbed}
+                      />
+                    </motion.div>
                   )}
 
                   {view === 'profile' && (
-                    <ProfileView
-                      onNavClick={(nav: string) => setView(nav as any)}
-                      isEmbed={isEmbed}
-                    />
+                    <motion.div
+                      key="profile"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="h-full"
+                    >
+                      <ProfileView
+                        onNavClick={(nav: string) => setView(nav as any)}
+                        isEmbed={isEmbed}
+                      />
+                    </motion.div>
                   )}
 
                   {view === 'room-service' && (
-                    <RoomServiceView
-                      onBack={() => setView('concierge')}
-                      onAddToCart={(item: any) => {
-                        setCartItems([item])
-                      }}
-                      onCheckout={() => setView('checkout')}
-                      cartCount={cartItems.length}
-                    />
+                    <motion.div
+                      key="room-service"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="h-full"
+                    >
+                      <RoomServiceView
+                        onBack={() => setView('concierge')}
+                        onAddToCart={(item: any) => {
+                          setCartItems([item])
+                        }}
+                        onCheckout={() => setView('checkout')}
+                        cartCount={cartItems.length}
+                      />
+                    </motion.div>
                   )}
 
                   {view === 'checkout' && (
