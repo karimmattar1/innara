@@ -615,14 +615,14 @@ function GuestAppContent() {
 
                 {/* Main Content - Full Height */}
                 <div className="flex-1 flex flex-col">
-                  <AnimatePresence>
+                  <AnimatePresence mode="wait">
                   {view === 'concierge' && (
                     <motion.div
                       key="concierge"
-                      initial={{ opacity: 1 }}
+                      initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.15 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
                       className="h-full"
                     >
                       <ConciergeView
@@ -644,10 +644,10 @@ function GuestAppContent() {
                   {view === 'explore' && (
                     <motion.div
                       key="explore"
-                      initial={{ opacity: 1 }}
+                      initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.15 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
                       className="h-full"
                     >
                       <ExploreView
@@ -661,10 +661,10 @@ function GuestAppContent() {
                   {view === 'requests' && (
                     <motion.div
                       key="requests"
-                      initial={{ opacity: 1 }}
+                      initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.15 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
                       className="h-full"
                     >
                       <RequestsView
@@ -677,10 +677,10 @@ function GuestAppContent() {
                   {view === 'profile' && (
                     <motion.div
                       key="profile"
-                      initial={{ opacity: 1 }}
+                      initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.15 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
                       className="h-full"
                     >
                       <ProfileView
@@ -693,10 +693,10 @@ function GuestAppContent() {
                   {view === 'room-service' && (
                     <motion.div
                       key="room-service"
-                      initial={{ opacity: 1 }}
+                      initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.15 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
                       className="h-full"
                     >
                       <RoomServiceView
@@ -900,7 +900,7 @@ function ConciergeView({ step, nextStep, selectedTime, typingText, onTimeSelect,
               <div className="bg-gradient-to-br from-navy to-navy-dark text-white px-4 py-3 rounded-2xl rounded-bl-md max-w-[85%] shadow-2xl border-2 border-gold/30">
                 <p className="mb-2">Perfect! ✨ Housekeeping is on their way.</p>
                 <div className="flex items-center gap-2 text-sm">
-                  <span>⏱️ Estimated arrival: <span className="font-bold text-gold">~18 minutes</span></span>
+                  <span>⏱️ Estimated arrival: <span className="font-bold text-gold">~32 minutes</span></span>
                 </div>
                 <p className="text-xs opacity-70 mt-1">(2 requests ahead of you)</p>
                 <div className="mt-2 inline-block border border-gold/50 text-xs px-2 py-0.5 rounded-full bg-gold/10">
@@ -1045,8 +1045,8 @@ function ExploreView({ onServiceClick, onNavClick, isEmbed }: any) {
 
 function RequestsView({ onNavClick, isEmbed }: any) {
   const requests = [
-    { id: 1, service: 'Housekeeping', status: 'In Progress', time: '~18 min', icon: Wrench, color: 'from-blue-400 to-cyan-500' },
-    { id: 2, service: 'Room Service', status: 'Pending', time: '~32 min', icon: UtensilsCrossed, color: 'from-amber-400 to-orange-500' },
+    { id: 1, service: 'Housekeeping', status: 'In Progress', time: '~32 min', icon: Wrench, color: 'from-blue-400 to-cyan-500' },
+    { id: 2, service: 'Room Service', status: 'Pending', time: '~18 min', icon: UtensilsCrossed, color: 'from-amber-400 to-orange-500' },
   ]
 
   return (
@@ -1316,7 +1316,7 @@ function CheckoutView({ item, onPlaceOrder, onViewRequests }: any) {
             <Check className="w-10 h-10 text-white" />
           </motion.div>
           <h3 className="text-2xl font-semibold mb-2 text-white">Order Placed! 🎉</h3>
-          <p className="text-white/70 mb-6">We'll deliver in ~32 minutes</p>
+          <p className="text-white/70 mb-6">We'll deliver in ~18 minutes</p>
           <button
             onClick={onViewRequests}
             className="w-full h-12 bg-gradient-to-r from-navy to-navy-dark text-white rounded-full font-semibold text-sm flex items-center justify-center gap-2 hover:scale-105 transition-all shadow-lg"
@@ -1362,7 +1362,7 @@ function CheckoutView({ item, onPlaceOrder, onViewRequests }: any) {
             <div className="flex items-start gap-2">
               <Clock className="w-4 h-4 text-blue-300 flex-shrink-0 mt-0.5" />
               <div className="flex-1">
-                <p className="text-xs text-white">⏱️ Estimated delivery: <span className="font-bold">~32 minutes</span></p>
+                <p className="text-xs text-white">⏱️ Estimated delivery: <span className="font-bold">~18 minutes</span></p>
                 <p className="text-xs text-white/60 mt-0.5">Kitchen is busy</p>
                 <span className="inline-block mt-1.5 text-xs border border-navy text-navy px-2 py-0.5 rounded-full">AI Predicted</span>
               </div>

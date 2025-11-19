@@ -130,7 +130,7 @@ export default function LandingPage() {
                 staff: 'James',
                 staffInitials: 'JM',
                 isNew: true,
-                estimate: '~18 min'
+                estimate: '~32 min'
               }
             }, window.location.origin)
           }, 800)
@@ -148,7 +148,7 @@ export default function LandingPage() {
                 staff: 'Olivia',
                 staffInitials: 'OC',
                 isNew: true,
-                estimate: '~32 min'
+                estimate: '~18 min'
               }
             }, window.location.origin)
           }, 800)
