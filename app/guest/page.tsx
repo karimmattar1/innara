@@ -1183,7 +1183,7 @@ function RoomServiceView({ onBack, onAddToCart, onCheckout, cartCount }: any) {
 
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto">
-        <div className="px-6 py-6">
+        <div className="px-6 py-6 pb-4">
           <div className="backdrop-blur-xl bg-white/10 border-l-4 border-navy/30 p-3 rounded-lg mb-4 flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-navy flex-shrink-0" />
             <span className="text-sm text-navy">Popular right now: Caesar Salad</span>
@@ -1198,7 +1198,7 @@ function RoomServiceView({ onBack, onAddToCart, onCheckout, cartCount }: any) {
             ))}
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-4 pb-2">
             <FoodCard
               name="Caesar Salad"
               description="Romaine, croutons, parmesan"
