@@ -244,11 +244,15 @@ function GuestAppContent() {
       }, window.location.origin)
 
       await new Promise(resolve => setTimeout(resolve, 1000))
-      setCartItems([{
-        name: 'Caesar Salad',
-        price: 12,
-        description: 'Romaine, croutons, parmesan'
-      }])
+      // Actually click the button to trigger the state change
+      const foodCards2 = Array.from(document.querySelectorAll('.space-y-4 > .backdrop-blur-xl'))
+      const caesarCard2 = foodCards2.find(card => card.textContent?.includes('Caesar Salad'))
+      if (caesarCard2) {
+        const addButton2 = caesarCard2.querySelector('button.w-10.h-10.rounded-full')
+        if (addButton2) {
+          (addButton2 as HTMLButtonElement).click()
+        }
+      }
 
       // Show click indicator for checkout button (2s)
       await new Promise(resolve => setTimeout(resolve, 2000))
