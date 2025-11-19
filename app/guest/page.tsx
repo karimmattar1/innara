@@ -895,14 +895,14 @@ function ConciergeView({ step, nextStep, selectedTime, typingText, onTimeSelect,
               <div className="absolute -top-2 -left-2 backdrop-blur-xl bg-white/90 text-navy text-xs font-semibold px-2 py-0.5 rounded-full border border-navy shadow-lg">
                 AI
               </div>
-              <div className="bg-gradient-to-br from-gold-light to-gold text-white px-4 py-3 rounded-2xl rounded-bl-md max-w-[85%] shadow-2xl">
+              <div className="bg-gradient-to-br from-navy to-navy-dark text-white px-4 py-3 rounded-2xl rounded-bl-md max-w-[85%] shadow-2xl border-2 border-gold/30">
                 <p className="mb-2">Perfect! ✨ Housekeeping is on their way.</p>
                 <div className="flex items-center gap-2 text-sm">
-                  <span>⏱️ Estimated arrival: <span className="font-bold">~18 minutes</span></span>
+                  <span>⏱️ Estimated arrival: <span className="font-bold text-gold">~18 minutes</span></span>
                 </div>
                 <p className="text-xs opacity-70 mt-1">(2 requests ahead of you)</p>
-                <div className="mt-2 inline-block border border-white/50 text-xs px-2 py-0.5 rounded-full">
-                  AI Predicted
+                <div className="mt-2 inline-block border border-gold/50 text-xs px-2 py-0.5 rounded-full bg-gold/10">
+                  <span className="text-gold font-semibold">✓ Confirmed</span>
                 </div>
               </div>
             </div>
