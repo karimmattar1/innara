@@ -160,7 +160,7 @@ export default function LandingPage() {
             setTimeout(() => {
               setClickIndicators(prev => prev.filter(ind => ind.id !== id))
             }, 1500)
-          }, 1500)
+          }, 200)
 
           // Then switch dashboard to analytics after showing click
           setTimeout(() => {
@@ -168,7 +168,7 @@ export default function LandingPage() {
               type: 'SWITCH_VIEW',
               view: 'analytics'
             }, window.location.origin)
-          }, 3500)
+          }, 700)
         }
       }
     }
