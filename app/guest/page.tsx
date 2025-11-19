@@ -1322,10 +1322,7 @@ function CheckoutView({ item, onPlaceOrder, onViewRequests }: any) {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+    <div
       className="absolute inset-0 bg-black/70 backdrop-blur-lg z-50 flex items-end"
     >
       <motion.div
@@ -1387,7 +1384,7 @@ function CheckoutView({ item, onPlaceOrder, onViewRequests }: any) {
           </button>
         </div>
       </motion.div>
-    </motion.div>
+    </div>
   )
 }
 
