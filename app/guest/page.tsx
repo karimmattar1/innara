@@ -58,10 +58,14 @@ function GuestAppContent() {
 
       await new Promise(resolve => setTimeout(resolve, 800))
 
-      // Show typing in input field
-      setTypingText('I need my room cleaned')
+      // Show typing in input field - character by character
+      const message = 'I need my room cleaned'
+      for (let i = 0; i <= message.length; i++) {
+        setTypingText(message.substring(0, i))
+        await new Promise(resolve => setTimeout(resolve, 50)) // 50ms per character
+      }
 
-      await new Promise(resolve => setTimeout(resolve, 1200))
+      await new Promise(resolve => setTimeout(resolve, 400))
 
       // Show click on send button - re-query container to ensure fresh reference
       const containerForSend = document.querySelector('[data-app-container]')
