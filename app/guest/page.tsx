@@ -244,19 +244,20 @@ function GuestAppContent() {
       }, window.location.origin)
 
       await new Promise(resolve => setTimeout(resolve, 1000))
-      // Actually click the button to trigger the state change
-      console.log('[DEMO] Attempting to click Caesar Salad button...')
+      // Add Caesar Salad to cart
+      setCartItems([{
+        name: 'Caesar Salad',
+        price: 12,
+        description: 'Romaine, croutons, parmesan'
+      }])
+
+      // Trigger button click to update UI state
       const foodCards2 = Array.from(document.querySelectorAll('.space-y-4 > .backdrop-blur-xl'))
-      console.log('[DEMO] Found food cards:', foodCards2.length)
       const caesarCard2 = foodCards2.find(card => card.textContent?.includes('Caesar Salad'))
-      console.log('[DEMO] Found Caesar card:', !!caesarCard2)
       if (caesarCard2) {
-        const addButton2 = caesarCard2.querySelector('button.w-10.h-10.rounded-full')
-        console.log('[DEMO] Found add button:', !!addButton2)
+        const addButton2 = caesarCard2.querySelector('button.w-10.h-10.rounded-full') as HTMLButtonElement
         if (addButton2) {
-          console.log('[DEMO] Clicking button now...')
-          (addButton2 as HTMLButtonElement).click()
-          console.log('[DEMO] Button clicked!')
+          addButton2.click()
         }
       }
 
