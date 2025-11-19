@@ -721,39 +721,34 @@ export default function LandingPage() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center mb-12"
-            >
-              <h2 className="text-5xl md:text-6xl font-light text-navy mb-6" style={{ fontFamily: 'Georgia, serif' }}>
-                Get in <span className="italic">Touch</span>
-              </h2>
-              <p className="text-xl text-navy/70 max-w-2xl mx-auto font-light">
-                Questions about bringing INNARA to your hotel? We'd love to hear from you.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="backdrop-blur-xl bg-white/40 border border-white/40 rounded-3xl p-12 shadow-2xl"
+              className="bg-gradient-to-br from-navy via-navy to-navy-dark border border-gold/20 rounded-3xl p-12 shadow-2xl"
             >
+              <div className="text-center mb-8">
+                <h2 className="text-5xl md:text-6xl font-light text-white mb-6" style={{ fontFamily: 'Georgia, serif' }}>
+                  Get in <span className="italic text-gold">Touch</span>
+                </h2>
+                <p className="text-xl text-white/70 max-w-2xl mx-auto font-light">
+                  Questions about bringing INNARA to your hotel? We'd love to hear from you.
+                </p>
+              </div>
+
               <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
                 <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-navy rounded-2xl flex items-center justify-center shadow-lg">
-                    <Mail className="w-8 h-8 text-white" />
+                  <div className="w-16 h-16 bg-gold rounded-2xl flex items-center justify-center shadow-lg">
+                    <Mail className="w-8 h-8 text-navy" />
                   </div>
                   <div>
-                    <p className="text-sm text-navy/60 mb-1">Email us at</p>
-                    <a href="mailto:hello@innara.ai" className="text-2xl font-semibold text-navy hover:text-gold transition-colors">
+                    <p className="text-sm text-white/60 mb-1">Email us at</p>
+                    <a href="mailto:hello@innara.ai" className="text-2xl font-semibold text-white hover:text-gold transition-colors">
                       hello@innara.ai
                     </a>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-8 pt-8 border-t border-white/40 text-center">
-                <p className="text-navy/70 text-sm">
+              <div className="mt-8 pt-8 border-t border-white/20 text-center">
+                <p className="text-white/70 text-sm">
                   Whether you're a hotel interested in a pilot program or a guest excited about the future of hospitality, we're here to help.
                 </p>
               </div>
