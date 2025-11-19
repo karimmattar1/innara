@@ -317,15 +317,8 @@ function DashboardContent() {
 
       {/* Main Content */}
       <div className="relative z-10 p-6 space-y-6">
-        <AnimatePresence mode="wait">
         {activeView === 'dashboard' ? (
-          <motion.div
-            key="dashboard"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-          >
+          <>
         {/* Top Stats Row - Key Metrics */}
         <div className="grid grid-cols-5 gap-6">
           <MetricCard
@@ -544,19 +537,10 @@ function DashboardContent() {
             </div>
           </div>
         </div>
-          </motion.div>
+          </>
         ) : (
-          <motion.div
-            key="analytics"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-          >
-            <AnalyticsView />
-          </motion.div>
+          <AnalyticsView />
         )}
-        </AnimatePresence>
       </div>
 
       <style jsx global>{`
