@@ -567,25 +567,27 @@ export default function LandingPage() {
                           {clickIndicators.filter(ind => ind.target === 'guest').map((indicator) => (
                             <motion.div
                               key={indicator.id}
-                              initial={{ scale: 0, opacity: 1 }}
-                              animate={{ scale: 2, opacity: 0 }}
+                              initial={{ opacity: 0.8 }}
+                              animate={{ opacity: 0 }}
                               exit={{ opacity: 0 }}
-                              transition={{ duration: 0.8 }}
+                              transition={{ duration: 0.8, ease: "easeOut" }}
                               className="absolute pointer-events-none"
                               style={{
                                 left: `${indicator.x}%`,
                                 top: `${indicator.y}%`,
-                                width: '40px',
-                                height: '40px',
-                                marginLeft: '-20px',
-                                marginTop: '-20px',
+                                width: '80px',
+                                height: '80px',
+                                marginLeft: '-40px',
+                                marginTop: '-40px',
                                 borderRadius: '50%',
                                 border: '3px solid rgba(29, 27, 56, 0.6)',
                                 background: 'radial-gradient(circle, rgba(29, 27, 56, 0.3) 0%, transparent 70%)',
-                                willChange: 'transform',
-                                transform: 'translateZ(0)',
+                                willChange: 'opacity',
+                                transform: 'translate3d(0, 0, 0)',
                                 backfaceVisibility: 'hidden',
-                                WebkitFontSmoothing: 'antialiased'
+                                WebkitFontSmoothing: 'subpixel-antialiased',
+                                filter: 'blur(0)',
+                                imageRendering: '-webkit-optimize-contrast'
                               }}
                             />
                           ))}
@@ -654,25 +656,27 @@ export default function LandingPage() {
                           {clickIndicators.filter(ind => ind.target === 'dashboard').map((indicator) => (
                             <motion.div
                               key={indicator.id}
-                              initial={{ scale: 0, opacity: 1 }}
-                              animate={{ scale: 2.5, opacity: 0 }}
+                              initial={{ opacity: 0.8 }}
+                              animate={{ opacity: 0 }}
                               exit={{ opacity: 0 }}
-                              transition={{ duration: 0.8 }}
+                              transition={{ duration: 1, ease: "easeOut" }}
                               className="absolute pointer-events-none"
                               style={{
                                 left: `${indicator.x}%`,
                                 top: `${indicator.y}%`,
-                                width: '60px',
-                                height: '60px',
-                                marginLeft: '-30px',
-                                marginTop: '-30px',
+                                width: '150px',
+                                height: '150px',
+                                marginLeft: '-75px',
+                                marginTop: '-75px',
                                 borderRadius: '50%',
                                 border: '4px solid rgba(29, 27, 56, 0.6)',
                                 background: 'radial-gradient(circle, rgba(29, 27, 56, 0.3) 0%, transparent 70%)',
-                                willChange: 'transform',
-                                transform: 'translateZ(0)',
+                                willChange: 'opacity',
+                                transform: 'translate3d(0, 0, 0)',
                                 backfaceVisibility: 'hidden',
-                                WebkitFontSmoothing: 'antialiased'
+                                WebkitFontSmoothing: 'subpixel-antialiased',
+                                filter: 'blur(0)',
+                                imageRendering: '-webkit-optimize-contrast'
                               }}
                             />
                           ))}

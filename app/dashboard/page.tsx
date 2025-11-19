@@ -25,6 +25,10 @@ function DashboardContent() {
     roomService: 9,
     valet: 7,
   })
+  const [revenue, setRevenue] = useState(12.4) // in thousands
+  const [guestHappiness, setGuestHappiness] = useState(94) // percentage
+  const [avgResolution, setAvgResolution] = useState(6.2) // minutes
+  const [guestsServed, setGuestsServed] = useState(87) // count
   const [requests, setRequests] = useState(initialRequests)
   const [activities, setActivities] = useState([
     { id: 'a3', text: 'Room 420 • Pizza delivered', time: '5 min ago' },
@@ -147,6 +151,10 @@ function DashboardContent() {
             total: prev.total + 1,
             housekeeping: prev.housekeeping + 1
           }))
+          // Housekeeping typically doesn't add revenue, slight happiness increase
+          setGuestHappiness(prev => Math.min(100, prev + 0.5))
+          setAvgResolution(prev => Math.max(4.0, prev - 0.1)) // Improving resolution time
+          setGuestsServed(prev => prev + 1)
           setActivities(prev => [{
             id: `a-${Date.now()}`,
             text: `Room ${request.room} • Housekeeping requested`,
@@ -158,6 +166,11 @@ function DashboardContent() {
             total: prev.total + 1,
             roomService: prev.roomService + 1
           }))
+          // Room service adds revenue (Caesar Salad = $12)
+          setRevenue(prev => prev + 0.012) // Add $12 as 0.012K
+          setGuestHappiness(prev => Math.min(100, prev + 1)) // Food makes people happy
+          setAvgResolution(prev => Math.max(4.0, prev - 0.15))
+          setGuestsServed(prev => prev + 1)
           setActivities(prev => [{
             id: `a-${Date.now()}`,
             text: `Room ${request.room} • ${request.item} ordered`,
@@ -168,6 +181,9 @@ function DashboardContent() {
             ...prev,
             total: prev.total + 1
           }))
+          setGuestHappiness(prev => Math.min(100, prev + 0.3))
+          setAvgResolution(prev => Math.max(4.0, prev - 0.1))
+          setGuestsServed(prev => prev + 1)
           setActivities(prev => [{
             id: `a-${Date.now()}`,
             text: `Room ${request.room} • ${request.item}`,
@@ -208,6 +224,10 @@ function DashboardContent() {
           roomService: 9,
           valet: 7,
         })
+        setRevenue(12.4)
+        setGuestHappiness(94)
+        setAvgResolution(6.2)
+        setGuestsServed(87)
         setActivities([
           { id: 'a3', text: 'Room 420 • Pizza delivered', time: '5 min ago' },
           { id: 'a4', text: 'Room 305 • Towels delivered', time: '12 min ago' },
@@ -304,7 +324,7 @@ function DashboardContent() {
           <MetricCard
             icon={Star}
             label="Guest Happiness"
-            value="94%"
+            value={`${Math.round(guestHappiness)}%`}
             change="+3% vs last week"
             trend="up"
             description="Based on 128 interactions"
@@ -312,7 +332,7 @@ function DashboardContent() {
           <MetricCard
             icon={DollarSign}
             label="Revenue Today"
-            value="$12.4K"
+            value={`$${revenue.toFixed(1)}K`}
             change="+$2.1K vs yesterday"
             trend="up"
             description="Upsell conversion: 34%"
@@ -320,7 +340,7 @@ function DashboardContent() {
           <MetricCard
             icon={Clock}
             label="Avg Resolution"
-            value="6.2 min"
+            value={`${avgResolution.toFixed(1)} min`}
             change="-1.8 min vs yesterday"
             trend="up"
             description="Target: < 8 min"
@@ -336,7 +356,7 @@ function DashboardContent() {
           <MetricCard
             icon={Users}
             label="Guests Served"
-            value="87"
+            value={guestsServed}
             change="+12 today"
             trend="up"
             description="168 total checked in"

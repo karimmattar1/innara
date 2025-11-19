@@ -244,22 +244,12 @@ function GuestAppContent() {
       }, window.location.origin)
 
       await new Promise(resolve => setTimeout(resolve, 1000))
-      // Add Caesar Salad to cart
+      // Add Caesar Salad to cart - this will automatically update the button display
       setCartItems([{
         name: 'Caesar Salad',
         price: 12,
         description: 'Romaine, croutons, parmesan'
       }])
-
-      // Trigger button click to update UI state
-      const foodCards2 = Array.from(document.querySelectorAll('.space-y-4 > .backdrop-blur-xl'))
-      const caesarCard2 = foodCards2.find(card => card.textContent?.includes('Caesar Salad'))
-      if (caesarCard2) {
-        const addButton2 = caesarCard2.querySelector('button.w-10.h-10.rounded-full') as HTMLButtonElement
-        if (addButton2) {
-          addButton2.click()
-        }
-      }
 
       // Show click indicator for checkout button (2s)
       await new Promise(resolve => setTimeout(resolve, 2000))
@@ -608,9 +598,9 @@ function GuestAppContent() {
               </div>
 
               {/* Content */}
-              <div className="relative z-10 h-full flex flex-col pt-2">
+              <div className="relative z-10 h-full flex flex-col pt-4">
                 {/* Top Bar - Transparent & Blurred - Always show */}
-                <div className="flex-shrink-0 h-14 backdrop-blur-2xl bg-white/20 border-b border-white/20 px-4 flex items-center justify-between">
+                <div className="flex-shrink-0 h-12 backdrop-blur-2xl bg-white/20 border-b border-white/20 px-4 flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Image src="/logo.png" alt="INNARA" width={32} height={32} className="rounded-full" />
                     <span className="text-lg font-light tracking-wider text-navy" style={{ fontFamily: 'Georgia, serif' }}>INNARA</span>
@@ -716,6 +706,7 @@ function GuestAppContent() {
                         }}
                         onCheckout={() => setView('checkout')}
                         cartCount={cartItems.length}
+                        added={cartItems.length > 0}
                       />
                     </motion.div>
                   )}
@@ -925,18 +916,29 @@ function ConciergeView({ step, nextStep, selectedTime, typingText, onTimeSelect,
 
       {/* Bottom Fixed Chat Input - Always show */}
       <div className="flex-shrink-0 px-4 py-2 backdrop-blur-xl bg-white/10 border-t border-white/20">
-        <div className="relative">
+        <div
+          className="relative"
+          style={{
+            transform: 'translateZ(0)',
+            backfaceVisibility: 'hidden',
+            willChange: 'contents'
+          }}
+        >
           <input
             type="text"
             value={typingText}
             readOnly
             placeholder="What do you need today?"
             onClick={() => step === 0 && nextStep()}
-            className="w-full h-11 pl-4 pr-12 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-sm text-navy placeholder:text-navy/50 focus:outline-none focus:border-navy focus:bg-white/30 transition-colors shadow-lg"
+            className="w-full h-11 pl-4 pr-12 rounded-full backdrop-blur-xl bg-white/20 border border-white/30 text-sm text-navy placeholder:text-navy/50 focus:outline-none focus:border-navy focus:bg-white/30 transition-none shadow-lg"
             style={{
-              WebkitFontSmoothing: 'antialiased',
+              WebkitFontSmoothing: 'subpixel-antialiased',
+              MozOsxFontSmoothing: 'grayscale',
               backfaceVisibility: 'hidden',
-              transform: 'translateZ(0)'
+              transform: 'translate3d(0, 0, 0)',
+              willChange: 'contents',
+              filter: 'blur(0)',
+              imageRendering: '-webkit-optimize-contrast'
             }}
           />
           <button className="absolute right-1.5 top-1.5 w-8 h-8 rounded-full bg-gradient-to-br from-navy to-navy-dark flex items-center justify-center shadow-md hover:scale-110 transition-transform">
@@ -1172,11 +1174,8 @@ function ProfileView({ onNavClick, isEmbed }: any) {
   )
 }
 
-function RoomServiceView({ onBack, onAddToCart, onCheckout, cartCount }: any) {
-  const [added, setAdded] = useState(false)
-
+function RoomServiceView({ onBack, onAddToCart, onCheckout, cartCount, added }: any) {
   const handleAdd = () => {
-    setAdded(true)
     onAddToCart({
       name: 'Caesar Salad',
       price: 12,
