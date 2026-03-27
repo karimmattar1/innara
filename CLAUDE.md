@@ -50,15 +50,15 @@ Hotels use 5-15 disconnected tools for guest communication, service requests, ho
 - **Middleware:** Role-based routing, redirect unauthorized users
 
 ## Current Phase
-Phase 1: Foundation (21 tickets, ~2.5 weeks)
+Phase 1: Foundation (22 tickets, ~2.5 weeks)
 
-## Phase Plan (6 phases, ~147 tickets total)
-1. **Foundation** (21 tickets) -- Project setup, schema, auth (booking ref verification, magic link, password reset, email verification), middleware, component migration, portal shells, CI/CD
-2. **Core Features** (28 tickets) -- AI concierge, service requests, room service, guest checkout, messaging, QR codes, AI security, image upload, order cancellation, form idempotency
-3. **Supporting Features** (19 tickets) -- Staff portal screens, staff profile, notification center, break/away status, request escalation, shift handoff, optimistic locking, department scoping
+## Phase Plan (6 phases, ~155 tickets total)
+1. **Foundation** (22 tickets) -- Project setup, schema, auth (booking ref verification, magic link, password reset, email verification), middleware, component migration, portal shells, CI/CD, RLS verification
+2. **Core Features** (29 tickets) -- AI concierge, service requests, room service, guest checkout, messaging, QR codes, AI security, image upload, order cancellation, form idempotency, adversarial AI testing
+3. **Supporting Features** (20 tickets) -- Staff portal screens, staff profile, notification center, break/away status, request escalation, shift handoff, optimistic locking, department scoping, concurrency stress testing
 4. **Manager Portal + Billing** (30 tickets) -- Manager dashboard, analytics, catalog, staff management, billing, branding, manager profile, service hours, Stripe resilience, invite lifecycle, audit expansion
-5. **Admin + PWA + PMS** (21 tickets) -- Admin portal, PWA, PMS integration, i18n, GDPR export, admin audit, PWA install prompt, hotel deactivation cascade, role change workflow, PMS sync recovery
-6. **Testing & Launch** (15 tickets) -- E2E test suites, security audit, performance testing, launch checklist, empty state designs
+5. **Admin + PWA + PMS** (23 tickets) -- Admin portal, PWA, PMS integration, i18n, GDPR export, admin audit, PWA install prompt, hotel deactivation cascade, role change workflow, PMS sync recovery, network resilience, PMS malformed data
+6. **Testing & Launch** (18 tickets) -- E2E test suites, security audit, performance testing, launch checklist, empty state designs, external pentest, OWASP Top 10 audit, PII data protection audit
 
 ## Linear Team
 - **Team Key:** INN
