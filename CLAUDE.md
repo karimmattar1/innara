@@ -50,15 +50,15 @@ Hotels use 5-15 disconnected tools for guest communication, service requests, ho
 - **Middleware:** Role-based routing, redirect unauthorized users
 
 ## Current Phase
-Phase 1: Foundation (18 tickets, ~2.5 weeks)
+Phase 1: Foundation (21 tickets, ~2.5 weeks)
 
-## Phase Plan (6 phases, 102 tickets total)
-1. **Foundation** (18 tickets) -- Project setup, schema, auth, middleware, component migration, portal shells, CI/CD
-2. **Core Features** (22 tickets) -- AI concierge, service requests, room service, messaging, staff dashboard
-3. **Management & Analytics** (20 tickets) -- Manager dashboard, analytics, catalog management, staff management, reporting
-4. **Advanced Features** (18 tickets) -- Admin portal, billing/Stripe, integrations, branding, go-live wizard
-5. **Polish & Edge Cases** (14 tickets) -- Error handling, loading states, accessibility, responsive fixes, performance
-6. **Testing & Launch** (10 tickets) -- E2E test suites, security audit, performance testing, launch checklist
+## Phase Plan (6 phases, ~147 tickets total)
+1. **Foundation** (21 tickets) -- Project setup, schema, auth (booking ref verification, magic link, password reset, email verification), middleware, component migration, portal shells, CI/CD
+2. **Core Features** (28 tickets) -- AI concierge, service requests, room service, guest checkout, messaging, QR codes, AI security, image upload, order cancellation, form idempotency
+3. **Supporting Features** (19 tickets) -- Staff portal screens, staff profile, notification center, break/away status, request escalation, shift handoff, optimistic locking, department scoping
+4. **Manager Portal + Billing** (30 tickets) -- Manager dashboard, analytics, catalog, staff management, billing, branding, manager profile, service hours, Stripe resilience, invite lifecycle, audit expansion
+5. **Admin + PWA + PMS** (21 tickets) -- Admin portal, PWA, PMS integration, i18n, GDPR export, admin audit, PWA install prompt, hotel deactivation cascade, role change workflow, PMS sync recovery
+6. **Testing & Launch** (15 tickets) -- E2E test suites, security audit, performance testing, launch checklist, empty state designs
 
 ## Linear Team
 - **Team Key:** INN

@@ -7,11 +7,15 @@
 
 ## What's Done
 - Research complete (all 6 agents: market, competitor, legal, tech, business, GTM)
-- 6-phase plan approved (102 tickets)
+- 6-phase plan approved (~147 tickets total: 102 original + 11 initial gaps + 13 user-flow gaps + 21 edge-case gaps)
+- User-flow analysis complete (22 journeys, 121 scenarios, 35 gaps, 25+ Playwright specs) — see docs/planning/user-flows.md
+- Comprehensive architecture doc (580 lines, 18 sections) — see docs/planning/architecture.md
+- Database schema doc (28 tables, full RLS, triggers) — see docs/planning/database-schema.md
 - Repo scaffolded with full project structure
+- All Linear tickets created (INN-1 through INN-147) with labels, Phase 1 tickets in Todo
 
 ## What's Next
-- Phase 1: Foundation (~2.5 weeks, 18 tickets)
+- Phase 1: Foundation (~2.5 weeks, 21 tickets)
   - Supabase schema (baseline from existing migrations + new tables)
   - Auth (4 roles: guest, staff, manager, admin -- JWT custom claims)
   - Middleware (role-based routing to correct portal)
@@ -30,12 +34,12 @@
 - 4 portals: Guest (mobile PWA), Staff (desktop), Manager (desktop), Admin (desktop)
 
 ## Phase Progress
-- [ ] Phase 1: Foundation (18 tickets)
-- [ ] Phase 2: Core Features (22 tickets)
-- [ ] Phase 3: Management & Analytics (20 tickets)
-- [ ] Phase 4: Advanced Features (18 tickets)
-- [ ] Phase 5: Polish & Edge Cases (14 tickets)
-- [ ] Phase 6: Testing & Launch (10 tickets)
+- [ ] Phase 1: Foundation (21 tickets — 18 original + 3 gaps)
+- [ ] Phase 2: Core Features (28 tickets — 20 original + 8 gaps)
+- [ ] Phase 3: Supporting Features (19 tickets — 12 original + 7 gaps)
+- [ ] Phase 4: Manager Portal + Billing (30 tickets — 24 original + 6 gaps)
+- [ ] Phase 5: Admin + PWA + PMS (21 tickets — 14 original + 7 gaps)
+- [ ] Phase 6: Testing & Launch (15 tickets — 14 original + 1 gap)
 
 ## Blockers
 - None currently
@@ -43,6 +47,7 @@
 ## Links
 - Linear: INN team
 - GitHub: https://github.com/karimmattar1/innara
+- Supabase: innara (ref: hbqcujxpphwgkgrqpjmo, region: ap-south-1, ai-solutions org)
 - Figma: https://www.figma.com/design/p6rGnzuVAssEL9eCdq14RE/
 - Staging: TBD (Vercel)
 - Production: TBD
