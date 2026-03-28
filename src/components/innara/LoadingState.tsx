@@ -105,7 +105,7 @@ export function LoadingSkeleton({
         <div
           key={i}
           className="h-4 bg-muted/50 rounded animate-pulse"
-          style={{ width: `${65 + Math.random() * 30}%` }}
+          style={{ width: `${65 + ((i * 17) % 30)}%` }}
         />
       ))}
     </div>

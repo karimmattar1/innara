@@ -31,7 +31,7 @@ interface RequestChatProps {
 }
 
 export function RequestChat({
-  requestId,
+  requestId: _requestId,
   isStaff = false,
   currentUserId = '',
   currentUserName = '',

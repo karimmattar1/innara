@@ -12,7 +12,7 @@ interface SlaIndicatorProps {
 }
 
 export function SlaIndicator({ createdAt, slaMinutes, status, size = "sm" }: SlaIndicatorProps) {
-  const [now, setNow] = useState(Date.now());
+  const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
     const interval = setInterval(() => setNow(Date.now()), 30000);

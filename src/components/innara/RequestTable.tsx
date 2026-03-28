@@ -6,7 +6,6 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { Play, CheckCircle2, UserPlus, Eye } from "lucide-react";
 import { StatusBadge } from "./StatusBadge";
 import { StaffAvatar } from "./StaffAvatar";
-import { STATUS_CONFIG } from "@/constants/app";
 import type { RequestStatus } from "@/constants/app";
 
 interface Staff {
