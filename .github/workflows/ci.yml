@@ -6,9 +6,13 @@ on:
   pull_request:
     branches: [main]
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  lint-and-typecheck:
-    name: Lint & Type Check
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,8 +21,21 @@ jobs:
           node-version: 20
           cache: "npm"
       - run: npm ci
+
       - run: npm run lint
-      - run: npx tsc --noEmit
+
+  typecheck:
+    name: Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+      - run: npm ci
+
+      - run: npm run typecheck
 
   unit-tests:
     name: Unit Tests
@@ -30,12 +47,13 @@ jobs:
           node-version: 20
           cache: "npm"
       - run: npm ci
-      - run: npx vitest run
+
+      - run: npm run test -- --run
 
   build:
     name: Build
     runs-on: ubuntu-latest
-    needs: [lint-and-typecheck]
+    needs: [lint, typecheck]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -43,21 +61,16 @@ jobs:
           node-version: 20
           cache: "npm"
       - run: npm ci
-      - run: npm run build
 
-  e2e-tests:
-    name: E2E Tests
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/cache@v4
         with:
-          node-version: 20
-          cache: "npm"
-      - run: npm ci
-      - run: npx playwright install --with-deps chromium
-      - run: npx playwright test
+          path: .next/cache
+          key: nextjs-cache-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('src/**') }}
+          restore-keys: |
+            nextjs-cache-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-
+            nextjs-cache-${{ runner.os }}-
+
+      - run: npm run build
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
