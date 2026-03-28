@@ -1,8 +1,8 @@
 # Innara -- Primer
 
 ## Current State
-- **Phase:** Phase 1: Foundation (nearly complete — 3 tickets remaining)
-- **Last Updated:** 2026-03-27
+- **Phase:** Phase 1: Foundation — COMPLETE
+- **Last Updated:** 2026-03-28
 - **Linear Team:** INN
 
 ## What's Done (Phase 1)
@@ -25,17 +25,15 @@
 - INN-63: CI/CD — GitHub Actions (ci.yml + e2e.yml) + Vercel config
 - INN-65: Auth E2E tests — 18 Playwright tests, all passing
 - INN-116: Password reset flow (forgot password + reset confirmation pages)
+- INN-117: Email verification flow — callback route + verify-email page (success/error states)
+- INN-127: Guest booking ref verification — 3-step flow at /auth/guest/verify (booking ref → email → magic link)
+- INN-148: RLS tenant isolation — tested with 2 hotels, 6 users. Found + fixed 20 policies with global manager access. Migration: fix_rls_manager_tenant_isolation. Added is_manager_of_hotel() SECURITY DEFINER function.
 - Logo assets copied to public/ (4 files: icon + wordmark, light + dark)
 - Sonner toast provider added to root layout
 - Glassmorphism CSS (glass-card, glass-card-dark, glass-panel, gradient orbs, mobile-header, bottom-nav)
-
-## Remaining Phase 1 (3 tickets)
-- INN-117: Email verification flow — callback route done, needs Supabase email template config (manual step)
-- INN-127: Guest booking ref verification + magic link + multi-guest — complex, may overlap with Phase 2
-- INN-148: RLS tenant isolation verification — needs test data + multiple users to test properly
+- Server actions: verifyBookingReference, sendGuestMagicLink (src/app/actions/auth.ts)
 
 ## What's Next
-- Complete remaining 3 Phase 1 tickets or defer to Phase 2 if appropriate
 - Run `/phase-review` (codex-reviewer + qa-tester + scorer + self-learner)
 - If phase passes: move Phase 2 tickets from Backlog → Todo
 - Begin Phase 2: Core Features (AI concierge, service requests, room service)
@@ -48,6 +46,7 @@
 - JWT claims inject app_role, hotel_id, department via custom_access_token_hook
 - Middleware redirects: guest portal → /auth/guest/login, staff/manager/admin → /auth/staff/login
 - Supabase project: hbqcujxpphwgkgrqpjmo (ap-south-1, ai-solutions org)
+- RLS uses `is_manager_of_hotel()` SECURITY DEFINER function to avoid infinite recursion on staff_assignments and scope managers to their hotel
 
 ## Manual Steps Needed
 - Enable JWT hook in Supabase Dashboard → Authentication → Hooks → Custom Access Token
@@ -55,7 +54,7 @@
 - Configure Supabase email templates for verification + password reset
 
 ## Phase Progress
-- [~] Phase 1: Foundation (22 tickets — 19 done, 3 remaining)
+- [x] Phase 1: Foundation (22 tickets — complete 2026-03-28)
 - [ ] Phase 2: Core Features (29 tickets)
 - [ ] Phase 3: Supporting Features (20 tickets)
 - [ ] Phase 4: Manager Portal + Billing (30 tickets)
