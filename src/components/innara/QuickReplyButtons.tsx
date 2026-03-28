@@ -1,0 +1,47 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+
+interface QuickReplyButtonsProps {
+  options: string[];
+  onSelect: (option: string) => void;
+}
+
+export function QuickReplyButtons({ options, onSelect }: QuickReplyButtonsProps) {
+  const router = useRouter();
+
+  const handleSelect = (option: string) => {
+    const normalized = option.trim().toLowerCase();
+
+    // Prevent known loop: this quick reply should navigate, not be re-parsed as text.
+    if (
+      normalized === "open room service menu" ||
+      normalized === "open menu" ||
+      normalized === "show menu" ||
+      normalized === "view menu" ||
+      normalized === "order one of these"
+    ) {
+      router.push("/guest/room-service");
+      return;
+    }
+
+    onSelect(option);
+  };
+
+  return (
+    <div className="flex flex-wrap gap-2 mt-3">
+      {options.map((option) => (
+        <Button
+          key={option}
+          variant="secondary"
+          size="sm"
+          onClick={() => handleSelect(option)}
+          className="hover:scale-105"
+        >
+          {option}
+        </Button>
+      ))}
+    </div>
+  );
+}

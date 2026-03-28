@@ -145,4 +145,184 @@
   html {
     @apply font-sans;
   }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* ========================================
+   GRADIENT BACKGROUND — Guest Portal
+   ======================================== */
+
+.gradient-bg {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.gradient-bg::before {
+  content: '';
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  top: -140px;
+  left: -100px;
+  background: radial-gradient(circle, hsl(216 82% 70% / 0.72) 0%, hsl(224 72% 76% / 0.44) 35%, transparent 65%);
+  filter: blur(40px);
+  animation: float-orb-1 25s ease-in-out infinite;
+}
+
+.gradient-bg::after {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  bottom: -80px;
+  right: -80px;
+  background: radial-gradient(circle, hsl(230 78% 70% / 0.66) 0%, hsl(238 65% 78% / 0.38) 35%, transparent 65%);
+  filter: blur(35px);
+  animation: float-orb-2 30s ease-in-out infinite;
+}
+
+.gradient-orb-1 {
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  top: 40%;
+  left: 10%;
+  background: radial-gradient(circle, hsl(220 78% 70% / 0.62) 0%, hsl(228 65% 78% / 0.34) 40%, transparent 65%);
+  filter: blur(35px);
+  pointer-events: none;
+  z-index: -1;
+  animation: float-orb-3 20s ease-in-out infinite;
+}
+
+.gradient-orb-2 {
+  position: fixed;
+  width: 450px;
+  height: 450px;
+  top: 60%;
+  right: 20%;
+  background: radial-gradient(circle, hsl(224 75% 72% / 0.58) 0%, hsl(232 62% 80% / 0.30) 40%, transparent 65%);
+  filter: blur(32px);
+  pointer-events: none;
+  z-index: -1;
+  animation: float-orb-4 22s ease-in-out infinite reverse;
+}
+
+.gradient-orb-3 {
+  position: fixed;
+  width: 420px;
+  height: 420px;
+  top: 8%;
+  right: 12%;
+  background: radial-gradient(circle, hsl(213 80% 68% / 0.64) 0%, hsl(222 68% 76% / 0.34) 40%, transparent 65%);
+  filter: blur(32px);
+  pointer-events: none;
+  z-index: -1;
+  animation: float-orb-5 18s ease-in-out infinite;
+}
+
+@keyframes float-orb-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -20px) scale(1.05); }
+  66% { transform: translate(-20px, 30px) scale(0.98); }
+}
+
+@keyframes float-orb-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-40px, -30px) scale(1.08); }
+}
+
+@keyframes float-orb-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(25px, 35px) scale(1.03); }
+  66% { transform: translate(-35px, -15px) scale(0.97); }
+}
+
+@keyframes float-orb-4 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, 20px) scale(1.06); }
+}
+
+@keyframes float-orb-5 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-20px, 25px) scale(1.02); }
+  66% { transform: translate(25px, -20px) scale(0.98); }
+}
+
+/* ========================================
+   GLASSMORPHISM
+   ======================================== */
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 20px;
+  box-shadow:
+    0 8px 32px rgba(100, 120, 160, 0.12),
+    0 2px 8px rgba(255, 255, 255, 0.3) inset,
+    0 -1px 4px rgba(100, 120, 160, 0.08) inset;
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  transform: translateY(-3px);
+  box-shadow:
+    0 16px 48px rgba(100, 120, 160, 0.18),
+    0 2px 8px rgba(255, 255, 255, 0.4) inset,
+    0 -1px 4px rgba(100, 120, 160, 0.1) inset;
+}
+
+.glass-card-dark {
+  background: rgba(26, 29, 58, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.glass-card-dark:hover {
+  background: rgba(26, 29, 58, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* ========================================
+   NAVIGATION — Guest Portal
+   ======================================== */
+
+.mobile-header {
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.bottom-nav {
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 -6px 30px rgba(26, 29, 58, 0.12);
 }

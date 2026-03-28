@@ -1,7 +1,7 @@
 "use client";
 
-import { Suspense, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { InnaraLogo } from "@/components/innara/Logo";
@@ -9,39 +9,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Eye, EyeOff, Loader2, AlertCircle } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 
-export default function InviteAcceptPage(): React.ReactElement {
-  return (
-    <Suspense
-      fallback={
-        <div className="dark">
-          <div className="flex min-h-screen items-center justify-center bg-background">
-            <Loader2 className="size-6 animate-spin text-primary" />
-          </div>
-        </div>
-      }
-    >
-      <InviteAcceptContent />
-    </Suspense>
-  );
-}
-
-function InviteAcceptContent(): React.ReactElement {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-
-  const token = searchParams.get("token") ?? "";
-  const emailParam = searchParams.get("email") ?? "";
-
+export default function ResetPasswordPage(): React.ReactElement {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [passwordError, setPasswordError] = useState("");
-
-  const hasMissingParams = !token || !emailParam;
+  const router = useRouter();
 
   function validatePasswords(): boolean {
     if (password.length < 8) {
@@ -63,65 +40,16 @@ function InviteAcceptContent(): React.ReactElement {
     setIsLoading(true);
 
     const supabase = createClient();
+    const { error } = await supabase.auth.updateUser({ password });
 
-    // Step 1: Verify the invite OTP
-    const { error: verifyError } = await supabase.auth.verifyOtp({
-      email: emailParam,
-      token,
-      type: "invite",
-    });
-
-    if (verifyError) {
-      toast.error(verifyError.message);
+    if (error) {
+      toast.error(error.message);
       setIsLoading(false);
       return;
     }
 
-    // Step 2: Set the user's password
-    const { error: updateError } = await supabase.auth.updateUser({ password });
-
-    if (updateError) {
-      toast.error(updateError.message);
-      setIsLoading(false);
-      return;
-    }
-
-    toast.success("Account activated! Redirecting...");
-    router.push("/staff");
-  }
-
-  // Missing params error state
-  if (hasMissingParams) {
-    return (
-      <div className="dark">
-        <div className="relative flex min-h-screen flex-col items-center justify-center bg-background px-4 py-10 text-foreground">
-          <div className="relative z-10 w-full max-w-sm">
-            <div className="mb-8 flex justify-center">
-              <InnaraLogo variant="light" size="md" />
-            </div>
-
-            <div className="glass-card-dark p-6 text-center sm:p-8">
-              <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-destructive/10">
-                <AlertCircle className="size-6 text-destructive" />
-              </div>
-              <h1 className="mb-2 text-xl font-medium">Invalid Invite Link</h1>
-              <p className="mb-6 text-sm text-muted-foreground">
-                This invite link is invalid or has expired. Please check the link in your
-                email and try again, or contact your hotel administrator.
-              </p>
-              <Link href="/auth/staff/login">
-                <Button
-                  variant="outline"
-                  className="h-11 w-full rounded-xl"
-                >
-                  Go to Staff Login
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    toast.success("Password updated successfully!");
+    router.push("/auth/staff/login");
   }
 
   return (
@@ -147,33 +75,19 @@ function InviteAcceptContent(): React.ReactElement {
 
           {/* Heading */}
           <div className="mb-8 text-center">
-            <h1 className="mb-2 text-3xl font-medium">Accept Your Invitation</h1>
-            <p className="text-muted-foreground">Set up your password to join the team</p>
+            <h1 className="mb-2 text-3xl font-medium">Reset Password</h1>
+            <p className="text-muted-foreground">Choose a new password for your account</p>
           </div>
 
           {/* Form card */}
           <div className="glass-card-dark p-6 sm:p-8">
             <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Email (readonly) */}
+              {/* New password */}
               <div className="space-y-2">
-                <Label htmlFor="invite-email">Email</Label>
-                <Input
-                  id="invite-email"
-                  type="email"
-                  name="email"
-                  value={emailParam}
-                  readOnly
-                  disabled
-                  className="h-11 rounded-xl border-white/10 bg-white/5 text-muted-foreground"
-                />
-              </div>
-
-              {/* Password */}
-              <div className="space-y-2">
-                <Label htmlFor="invite-password">Password</Label>
+                <Label htmlFor="reset-password">New Password</Label>
                 <div className="relative">
                   <Input
-                    id="invite-password"
+                    id="reset-password"
                     type={showPassword ? "text" : "password"}
                     name="new-password"
                     autoComplete="new-password"
@@ -187,7 +101,7 @@ function InviteAcceptContent(): React.ReactElement {
                     minLength={8}
                     disabled={isLoading}
                     aria-invalid={passwordError ? true : undefined}
-                    aria-describedby={passwordError ? "invite-password-error" : undefined}
+                    aria-describedby={passwordError ? "reset-password-error" : undefined}
                     className="h-11 rounded-xl border-white/10 bg-white/5 pr-11 text-foreground placeholder:text-muted-foreground"
                   />
                   <button
@@ -203,14 +117,14 @@ function InviteAcceptContent(): React.ReactElement {
 
               {/* Confirm password */}
               <div className="space-y-2">
-                <Label htmlFor="invite-confirm-password">Confirm Password</Label>
+                <Label htmlFor="reset-confirm-password">Confirm New Password</Label>
                 <div className="relative">
                   <Input
-                    id="invite-confirm-password"
+                    id="reset-confirm-password"
                     type={showConfirmPassword ? "text" : "password"}
                     name="confirm-password"
                     autoComplete="new-password"
-                    placeholder="Re-enter your password"
+                    placeholder="Re-enter your new password"
                     value={confirmPassword}
                     onChange={(e) => {
                       setConfirmPassword(e.target.value);
@@ -220,7 +134,7 @@ function InviteAcceptContent(): React.ReactElement {
                     minLength={8}
                     disabled={isLoading}
                     aria-invalid={passwordError ? true : undefined}
-                    aria-describedby={passwordError ? "invite-password-error" : undefined}
+                    aria-describedby={passwordError ? "reset-password-error" : undefined}
                     className="h-11 rounded-xl border-white/10 bg-white/5 pr-11 text-foreground placeholder:text-muted-foreground"
                   />
                   <button
@@ -237,7 +151,7 @@ function InviteAcceptContent(): React.ReactElement {
               {/* Validation error */}
               {passwordError && (
                 <p
-                  id="invite-password-error"
+                  id="reset-password-error"
                   className="text-sm text-destructive"
                   role="alert"
                 >
@@ -253,23 +167,22 @@ function InviteAcceptContent(): React.ReactElement {
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 size-4 animate-spin" />
-                    Activating account...
+                    Updating password...
                   </>
                 ) : (
-                  "Activate Account"
+                  "Update Password"
                 )}
               </Button>
             </form>
           </div>
 
-          {/* Already have an account */}
+          {/* Back to login */}
           <p className="mt-8 text-center text-sm text-muted-foreground">
-            Already have an account?{" "}
             <Link
               href="/auth/staff/login"
               className="font-semibold text-bronze hover:underline"
             >
-              Sign in
+              Back to Sign In
             </Link>
           </p>
         </div>
