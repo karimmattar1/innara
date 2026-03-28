@@ -82,7 +82,7 @@ export async function updateSession(request: NextRequest) {
 
   // Not authenticated → redirect to appropriate login
   if (!user) {
-    const loginPath = pathname.startsWith("/staff") || pathname.startsWith("/manager")
+    const loginPath = pathname.startsWith("/staff") || pathname.startsWith("/manager") || pathname.startsWith("/admin")
       ? "/auth/staff/login"
       : "/auth/guest/login";
     const url = request.nextUrl.clone();
