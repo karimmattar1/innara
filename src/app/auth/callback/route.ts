@@ -15,6 +15,6 @@ export async function GET(request: Request): Promise<NextResponse> {
   }
 
   return NextResponse.redirect(
-    `${origin}/auth/guest/login?error=auth_callback_failed`
+    `${origin}/auth/verify-email?error=verification_failed`
   );
 }
