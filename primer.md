@@ -1,57 +1,61 @@
 # Innara -- Primer
 
 ## Current State
-- **Phase:** Phase 1: Foundation (in progress)
+- **Phase:** Phase 1: Foundation (nearly complete — 3 tickets remaining)
 - **Last Updated:** 2026-03-27
 - **Linear Team:** INN
 
 ## What's Done (Phase 1)
-- P1-01 (INN-14): Next.js 16 project scaffolded with App Router ✅
-- P1-02 (INN-15): Tailwind v4, DM Sans, design tokens configured ✅
-- P1-03 (INN-16): 48 shadcn/ui components installed (base-nova style, @base-ui/react) ✅
-- P1-04 (INN-17): 42/43 custom Innara components migrated from design-static ✅
-- P1-05 (INN-18): Constants (app.ts 342 lines, navigation.ts), types (domain.ts 489 lines, database.ts auto-gen) ✅
-- P1-06 (INN-19): Supabase baseline schema — 29 tables with RLS ✅
-- P1-07 (INN-20): New tables (ai_conversations, ai_messages, subscriptions, audit_logs, hotel_branding, shifts, shift_assignments, integration_configs) ✅
-- P1-08 (INN-21): Custom JWT claims hook (custom_access_token_hook + 5 helper functions) ✅
-- P1-09 (INN-22): Supabase Auth client setup (@supabase/ssr) ✅
-- P1-12 (INN-25): Role-based middleware (JWT decoding, portal routing, PUBLIC_PATHS) ✅
-- P1-17 (INN-30): CI/CD — GitHub Actions (ci.yml + e2e.yml) + Vercel config ✅
-- Types auto-generated from Supabase schema (database.ts 1,673 lines) ✅
+- INN-14: Next.js 16 project scaffolded with App Router
+- INN-15: Tailwind v4, DM Sans, design tokens configured
+- INN-16: 48 shadcn/ui components installed (base-nova style, @base-ui/react)
+- INN-17: 42 custom Innara components migrated from design-static
+- INN-19: Constants (app.ts 342 lines, navigation.ts), types (domain.ts 489 lines, database.ts auto-gen)
+- INN-21: Supabase baseline schema — 29 tables with RLS
+- INN-24: New tables (ai_conversations, ai_messages, subscriptions, audit_logs, hotel_branding, shifts, shift_assignments, integration_configs)
+- INN-26: Custom JWT claims hook (custom_access_token_hook + 5 helper functions)
+- INN-28: Supabase Auth client setup (@supabase/ssr, client + server)
+- INN-32: Role-based middleware (JWT decoding, portal routing, PUBLIC_PATHS, admin redirect fix)
+- INN-35: Guest login + registration pages (glassmorphism, form validation)
+- INN-37: Staff/Manager login + invite accept page
+- INN-41: Guest portal shell layout (gradient bg, mobile-first, AppBackground)
+- INN-44: Staff portal shell layout (dark theme, StaffHeader)
+- INN-47: Manager portal shell layout (dark theme, ManagerHeader)
+- INN-49: Admin portal shell layout (dark theme, AdminHeader)
+- INN-63: CI/CD — GitHub Actions (ci.yml + e2e.yml) + Vercel config
+- INN-65: Auth E2E tests — 18 Playwright tests, all passing
+- INN-116: Password reset flow (forgot password + reset confirmation pages)
+- Logo assets copied to public/ (4 files: icon + wordmark, light + dark)
+- Sonner toast provider added to root layout
+- Glassmorphism CSS (glass-card, glass-card-dark, glass-panel, gradient orbs, mobile-header, bottom-nav)
 
-## In Progress
-- P1-04 remaining: 1 component left (RoomServiceCheckoutSheet — Phase 2 dependency, deferred)
-- Portal shell layouts (INN-41, 44, 47, 49): Header/nav components ready, need layout wrappers
-- Auth pages (INN-35, 37, 116, 117, 127): Not started
+## Remaining Phase 1 (3 tickets)
+- INN-117: Email verification flow — callback route done, needs Supabase email template config (manual step)
+- INN-127: Guest booking ref verification + magic link + multi-guest — complex, may overlap with Phase 2
+- INN-148: RLS tenant isolation verification — needs test data + multiple users to test properly
 
 ## What's Next
-1. Build portal shell layouts (guest, staff, manager, admin)
-2. Build auth pages (guest login/register, staff login, password reset, email verification, booking ref)
-3. Auth E2E tests (INN-65)
-4. RLS verification (INN-148)
-5. Commit all component work
+- Complete remaining 3 Phase 1 tickets or defer to Phase 2 if appropriate
+- Run `/phase-review` (codex-reviewer + qa-tester + scorer + self-learner)
+- If phase passes: move Phase 2 tickets from Backlog → Todo
+- Begin Phase 2: Core Features (AI concierge, service requests, room service)
 
-## Key Decisions
-- Next.js 16 (not 14) — scaffold created with latest
-- React 19 with Server Components by default
-- Tailwind CSS v4 with shadcn base-nova style (@base-ui/react, NOT Radix — no `asChild` prop)
-- Shared PortalHeader component with thin wrappers (StaffHeader, ManagerHeader, AdminHeader)
-- Context hooks replaced with props for Next.js compatibility
-- Design system: Navy #1a1d3a, Bronze #9B7340, DM Sans, glassmorphism
-- Multi-tenant from day one (hotel_id + RLS on every table)
-
-## Technical Notes
-- shadcn base-nova uses @base-ui/react — DropdownMenuTrigger does NOT support `asChild`, pass className directly
-- Guest paths are /guest/*, staff /staff/*, manager /manager/*, admin /admin/*
+## Key Technical Notes
+- **Next.js 16** (not 14) with React 19
+- **Tailwind CSS v4** with shadcn base-nova style (@base-ui/react — NO `asChild` prop)
+- **Shared PortalHeader** component with thin wrappers (StaffHeader, ManagerHeader, AdminHeader)
+- Guest paths: /guest/*, Staff: /staff/*, Manager: /manager/*, Admin: /admin/*
 - JWT claims inject app_role, hotel_id, department via custom_access_token_hook
+- Middleware redirects: guest portal → /auth/guest/login, staff/manager/admin → /auth/staff/login
 - Supabase project: hbqcujxpphwgkgrqpjmo (ap-south-1, ai-solutions org)
 
 ## Manual Steps Needed
 - Enable JWT hook in Supabase Dashboard → Authentication → Hooks → Custom Access Token
 - Set GitHub Secrets: NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY
+- Configure Supabase email templates for verification + password reset
 
 ## Phase Progress
-- [~] Phase 1: Foundation (22 tickets — ~12 done, ~10 remaining)
+- [~] Phase 1: Foundation (22 tickets — 19 done, 3 remaining)
 - [ ] Phase 2: Core Features (29 tickets)
 - [ ] Phase 3: Supporting Features (20 tickets)
 - [ ] Phase 4: Manager Portal + Billing (30 tickets)
