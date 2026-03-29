@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { DEPARTMENTS } from "@/constants/app";
+import { resolveHotelId } from "@/lib/auth-context";
 import type { ActionResult } from "@/app/actions/requests";
 
 // ---------------------------------------------------------------------------
@@ -91,26 +92,6 @@ export interface ActiveStaffMember {
 /** Returns today's date in YYYY-MM-DD format (UTC). */
 function todayUTC(): string {
   return new Date().toISOString().slice(0, 10);
-}
-
-/**
- * Resolves the hotel_id for the authenticated user from staff_assignments.
- * Returns null when the user has no active staff assignment (not a staff member).
- */
-async function resolveHotelId(
-  supabase: Awaited<ReturnType<typeof createClient>>,
-  userId: string,
-): Promise<string | null> {
-  const { data, error } = await supabase
-    .from("staff_assignments")
-    .select("hotel_id")
-    .eq("user_id", userId)
-    .eq("is_active", true)
-    .limit(1)
-    .maybeSingle();
-
-  if (error || !data) return null;
-  return data.hotel_id as string;
 }
 
 // ---------------------------------------------------------------------------

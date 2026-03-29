@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { resolveStaffContext } from "@/lib/auth-context";
 import type { ActionResult } from "@/app/actions/requests";
 import { DEPARTMENTS } from "@/constants/app";
 
@@ -43,8 +44,10 @@ const getAvailableStaffSchema = z.object({
 // ---------------------------------------------------------------------------
 
 /**
- * Resolves the authenticated user's active staff assignment.
- * Returns null on any error to allow callers to return a consistent ActionResult.
+ * Resolves the authenticated user's active staff assignment, including the
+ * availability_status and status_changed_at fields that are specific to this
+ * module. Uses resolveStaffContext for core auth + assignment lookup, then
+ * fetches the extra availability fields in a second targeted query.
  */
 async function resolveAssignment(supabase: Awaited<ReturnType<typeof createClient>>): Promise<{
   user: { id: string } | null;
@@ -57,28 +60,33 @@ async function resolveAssignment(supabase: Awaited<ReturnType<typeof createClien
   } | null;
   error: string | null;
 }> {
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser();
-
-  if (authError || !user) {
-    return { user: null, assignment: null, error: "Unauthorized" };
+  const ctx = await resolveStaffContext(supabase);
+  if (ctx.error) {
+    return { user: ctx.user, assignment: null, error: ctx.error };
   }
 
-  const { data: assignment, error: assignError } = await supabase
+  // Fetch the extra availability fields not included in the shared context
+  const { data: extra, error: extraError } = await supabase
     .from("staff_assignments")
-    .select("id, hotel_id, department, availability_status, status_changed_at")
-    .eq("user_id", user.id)
-    .eq("is_active", true)
-    .limit(1)
-    .maybeSingle();
+    .select("availability_status, status_changed_at")
+    .eq("id", ctx.assignment!.id)
+    .single();
 
-  if (assignError || !assignment) {
-    return { user, assignment: null, error: "No active staff assignment found." };
+  if (extraError || !extra) {
+    return { user: ctx.user, assignment: null, error: "No active staff assignment found." };
   }
 
-  return { user, assignment, error: null };
+  return {
+    user: ctx.user,
+    assignment: {
+      id: ctx.assignment!.id,
+      hotel_id: ctx.assignment!.hotel_id,
+      department: ctx.assignment!.department as string,
+      availability_status: extra.availability_status as string,
+      status_changed_at: extra.status_changed_at as string | null,
+    },
+    error: null,
+  };
 }
 
 // ---------------------------------------------------------------------------

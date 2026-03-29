@@ -249,111 +249,29 @@ describe("releaseRequest — business rule invariants", () => {
 // ---------------------------------------------------------------------------
 
 describe("concurrency stress test — documented plan (INN-150)", () => {
-  it("documents: N concurrent callers claim the same request, exactly 1 succeeds", () => {
-    // TEST PLAN:
-    //
-    // Setup:
-    //   - Seed a request: { id, status: "new", assigned_staff_id: null, version: 1 }
-    //   - Create N authenticated Supabase clients (N=5) for N different staff members
-    //
-    // Execution:
-    //   const results = await Promise.all(
-    //     staffClients.map(client => claimRequestViaSupabase(client, requestId, 1))
-    //   );
-    //
-    // Assertions:
-    //   const successes = results.filter(r => r.success);
-    //   const failures = results.filter(r => !r.success);
-    //
-    //   expect(successes).toHaveLength(1);
-    //   expect(failures).toHaveLength(N - 1);
-    //
-    //   // The one success must return a new version
-    //   expect(successes[0].data.version).toBe(2);
-    //
-    //   // Failures must explain WHY they failed (not a generic 500)
-    //   for (const failure of failures) {
-    //     expect(
-    //       failure.error === "This request has already been claimed by another staff member." ||
-    //       failure.error === "This request was modified. Please refresh and try again."
-    //     ).toBe(true);
-    //   }
-    //
-    //   // Verify DB state: exactly one assignee
-    //   const { data: row } = await serviceClient.from("requests")
-    //     .select("assigned_staff_id, version")
-    //     .eq("id", requestId)
-    //     .single();
-    //   expect(row.assigned_staff_id).not.toBeNull();
-    //   expect(row.version).toBe(2);
-    //
-    // Postgres guarantee:
-    //   The atomic WHERE clause (version=1 AND assigned_staff_id IS NULL) ensures
-    //   only one UPDATE can match. Postgres's MVCC serializes concurrent writes to
-    //   the same row — the first writer wins, all others see the row as already
-    //   modified and their WHERE clause produces 0 rows.
-
-    // Placeholder assertion — this test documents the plan, not the execution.
-    expect(true).toBe(true);
+  it.skip("integration: N concurrent callers claim the same request, exactly 1 succeeds", () => {
+    // Requires live DB + N authenticated Supabase clients.
+    // Setup: Seed request at version=1, fire N concurrent claims via Promise.all().
+    // Verifies: exactly 1 success, N-1 failures with descriptive error messages,
+    // DB state shows exactly one assignee at version=2.
   });
 
-  it("documents: version mismatch between read and claim causes graceful failure", () => {
-    // TEST PLAN:
-    //
-    // Setup:
-    //   - Seed a request at version=1
-    //   - Staff A reads the request (observes version=1)
-    //   - Staff B claims successfully → DB version is now 2
-    //   - Staff A attempts to claim with version=1 (stale)
-    //
-    // Execution:
-    //   const resultA = await claimRequest(requestId, 1); // stale version
-    //
-    // Assertions:
-    //   expect(resultA.success).toBe(false);
-    //   expect(resultA.error).toMatch(/modified|refresh/i);
-    //
-    // This simulates the real-world scenario where a staff member has the
-    // request queue open in their browser for a few seconds before claiming.
-
-    expect(true).toBe(true);
+  it.skip("integration: version mismatch between read and claim causes graceful failure", () => {
+    // Requires live DB + authenticated sessions.
+    // Setup: Staff A reads version=1, Staff B claims (version→2), Staff A claims with stale version=1.
+    // Verifies: Staff A gets { success: false, error: /modified|refresh/ }.
   });
 
-  it("documents: released request can be claimed by a different staff member", () => {
-    // TEST PLAN:
-    //
-    // Setup:
-    //   - Staff A claims a request → version=2, assigned_staff_id=staff-a
-    //   - Staff A releases the request → version=3, assigned_staff_id=null, status=new
-    //   - Staff B claims the request with version=3
-    //
-    // Assertions:
-    //   expect(staffBResult.success).toBe(true);
-    //   expect(staffBResult.data.version).toBe(4);
-    //   expect(staffBResult.data.assignedStaffId).toBe(staffBId);
-    //
-    // Verifies: the claim → release → re-claim lifecycle works end-to-end.
-
-    expect(true).toBe(true);
+  it.skip("integration: released request can be claimed by a different staff member", () => {
+    // Requires live DB + authenticated sessions.
+    // Setup: Staff A claims → releases → Staff B claims with fresh version.
+    // Verifies: claim → release → re-claim lifecycle works end-to-end.
   });
 
-  it("documents: cross-hotel claim attempt is blocked by hotel_id predicate", () => {
-    // TEST PLAN:
-    //
-    // Setup:
-    //   - Hotel A has request-1 at version=1
-    //   - Staff member from Hotel B attempts to claim request-1
-    //
-    // Expected behavior:
-    //   - The WHERE clause includes .eq("hotel_id", staffBHotelId)
-    //   - staffBHotelId !== request-1.hotel_id → 0 rows matched
-    //   - claimRequest returns: { success: false, error: "Request not found." }
-    //     (because the diagnostic SELECT also filters by hotel_id)
-    //
-    // This verifies multi-tenant isolation at the claim layer — the most
-    // critical security boundary in the request system.
-
-    expect(true).toBe(true);
+  it.skip("integration: cross-hotel claim attempt is blocked by hotel_id predicate", () => {
+    // Requires live DB with multi-tenant seed data.
+    // Setup: Staff from Hotel B attempts to claim Hotel A's request.
+    // Verifies: multi-tenant isolation at the claim layer.
   });
 });
 

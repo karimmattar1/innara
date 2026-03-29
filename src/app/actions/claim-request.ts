@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { resolveHotelId, isManagerRole } from "@/lib/auth-context";
 import type { ActionResult } from "@/app/actions/requests";
 
 // ---------------------------------------------------------------------------
@@ -66,22 +67,10 @@ export async function claimRequest(
     }
 
     // 3. Get staff's hotel_id from an active staff assignment
-    const { data: assignment, error: assignmentError } = await supabase
-      .from("staff_assignments")
-      .select("hotel_id")
-      .eq("user_id", user.id)
-      .eq("is_active", true)
-      .limit(1)
-      .maybeSingle();
-
-    if (assignmentError) {
-      return { success: false, error: "Unable to retrieve staff assignment. Please try again." };
-    }
-    if (!assignment) {
+    const hotelId = await resolveHotelId(supabase, user.id);
+    if (!hotelId) {
       return { success: false, error: "No active staff assignment found for your account." };
     }
-
-    const hotelId = assignment.hotel_id;
 
     // 4. Atomic optimistic-lock claim:
     //    - hotel_id scopes the update to this tenant
@@ -200,29 +189,13 @@ export async function releaseRequest(
     }
 
     // 3. Get staff's hotel_id from active staff assignment
-    const { data: assignment, error: assignmentError } = await supabase
-      .from("staff_assignments")
-      .select("hotel_id")
-      .eq("user_id", user.id)
-      .eq("is_active", true)
-      .limit(1)
-      .maybeSingle();
-
-    if (assignmentError || !assignment) {
+    const hotelId = await resolveHotelId(supabase, user.id);
+    if (!hotelId) {
       return { success: false, error: "No active staff assignment found for your account." };
     }
 
-    const hotelId = assignment.hotel_id;
-
     // 4. Check manager role from user_roles table (not JWT claims)
-    const { data: roleData } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", user.id)
-      .limit(1)
-      .maybeSingle();
-
-    const isManager = roleData?.role === "manager" || roleData?.role === "super_admin";
+    const isManager = await isManagerRole(supabase, user.id);
 
     // 5. Fetch current request scoped to hotel_id (multi-tenant isolation)
     const { data: current, error: fetchError } = await supabase

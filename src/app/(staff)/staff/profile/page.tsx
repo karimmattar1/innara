@@ -21,6 +21,7 @@ import { PageHeader } from "@/components/innara/PageHeader";
 import { getStaffProfile } from "@/app/actions/staff";
 import { createClient } from "@/lib/supabase/client";
 import { DEPARTMENT_LABELS } from "@/constants/app";
+import { getInitials } from "@/lib/utils";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -40,16 +41,6 @@ interface ProfileData {
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
-
-function getInitials(name: string): string {
-  return name
-    .split(" ")
-    .map((part) => part[0])
-    .filter(Boolean)
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
-}
 
 function formatRole(role: string): string {
   return role

@@ -8,7 +8,9 @@ import {
   REQUEST_CATEGORIES,
   REQUEST_PRIORITIES,
   REQUEST_STATUSES,
+  VALID_TRANSITIONS,
 } from "@/constants/app";
+import { resolveStaffContext } from "@/lib/auth-context";
 import type { ActionResult } from "@/app/actions/requests";
 
 // ---------------------------------------------------------------------------
@@ -48,44 +50,6 @@ const setEtaSchema = z.object({
 });
 
 export type StaffRequestFilters = z.input<typeof staffRequestFiltersSchema>;
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-async function resolveStaffContext(supabase: Awaited<ReturnType<typeof createClient>>) {
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser();
-
-  if (authError || !user) {
-    return { error: "Unauthorized" as const, user: null, assignment: null };
-  }
-
-  const { data: assignment, error: assignError } = await supabase
-    .from("staff_assignments")
-    .select("id, user_id, hotel_id, department, is_active")
-    .eq("user_id", user.id)
-    .eq("is_active", true)
-    .limit(1)
-    .maybeSingle();
-
-  if (assignError || !assignment) {
-    return { error: "Staff assignment not found." as const, user, assignment: null };
-  }
-
-  return { error: null, user, assignment };
-}
-
-// Valid status transitions: new→pending→in_progress→completed, any→cancelled
-const VALID_TRANSITIONS: Record<string, string[]> = {
-  new: ["pending", "cancelled"],
-  pending: ["in_progress", "cancelled"],
-  in_progress: ["completed", "cancelled"],
-  completed: [],
-  cancelled: [],
-};
 
 // ---------------------------------------------------------------------------
 // getStaffProfile
@@ -135,7 +99,7 @@ export async function getStaffProfile(): Promise<
         id: user!.id,
         name: profile.full_name ?? "Staff Member",
         email: profile.email ?? user!.email ?? "",
-        department: assignment!.department,
+        department: assignment!.department ?? "",
         role: roleRow?.role ?? "staff",
         hotelId: assignment!.hotel_id,
         isActive: assignment!.is_active,
@@ -386,7 +350,7 @@ export async function updateRequestStatus(
     }
 
     // Validate transition
-    const allowedNext = VALID_TRANSITIONS[request.status] ?? [];
+    const allowedNext = VALID_TRANSITIONS[request.status as keyof typeof VALID_TRANSITIONS] ?? [];
     if (!allowedNext.includes(parsed.data.newStatus)) {
       return {
         success: false,

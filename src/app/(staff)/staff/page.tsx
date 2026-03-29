@@ -29,6 +29,7 @@ import {
   DEPARTMENT_LABELS,
   CATEGORY_COLORS,
 } from "@/constants/app";
+import { getTimeAgo, getInitials } from "@/lib/utils";
 import type { ShiftData, ActiveStaffMember } from "@/app/actions/shifts";
 
 // ---------------------------------------------------------------------------
@@ -78,17 +79,6 @@ function todayDateString(): string {
   return new Date().toISOString().slice(0, 10);
 }
 
-function timeAgo(isoString: string): string {
-  const diffMs = Date.now() - new Date(isoString).getTime();
-  const diffMinutes = Math.floor(diffMs / 60000);
-  if (diffMinutes < 1) return "Just now";
-  if (diffMinutes < 60) return `${diffMinutes}m ago`;
-  const diffHours = Math.floor(diffMinutes / 60);
-  if (diffHours < 24) return `${diffHours}h ago`;
-  const diffDays = Math.floor(diffHours / 24);
-  return `${diffDays}d ago`;
-}
-
 function durationOnShift(checkInAt: string): string {
   const diffMs = Date.now() - new Date(checkInAt).getTime();
   const diffMinutes = Math.floor(diffMs / 60000);
@@ -104,15 +94,6 @@ function formatShiftTime(time: string): string {
   const ampm = h >= 12 ? "PM" : "AM";
   const hour = h % 12 || 12;
   return `${hour}:${String(m).padStart(2, "0")} ${ampm}`;
-}
-
-function getInitials(name: string): string {
-  return name
-    .split(" ")
-    .map((part) => part[0] ?? "")
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
 }
 
 // ---------------------------------------------------------------------------
@@ -648,7 +629,7 @@ function RequestRow({
             </span>
           )}
           <span aria-hidden="true">·</span>
-          <span>{timeAgo(request.created_at)}</span>
+          <span>{getTimeAgo(request.created_at)}</span>
         </div>
       </div>
 

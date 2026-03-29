@@ -51,10 +51,12 @@ import {
   REQUEST_CATEGORIES,
   REQUEST_STATUSES,
   REQUEST_PRIORITIES,
+  VALID_TRANSITIONS,
   type RequestStatus,
   type RequestPriority,
   type RequestCategory,
 } from "@/constants/app";
+import { getTimeAgo, getInitials } from "@/lib/utils";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -98,39 +100,11 @@ interface StaffProfile {
 // Constants
 // ---------------------------------------------------------------------------
 
-const VALID_TRANSITIONS: Record<RequestStatus, RequestStatus[]> = {
-  new: ["pending", "cancelled"],
-  pending: ["in_progress", "cancelled"],
-  in_progress: ["completed", "cancelled"],
-  completed: [],
-  cancelled: [],
-};
-
 const PAGE_SIZE = 20;
 
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
-
-function getTimeAgo(dateString: string): string {
-  const date = new Date(dateString);
-  const minutes = Math.floor((Date.now() - date.getTime()) / (1000 * 60));
-  if (minutes < 1) return "Just now";
-  if (minutes < 60) return `${minutes}m ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  return `${days}d ago`;
-}
-
-function getInitials(name: string): string {
-  return name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
-}
 
 // ---------------------------------------------------------------------------
 // Sub-components (inline, no new files)

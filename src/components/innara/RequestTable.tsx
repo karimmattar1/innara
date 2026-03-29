@@ -7,6 +7,7 @@ import { Play, CheckCircle2, UserPlus, Eye } from "lucide-react";
 import { StatusBadge } from "./StatusBadge";
 import { StaffAvatar } from "./StaffAvatar";
 import type { RequestStatus } from "@/constants/app";
+import { getTimeAgo } from "@/lib/utils";
 
 interface Staff {
   id: string;
@@ -29,16 +30,6 @@ interface RequestTableProps {
   requests: Request[];
   onViewRequest?: (id: string) => void;
   onUpdateStatus?: (requestId: string, status: RequestStatus) => Promise<boolean> | boolean;
-}
-
-function getTimeAgo(date: Date): string {
-  const minutes = Math.floor((Date.now() - date.getTime()) / (1000 * 60));
-  if (minutes < 1) return 'Just now';
-  if (minutes < 60) return `${minutes}m ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  return `${days}d ago`;
 }
 
 export function RequestTable({ requests, onViewRequest, onUpdateStatus }: RequestTableProps) {

@@ -14,35 +14,12 @@ import {
 } from "@/app/actions/messaging";
 import { getStaffProfile } from "@/app/actions/staff";
 import { CATEGORY_LABELS, CATEGORY_COLORS } from "@/constants/app";
+import { getTimeAgo, getInitials } from "@/lib/utils";
 import type { StaffConversation, MessageWithSender } from "@/app/actions/messaging";
 
 // ---------------------------------------------------------------------------
 // Local helpers
 // ---------------------------------------------------------------------------
-
-function timeAgo(dateString: string): string {
-  if (!dateString) return "";
-  const now = Date.now();
-  const then = new Date(dateString).getTime();
-  const diffMs = now - then;
-  const diffMins = Math.floor(diffMs / 60_000);
-  if (diffMins < 1) return "just now";
-  if (diffMins < 60) return `${diffMins}m ago`;
-  const diffHours = Math.floor(diffMins / 60);
-  if (diffHours < 24) return `${diffHours}h ago`;
-  const diffDays = Math.floor(diffHours / 24);
-  return `${diffDays}d ago`;
-}
-
-function getInitials(name: string | null): string {
-  if (!name) return "?";
-  return name
-    .split(" ")
-    .map((part) => part[0] ?? "")
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
-}
 
 // ---------------------------------------------------------------------------
 // Sub-components (local, not exported)
@@ -82,7 +59,7 @@ function ConversationItem({ conversation, isSelected, onClick }: ConversationIte
               {conversation.guestName ?? "Guest"}
             </span>
             <span className="text-[11px] text-white/40 shrink-0">
-              {timeAgo(conversation.lastMessageAt)}
+              {getTimeAgo(conversation.lastMessageAt)}
             </span>
           </div>
           {/* Room + Category */}

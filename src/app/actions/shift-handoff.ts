@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { resolveStaffContext } from "@/lib/auth-context";
 import type { ActionResult } from "@/app/actions/requests";
 
 // ---------------------------------------------------------------------------
@@ -24,26 +25,6 @@ export interface HandoffPreview {
 // ---------------------------------------------------------------------------
 // Internal helpers
 // ---------------------------------------------------------------------------
-
-/**
- * Returns the active staff assignment for the authenticated user, or null.
- * Includes hotel_id and department for multi-tenant + department scoping.
- */
-async function resolveStaffAssignment(
-  supabase: Awaited<ReturnType<typeof createClient>>,
-  userId: string,
-): Promise<{ hotelId: string; department: string | null } | null> {
-  const { data, error } = await supabase
-    .from("staff_assignments")
-    .select("hotel_id, department")
-    .eq("user_id", userId)
-    .eq("is_active", true)
-    .limit(1)
-    .maybeSingle();
-
-  if (error || !data) return null;
-  return { hotelId: data.hotel_id as string, department: (data.department as string | null) ?? null };
-}
 
 /**
  * Returns the user IDs of all staff currently checked in (shift_assignments.status = 'active')
@@ -116,22 +97,15 @@ export async function handoffMyRequests(): Promise<ActionResult<HandoffResult>> 
   try {
     const supabase = await createClient();
 
-    // 1. Authenticate
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
-    if (authError || !user) {
-      return { success: false, error: "Unauthorized" };
+    // 1. Authenticate + resolve assignment (multi-tenant isolation + department)
+    const ctx = await resolveStaffContext(supabase);
+    if (ctx.error) {
+      return { success: false, error: ctx.error };
     }
 
-    // 2. Resolve assignment (multi-tenant isolation + department)
-    const assignment = await resolveStaffAssignment(supabase, user.id);
-    if (!assignment) {
-      return { success: false, error: "No active staff assignment found." };
-    }
-
-    const { hotelId, department } = assignment;
+    const user = ctx.user!;
+    const hotelId = ctx.assignment!.hotel_id;
+    const department = ctx.assignment!.department;
 
     // 3. Find all open requests assigned to this staff member
     const { data: openRequests, error: fetchError } = await supabase
@@ -222,22 +196,15 @@ export async function getHandoffPreview(): Promise<ActionResult<HandoffPreview>>
   try {
     const supabase = await createClient();
 
-    // 1. Authenticate
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
-    if (authError || !user) {
-      return { success: false, error: "Unauthorized" };
+    // 1. Authenticate + resolve assignment (multi-tenant isolation + department)
+    const ctx = await resolveStaffContext(supabase);
+    if (ctx.error) {
+      return { success: false, error: ctx.error };
     }
 
-    // 2. Resolve assignment (multi-tenant isolation + department)
-    const assignment = await resolveStaffAssignment(supabase, user.id);
-    if (!assignment) {
-      return { success: false, error: "No active staff assignment found." };
-    }
-
-    const { hotelId, department } = assignment;
+    const user = ctx.user!;
+    const hotelId = ctx.assignment!.hotel_id;
+    const department = ctx.assignment!.department;
 
     // 3. Count open requests assigned to this staff member
     const { count, error: countError } = await supabase

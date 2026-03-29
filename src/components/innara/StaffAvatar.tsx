@@ -1,18 +1,10 @@
-import { cn } from "@/lib/utils";
+import { cn, getInitials } from "@/lib/utils";
 
 interface StaffAvatarProps {
   name: string;
   size?: "sm" | "md" | "lg";
   showName?: boolean;
   className?: string;
-}
-
-function getInitials(name: string): string {
-  return name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase();
 }
 
 const sizeClasses = {

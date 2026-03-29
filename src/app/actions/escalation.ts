@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { resolveHotelId, isManagerRole } from "@/lib/auth-context";
 import type { ActionResult } from "@/app/actions/requests";
 
 // ---------------------------------------------------------------------------
@@ -41,49 +42,6 @@ export interface EscalatedRequest {
 }
 
 // ---------------------------------------------------------------------------
-// Internal helpers
-// ---------------------------------------------------------------------------
-
-/**
- * Resolves the hotel_id for the authenticated user from staff_assignments.
- * Returns null when the user has no active staff assignment.
- */
-async function resolveStaffHotelId(
-  supabase: Awaited<ReturnType<typeof createClient>>,
-  userId: string,
-): Promise<string | null> {
-  const { data, error } = await supabase
-    .from("staff_assignments")
-    .select("hotel_id")
-    .eq("user_id", userId)
-    .eq("is_active", true)
-    .limit(1)
-    .maybeSingle();
-
-  if (error || !data) return null;
-  return data.hotel_id as string;
-}
-
-/**
- * Checks whether the authenticated user holds a manager or super_admin role.
- * Queries the user_roles table directly (not JWT claims) for accuracy.
- */
-async function isManagerRole(
-  supabase: Awaited<ReturnType<typeof createClient>>,
-  userId: string,
-): Promise<boolean> {
-  const { data, error } = await supabase
-    .from("user_roles")
-    .select("role")
-    .eq("user_id", userId)
-    .limit(1)
-    .maybeSingle();
-
-  if (error || !data) return false;
-  return data.role === "manager" || data.role === "super_admin";
-}
-
-// ---------------------------------------------------------------------------
 // escalateRequest
 //
 // Staff escalates a request to management when they cannot resolve it.
@@ -113,7 +71,7 @@ export async function escalateRequest(
     }
 
     // 3. Resolve hotel (multi-tenant isolation)
-    const hotelId = await resolveStaffHotelId(supabase, user.id);
+    const hotelId = await resolveHotelId(supabase, user.id);
     if (!hotelId) {
       return { success: false, error: "No active staff assignment found." };
     }
@@ -214,7 +172,7 @@ export async function getEscalatedRequests(
     //    If caller supplied one, use it (managers may specify). Otherwise resolve from assignment.
     let effectiveHotelId = parsed.data.hotelId ?? null;
     if (!effectiveHotelId) {
-      effectiveHotelId = await resolveStaffHotelId(supabase, user.id);
+      effectiveHotelId = await resolveHotelId(supabase, user.id);
     }
     if (!effectiveHotelId) {
       return { success: false, error: "No active staff assignment found." };
@@ -297,7 +255,7 @@ export async function resolveEscalation(
     }
 
     // 4. Resolve hotel for multi-tenant isolation
-    const hotelId = await resolveStaffHotelId(supabase, user.id);
+    const hotelId = await resolveHotelId(supabase, user.id);
     if (!hotelId) {
       return { success: false, error: "No active staff assignment found." };
     }

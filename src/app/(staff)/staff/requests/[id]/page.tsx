@@ -65,10 +65,12 @@ import {
   CATEGORY_LABELS,
   CATEGORY_COLORS,
   DEPARTMENT_LABELS,
+  VALID_TRANSITIONS,
   type RequestStatus,
   type RequestPriority,
   type RequestCategory,
 } from "@/constants/app";
+import { getTimeAgo, getInitials } from "@/lib/utils";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -119,18 +121,6 @@ interface StaffMember {
   role: string;
 }
 
-// ---------------------------------------------------------------------------
-// Valid transitions mirror the server-side VALID_TRANSITIONS
-// ---------------------------------------------------------------------------
-
-const VALID_TRANSITIONS: Record<RequestStatus, RequestStatus[]> = {
-  new: ["pending", "cancelled"],
-  pending: ["in_progress", "cancelled"],
-  in_progress: ["completed", "cancelled"],
-  completed: [],
-  cancelled: [],
-};
-
 const STATUS_ACTION_LABELS: Record<RequestStatus, string> = {
   new: "New",
   pending: "Accept",
@@ -142,17 +132,6 @@ const STATUS_ACTION_LABELS: Record<RequestStatus, string> = {
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
-
-function getTimeAgo(dateString: string): string {
-  const date = new Date(dateString);
-  const minutes = Math.floor((Date.now() - date.getTime()) / (1000 * 60));
-  if (minutes < 1) return "Just now";
-  if (minutes < 60) return `${minutes}m ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  return `${days}d ago`;
-}
 
 function formatAbsoluteTime(dateString: string): string {
   return new Date(dateString).toLocaleString("en-US", {
@@ -169,15 +148,6 @@ function formatEta(minutes: number): string {
   const h = Math.floor(minutes / 60);
   const m = minutes % 60;
   return m > 0 ? `${h}h ${m}m` : `${h}h`;
-}
-
-function getInitials(name: string): string {
-  return name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
 }
 
 // ---------------------------------------------------------------------------

@@ -79,6 +79,19 @@ export const DEPARTMENTS = [
 export type Department = (typeof DEPARTMENTS)[number];
 
 // ============================================
+// REQUEST STATUS TRANSITIONS
+// Single source of truth for allowed state machine transitions
+// ============================================
+
+export const VALID_TRANSITIONS: Record<RequestStatus, RequestStatus[]> = {
+  new: ["pending", "cancelled"],
+  pending: ["in_progress", "cancelled"],
+  in_progress: ["completed", "cancelled"],
+  completed: [],
+  cancelled: [],
+};
+
+// ============================================
 // STATUS DISPLAY CONFIG
 // Uses unified glass styling — only dot color varies
 // ============================================
