@@ -1,29 +1,36 @@
 # Innara -- Primer
 
 ## Current State
-- **Phase:** Phase 2: Core Features — NOT STARTED
+- **Phase:** Phase 2: Core Features — Wave 1 COMPLETE, Wave 2 next
 - **Last Updated:** 2026-03-28
 - **Linear Team:** INN
 
 ## What's Done
-- Phase 1: Foundation — completed 2026-03-28, passed phase review (codex + QA + scorer + self-learner)
+- Phase 1: Foundation — completed 2026-03-28, passed phase review
+- Phase 2 Wave 1 (7/29 tickets done):
+  - INN-20: Request CRUD server actions (src/app/actions/requests.ts)
+  - INN-22: Order CRUD server actions (src/app/actions/orders.ts)
+  - INN-23: Menu query server actions (src/app/actions/menu.ts)
+  - INN-18: Guest welcome screen (src/app/(guest)/welcome/page.tsx)
+  - INN-30: Services grid screen (src/app/(guest)/services/page.tsx)
+  - INN-34: Stay verification flow — verified complete from Phase 1
+  - INN-38: AI concierge streaming API (src/app/api/ai/chat/route.ts + src/lib/ai/)
 
-## Phase 1 Review Summary
-- Codex: PASS WITH NOTES (0 critical, 5 important, 5 minor)
-- QA: PASS (0 critical, 4 important, 6 minor)
-- Post-review fixes applied: deleted 5 stub API routes, fixed lastName verification in booking flow, fixed ROLES constant mismatch (5 roles not 4), standardized password min to 8 chars, fixed Logo image warning, added /api/health endpoint, fixed lint warnings
-
-## What's Next (Phase 2: Core Features — 29 tickets)
-Phase 2 builds the guest-facing experience and core backend:
-- AI concierge (Claude API streaming + tools) — INN-38, INN-40
-- Service requests (CRUD + real-time) — INN-20, INN-42, INN-45, INN-56, INN-59
-- Room service (menu + checkout) — INN-23, INN-51, INN-53
-- Guest screens (welcome, concierge grid, explore, profile, feedback, checkout) — INN-18, INN-30, INN-34, INN-48, INN-61, INN-62, INN-67, INN-118
-- Server actions for orders — INN-22
-- Realtime hooks — INN-70
-- QR codes + deep links — INN-128
-- Edge cases: request reopen (INN-129), AI fallback (INN-130), order cancellation (INN-131), AI security (INN-132), image upload (INN-133), form idempotency (INN-134), adversarial AI testing (INN-149)
-- E2E test suite — INN-75
+## What's Next (Phase 2 Wave 2 — 13 tickets)
+Wave 2 builds on Wave 1's server actions + AI route:
+- INN-40: AI concierge chat screen (depends on INN-38)
+- INN-42: Housekeeping request screen (depends on INN-20)
+- INN-45: Maintenance request screen (depends on INN-20)
+- INN-48: Service detail screen (depends on INN-30)
+- INN-51: Room service menu screen (depends on INN-23)
+- INN-53: Room service checkout (depends on INN-22 + INN-51)
+- INN-56: Guest requests list (depends on INN-20)
+- INN-59: Request detail + timeline (depends on INN-20)
+- INN-61: Guest explore screen
+- INN-62: Guest profile screen
+- INN-67: Guest feedback/ratings
+- INN-70: Realtime hooks
+- INN-118: Guest checkout/session end
 
 ## Key Technical Notes
 - **Next.js 16** (not 14) with React 19

@@ -187,3 +187,61 @@ export async function getRequestById(requestId: string): Promise<ActionResult<un
     return { success: false, error: "Something went wrong. Please try again." };
   }
 }
+
+// ---------------------------------------------------------------------------
+// cancelRequest
+// ---------------------------------------------------------------------------
+
+export async function cancelRequest(
+  id: string,
+): Promise<ActionResult<{ id: string }>> {
+  const parsed = requestIdSchema.safeParse({ requestId: id });
+  if (!parsed.success) {
+    return { success: false, error: "Invalid request ID" };
+  }
+
+  try {
+    const supabase = await createClient();
+
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return { success: false, error: "Unauthorized" };
+    }
+
+    const { data: existing, error: fetchError } = await supabase
+      .from("requests")
+      .select("id, status")
+      .eq("id", parsed.data.requestId)
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (fetchError || !existing) {
+      return { success: false, error: "Request not found." };
+    }
+
+    if (existing.status !== "new" && existing.status !== "pending") {
+      return {
+        success: false,
+        error: "Only new or pending requests can be cancelled.",
+      };
+    }
+
+    const { error: updateError } = await supabase
+      .from("requests")
+      .update({ status: "cancelled", updated_at: new Date().toISOString() })
+      .eq("id", parsed.data.requestId)
+      .eq("user_id", user.id);
+
+    if (updateError) {
+      return { success: false, error: "Failed to cancel request. Please try again." };
+    }
+
+    return { success: true, data: { id: parsed.data.requestId } };
+  } catch {
+    return { success: false, error: "Something went wrong. Please try again." };
+  }
+}
