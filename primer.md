@@ -1,21 +1,22 @@
 # Innara -- Primer
 
 ## Current State
-- **Phase:** Phase 2: Core Features — ALL 29/29 COMPLETE, awaiting /phase-review
-- **Last Updated:** 2026-03-28
+- **Phase:** Phase 3: Supporting Features — CODE COMPLETE (20/20), awaiting phase review
+- **Last Updated:** 2026-03-29
 - **Linear Team:** INN
 
 ## What's Done
 - Phase 1: Foundation — completed 2026-03-28, passed phase review
-- Phase 2: Core Features — completed 2026-03-28 (29/29 tickets across 3 waves)
-  - Wave 1 (7 tickets): server actions (requests, orders, menu), welcome screen, services grid, stay verification, AI concierge API
-  - Wave 2 (13 tickets): all guest screens (housekeeping, maintenance, service detail, requests list, request detail+timeline, room service menu+checkout, explore, profile, feedback, checkout), AI chat UI, realtime hooks
-  - Wave 3 (9 tickets): QR codes, request reopen, AI fallback, order cancel guards, AI prompt injection protection, image upload, form idempotency, adversarial AI testing, E2E test suite
+- Phase 2: Core Features — completed 2026-03-29, passed phase review
+- Phase 3: Supporting Features — code complete 2026-03-29, 20/20 tickets Done
 
-## What's Next
-- Run /phase-review for Phase 2 (mandatory quality gate)
-- Fix any critical issues from review
-- Phase 3: Supporting Features (20 tickets — Staff portal screens, notifications, escalation, shifts)
+## Phase 3 Summary
+**Wave 1 — Backend (5 tickets):** Staff server actions (staff.ts, messaging.ts, shifts.ts, claim-request.ts), enhanced RLS, optimistic locking
+**Wave 2 — Staff Portal (6 tickets):** Dashboard, request queue, messaging, shift management, profile, seed data
+**Wave 3 — Features (9 tickets):** Notifications (backend + drawer), break/away status, escalation, shift handoff, department scoping, request detail view, E2E + concurrency tests
+**New files:** actions/{staff,messaging,shifts,claim-request,notifications,staff-status,escalation,shift-handoff}.ts, components/innara/NotificationDrawer.tsx, hooks/use-notifications.ts, staff portal pages (5), e2e/staff-portal.spec.ts, tests/concurrency/claim-race.test.ts
+**Migrations:** enhanced_staff_rls, request_version_column, notifications_table, staff_availability_status, escalation_and_handoff
+**Tests:** 73 Vitest (all pass), 70 Playwright specs
 
 ## Key Technical Notes
 - **Next.js 16** (not 14) with React 19
@@ -36,8 +37,8 @@
 
 ## Phase Progress
 - [x] Phase 1: Foundation (22 tickets — completed 2026-03-28, review passed)
-- [ ] Phase 2: Core Features (29 tickets — Todo in Linear)
-- [ ] Phase 3: Supporting Features (20 tickets)
+- [x] Phase 2: Core Features (29 tickets — completed 2026-03-29, review passed)
+- [ ] Phase 3: Supporting Features (20 tickets — code complete 2026-03-29, pending review)
 - [ ] Phase 4: Manager Portal + Billing (30 tickets)
 - [ ] Phase 5: Admin + PWA + PMS (23 tickets)
 - [ ] Phase 6: Testing & Launch (18 tickets)
