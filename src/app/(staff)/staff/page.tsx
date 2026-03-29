@@ -180,7 +180,7 @@ export default function StaffDashboard(): React.ReactElement {
   const handleSignOut = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.push("/staff/login");
+    router.push("/auth/staff/login");
   };
 
   const handleClaim = async (requestId: string, version: number) => {
@@ -561,7 +561,7 @@ function TodayShiftCard({ shift }: TodayShiftCardProps): React.ReactElement {
 
             {shift.status === "scheduled" && (
               <Link
-                href="/staff/shifts"
+                href="/staff/shift"
                 className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#9B7340] text-white text-xs font-medium hover:bg-[#b8924f] transition-colors"
               >
                 <LogIn className="w-3.5 h-3.5" />

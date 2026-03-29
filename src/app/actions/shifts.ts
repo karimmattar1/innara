@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { DEPARTMENTS } from "@/constants/app";
+import type { ActionResult } from "@/app/actions/requests";
 
 // ---------------------------------------------------------------------------
 // Schemas
@@ -29,12 +30,6 @@ const getShiftScheduleSchema = z.object({
 // ---------------------------------------------------------------------------
 // Response types
 // ---------------------------------------------------------------------------
-
-export interface ActionResult<T = undefined> {
-  success: boolean;
-  error?: string;
-  data?: T;
-}
 
 export type ShiftStatus = "scheduled" | "active" | "completed" | "absent";
 export type Department = (typeof DEPARTMENTS)[number];

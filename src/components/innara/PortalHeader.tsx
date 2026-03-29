@@ -14,6 +14,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useNotifications } from "@/hooks/use-notifications";
+import { NotificationDrawer } from "@/components/innara/NotificationDrawer";
 
 interface NavItem {
   label: string;
@@ -43,10 +45,12 @@ export function PortalHeader({
 }: PortalHeaderProps): React.ReactElement {
   const pathname = usePathname();
   const router = useRouter();
+  const notifications = useNotifications();
 
   const basePath = `/${portal === "admin" ? "admin" : portal}`;
   const defaultInitials = portal === "manager" ? "MG" : portal === "admin" ? "AD" : "ST";
   const defaultName = portal.charAt(0).toUpperCase() + portal.slice(1);
+  const effectiveNotificationCount = notifications.unreadCount > 0 ? notifications.unreadCount : (notificationCount ?? 0);
 
   const handleSignOut = () => {
     onSignOut?.();
@@ -81,23 +85,24 @@ export function PortalHeader({
           </nav>
 
           <div className="flex items-center gap-3">
-            <DropdownMenu>
-              <DropdownMenuTrigger className="relative p-2.5 rounded-xl hover:bg-secondary/50 transition-colors">
-                <Bell className="w-5 h-5 text-muted-foreground" />
-                {notificationCount > 0 && (
-                  <Badge className="absolute -top-0.5 -right-0.5 w-5 h-5 p-0 flex items-center justify-center bg-destructive text-destructive-foreground text-[10px] font-bold">
-                    {notificationCount}
-                  </Badge>
-                )}
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-80 bg-card border-border z-50">
-                <DropdownMenuLabel>Notifications</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <div className="py-4 text-center text-muted-foreground text-sm">
-                  No new notifications
-                </div>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <button
+              type="button"
+              onClick={notifications.toggle}
+              className="relative p-2.5 rounded-xl hover:bg-secondary/50 transition-colors"
+              aria-label={`Notifications${effectiveNotificationCount > 0 ? ` (${effectiveNotificationCount} unread)` : ""}`}
+            >
+              <Bell className="w-5 h-5 text-muted-foreground" />
+              {effectiveNotificationCount > 0 && (
+                <Badge className="absolute -top-0.5 -right-0.5 w-5 h-5 p-0 flex items-center justify-center bg-destructive text-destructive-foreground text-[10px] font-bold">
+                  {effectiveNotificationCount}
+                </Badge>
+              )}
+            </button>
+            <NotificationDrawer
+              open={notifications.isOpen}
+              onOpenChange={(isOpen) => { if (!isOpen) notifications.close(); }}
+              variant={portal === "staff" || portal === "manager" ? "dark" : "light"}
+            />
 
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-3 hover:bg-secondary/30 rounded-xl px-2 py-1.5 transition-colors">

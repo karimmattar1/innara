@@ -199,25 +199,44 @@ export async function releaseRequest(
       return { success: false, error: "Unauthorized" };
     }
 
-    // 3. Get staff's hotel_id and role from JWT claims
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-    const role = (session?.user?.app_metadata?.role as string | undefined) ?? "";
-    const isManager = role === "manager" || role === "super_admin";
+    // 3. Get staff's hotel_id from active staff assignment
+    const { data: assignment, error: assignmentError } = await supabase
+      .from("staff_assignments")
+      .select("hotel_id")
+      .eq("user_id", user.id)
+      .eq("is_active", true)
+      .limit(1)
+      .maybeSingle();
 
-    // 4. Fetch current request to verify ownership before attempting release
+    if (assignmentError || !assignment) {
+      return { success: false, error: "No active staff assignment found for your account." };
+    }
+
+    const hotelId = assignment.hotel_id;
+
+    // 4. Check manager role from user_roles table (not JWT claims)
+    const { data: roleData } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", user.id)
+      .limit(1)
+      .maybeSingle();
+
+    const isManager = roleData?.role === "manager" || roleData?.role === "super_admin";
+
+    // 5. Fetch current request scoped to hotel_id (multi-tenant isolation)
     const { data: current, error: fetchError } = await supabase
       .from("requests")
       .select("id, assigned_staff_id, version, hotel_id, status")
       .eq("id", parsed.data.requestId)
+      .eq("hotel_id", hotelId)
       .maybeSingle();
 
     if (fetchError || !current) {
       return { success: false, error: "Request not found." };
     }
 
-    // 5. Authorization: only the assigned staff or a manager can release
+    // 6. Authorization: only the assigned staff or a manager can release
     const isAssigned = current.assigned_staff_id === user.id;
     if (!isAssigned && !isManager) {
       return {
@@ -230,7 +249,7 @@ export async function releaseRequest(
       return { success: false, error: "This request is not currently claimed." };
     }
 
-    // 6. Atomic optimistic-lock release:
+    // 7. Atomic optimistic-lock release:
     //    - version check prevents clobbering a concurrent modification
     //    - Transition 'pending' → 'new' on release; leave other statuses intact
     const { data: updated, error: updateError } = await supabase
@@ -250,7 +269,7 @@ export async function releaseRequest(
       return { success: false, error: "Failed to release request. Please try again." };
     }
 
-    // 7. If 0 rows affected, the version was stale — a concurrent update occurred
+    // 8. If 0 rows affected, the version was stale — a concurrent update occurred
     if (!updated) {
       return {
         success: false,
@@ -258,7 +277,7 @@ export async function releaseRequest(
       };
     }
 
-    // 8. Insert audit event
+    // 9. Insert audit event
     await supabase.from("request_events").insert({
       request_id: updated.id,
       status: updated.status,

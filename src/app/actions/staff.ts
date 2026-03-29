@@ -206,7 +206,9 @@ export async function getStaffRequests(
       query = query.eq("assigned_staff_id", ctx.user!.id);
     }
     if (search) {
-      query = query.or(`item.ilike.%${search}%,description.ilike.%${search}%`);
+      // Sanitize PostgREST special characters to prevent filter injection
+      const sanitized = search.replace(/[%_\\,().]/g, "\\$&");
+      query = query.or(`item.ilike.%${sanitized}%,description.ilike.%${sanitized}%`);
     }
 
     query = query.order("created_at", { ascending: false }).range(from, to);

@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import type { NotificationType } from "@/types/domain";
+import type { ActionResult } from "@/app/actions/requests";
 
 // ---------------------------------------------------------------------------
 // Schemas
@@ -44,12 +45,6 @@ export type CreateNotificationInput = z.input<typeof createNotificationSchema>;
 // ---------------------------------------------------------------------------
 // Response types
 // ---------------------------------------------------------------------------
-
-export interface ActionResult<T = undefined> {
-  success: boolean;
-  error?: string;
-  data?: T;
-}
 
 export interface NotificationRow {
   id: string;
