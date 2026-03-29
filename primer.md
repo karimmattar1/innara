@@ -1,14 +1,14 @@
 # Innara -- Primer
 
 ## Current State
-- **Phase:** Phase 3: Supporting Features — CODE COMPLETE (20/20), awaiting phase review
+- **Phase:** Phase 3: Supporting Features — REVIEW PASSED (20/20), fixes applied
 - **Last Updated:** 2026-03-29
 - **Linear Team:** INN
 
 ## What's Done
 - Phase 1: Foundation — completed 2026-03-28, passed phase review
 - Phase 2: Core Features — completed 2026-03-29, passed phase review
-- Phase 3: Supporting Features — code complete 2026-03-29, 20/20 tickets Done
+- Phase 3: Supporting Features — completed 2026-03-29, review passed after 5 critical fixes
 
 ## Phase 3 Summary
 **Wave 1 — Backend (5 tickets):** Staff server actions (staff.ts, messaging.ts, shifts.ts, claim-request.ts), enhanced RLS, optimistic locking
@@ -38,7 +38,7 @@
 ## Phase Progress
 - [x] Phase 1: Foundation (22 tickets — completed 2026-03-28, review passed)
 - [x] Phase 2: Core Features (29 tickets — completed 2026-03-29, review passed)
-- [ ] Phase 3: Supporting Features (20 tickets — code complete 2026-03-29, pending review)
+- [x] Phase 3: Supporting Features (20 tickets — completed 2026-03-29, review passed)
 - [ ] Phase 4: Manager Portal + Billing (30 tickets)
 - [ ] Phase 5: Admin + PWA + PMS (23 tickets)
 - [ ] Phase 6: Testing & Launch (18 tickets)
