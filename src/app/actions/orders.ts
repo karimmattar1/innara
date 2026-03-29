@@ -224,10 +224,10 @@ export async function cancelOrder(orderId: string): Promise<ActionResult> {
       return { success: false, error: "Unauthorized" };
     }
 
-    // 3. Fetch order to verify ownership and status
+    // 3. Fetch order to verify ownership, status, and time window
     const { data: order, error: fetchError } = await supabase
       .from("orders")
-      .select("id, status, user_id")
+      .select("id, status, user_id, created_at")
       .eq("id", parsed.data.orderId)
       .eq("user_id", user.id)
       .maybeSingle();
@@ -242,6 +242,13 @@ export async function cancelOrder(orderId: string): Promise<ActionResult> {
 
     if (order.status !== "pending") {
       return { success: false, error: "Only pending orders can be cancelled." };
+    }
+
+    // Time guard: orders can only be cancelled within 5 minutes of creation (INN-131)
+    const CANCEL_WINDOW_MS = 5 * 60 * 1000;
+    const createdAt = new Date(order.created_at).getTime();
+    if (Date.now() - createdAt > CANCEL_WINDOW_MS) {
+      return { success: false, error: "Orders can only be cancelled within 5 minutes of placement." };
     }
 
     // 4. Cancel order
@@ -306,6 +313,42 @@ export async function getOrderById(orderId: string): Promise<ActionResult<unknow
     }
 
     return { success: true, data: order };
+  } catch {
+    return { success: false, error: "Something went wrong. Please try again." };
+  }
+}
+
+// ---------------------------------------------------------------------------
+// getOrderStatus (INN-131 — lightweight polling endpoint)
+// ---------------------------------------------------------------------------
+
+export async function getOrderStatus(
+  orderId: string,
+): Promise<ActionResult<{ id: string; status: string }>> {
+  const parsed = orderIdSchema.safeParse({ orderId });
+  if (!parsed.success) {
+    return { success: false, error: "Invalid order ID" };
+  }
+
+  try {
+    const supabase = await createClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      return { success: false, error: "Unauthorized" };
+    }
+
+    const { data, error } = await supabase
+      .from("orders")
+      .select("id, status")
+      .eq("id", parsed.data.orderId)
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (error || !data) {
+      return { success: false, error: "Order not found." };
+    }
+
+    return { success: true, data: { id: data.id, status: data.status } };
   } catch {
     return { success: false, error: "Something went wrong. Please try again." };
   }

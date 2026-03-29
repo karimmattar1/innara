@@ -15,6 +15,11 @@ import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { buildSystemPrompt } from "@/lib/ai/concierge-system-prompt";
 import { conciergeTools } from "@/lib/ai/concierge-tools";
+import {
+  sanitizeUserInput,
+  filterAIResponse,
+  detectAdversarialInput,
+} from "@/lib/ai/security";
 
 // Anthropic client — reads ANTHROPIC_API_KEY from env automatically
 const anthropic = new Anthropic();
@@ -89,7 +94,22 @@ export async function POST(request: NextRequest): Promise<Response> {
     );
   }
 
-  const { message: userMessage, conversationId } = parsed.data;
+  const rawMessage = parsed.data.message;
+  const { conversationId } = parsed.data;
+
+  // ------------------------------------------
+  // 2b. Adversarial detection — reject high-severity threats before any DB work
+  // ------------------------------------------
+  const threatResult = detectAdversarialInput(rawMessage);
+  if (threatResult.severity === "high") {
+    return new Response(
+      JSON.stringify({ error: "I'm here to help with your stay. What can I assist you with?" }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
+    );
+  }
+
+  // Sanitize input before it reaches the model (medium/low threats are stripped)
+  const userMessage = sanitizeUserInput(rawMessage);
 
   // ------------------------------------------
   // 3. Get active stay with hotel context
@@ -238,9 +258,10 @@ export async function POST(request: NextRequest): Promise<Response> {
         });
 
         stream.on("text", (delta: string) => {
-          fullResponse += delta;
+          const filteredDelta = filterAIResponse(delta);
+          fullResponse += filteredDelta;
           controller.enqueue(
-            encoder.encode(`data: ${JSON.stringify({ type: "text", text: delta })}\n\n`),
+            encoder.encode(`data: ${JSON.stringify({ type: "text", text: filteredDelta })}\n\n`),
           );
         });
 

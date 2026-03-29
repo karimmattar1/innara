@@ -27,7 +27,7 @@ export type CreateRequestInput = z.input<typeof createRequestSchema>;
 // Response types
 // ---------------------------------------------------------------------------
 
-interface ActionResult<T = undefined> {
+export interface ActionResult<T = undefined> {
   success: boolean;
   error?: string;
   data?: T;
@@ -239,6 +239,70 @@ export async function cancelRequest(
     if (updateError) {
       return { success: false, error: "Failed to cancel request. Please try again." };
     }
+
+    return { success: true, data: { id: parsed.data.requestId } };
+  } catch {
+    return { success: false, error: "Something went wrong. Please try again." };
+  }
+}
+
+// ---------------------------------------------------------------------------
+// reopenRequest (INN-129)
+// ---------------------------------------------------------------------------
+
+export async function reopenRequest(
+  requestId: string,
+): Promise<ActionResult<{ id: string }>> {
+  const parsed = requestIdSchema.safeParse({ requestId });
+  if (!parsed.success) {
+    return { success: false, error: "Invalid request ID" };
+  }
+
+  try {
+    const supabase = await createClient();
+
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+    if (authError || !user) {
+      return { success: false, error: "Unauthorized" };
+    }
+
+    const { data: existing, error: fetchError } = await supabase
+      .from("requests")
+      .select("id, status")
+      .eq("id", parsed.data.requestId)
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (fetchError || !existing) {
+      return { success: false, error: "Request not found." };
+    }
+
+    if (existing.status !== "completed") {
+      return { success: false, error: "Only completed requests can be reopened." };
+    }
+
+    const { error: updateError } = await supabase
+      .from("requests")
+      .update({ status: "pending", updated_at: new Date().toISOString() })
+      .eq("id", parsed.data.requestId)
+      .eq("user_id", user.id);
+
+    if (updateError) {
+      return { success: false, error: "Failed to reopen request. Please try again." };
+    }
+
+    // Log the reopen event
+    await supabase.from("request_events").insert({
+      request_id: parsed.data.requestId,
+      from_status: "completed",
+      to_status: "pending",
+      by_role: "guest",
+      by_name: "Guest",
+      note: "Guest reopened request",
+    });
 
     return { success: true, data: { id: parsed.data.requestId } };
   } catch {
