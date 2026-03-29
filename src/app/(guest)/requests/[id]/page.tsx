@@ -11,7 +11,6 @@ import {
   XCircle,
   AlertCircle,
   ChevronLeft,
-  type LucideIcon,
 } from "lucide-react";
 import { GuestPageShell } from "@/components/innara/GuestPageShell";
 import { CategoryIcon } from "@/components/innara/CategoryIcon";
@@ -30,16 +29,17 @@ import { cn } from "@/lib/utils";
 // Timeline event icon helpers
 // ---------------------------------------------------------------------------
 
-function getEventIcon(toStatus: string): LucideIcon {
+function EventIcon({ toStatus }: { toStatus: string }): React.ReactElement {
+  const className = "w-4 h-4";
   switch (toStatus) {
     case "completed":
-      return CheckCircle2;
+      return <CheckCircle2 className={className} />;
     case "cancelled":
-      return XCircle;
+      return <XCircle className={className} />;
     case "in_progress":
-      return Clock;
+      return <Clock className={className} />;
     default:
-      return User;
+      return <User className={className} />;
   }
 }
 
@@ -68,7 +68,6 @@ interface TimelineEntryProps {
 }
 
 function TimelineEntry({ event, isLast }: TimelineEntryProps): React.ReactElement {
-  const Icon = getEventIcon(event.toStatus);
   const colorClass = getEventColor(event.toStatus);
 
   const timeLabel = (() => {
@@ -102,7 +101,7 @@ function TimelineEntry({ event, isLast }: TimelineEntryProps): React.ReactElemen
             colorClass,
           )}
         >
-          <Icon className="w-4 h-4" />
+          <EventIcon toStatus={event.toStatus} />
         </div>
         {!isLast && (
           <div className="w-px flex-1 bg-border/60 mt-1 mb-0 min-h-[20px]" />

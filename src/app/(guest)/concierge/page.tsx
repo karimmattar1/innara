@@ -157,7 +157,7 @@ export default function ConciergeChatPage(): React.ReactElement {
       setIsLoading(true);
 
       try {
-        const response = await fetch("/api/ai/concierge", {
+        const response = await fetch("/api/ai/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ message: text, conversationId }),

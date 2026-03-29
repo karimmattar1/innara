@@ -10,105 +10,37 @@ import { LoadingState } from "@/components/innara/LoadingState";
 import { SectionHeader } from "@/components/innara/SectionHeader";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { getMenuCategories, getMenuItems } from "@/app/actions/menu";
 import type { MenuItemData, MenuCategoryData, CartItem } from "@/types/domain";
 
 // ---------------------------------------------------------------------------
-// Placeholder server action types (actions will be wired in a later ticket)
+// Map DB snake_case rows to camelCase domain types
 // ---------------------------------------------------------------------------
 
-async function fetchMenuCategories(): Promise<MenuCategoryData[]> {
-  // Placeholder — real action: getMenuCategories() from src/app/actions/menu.ts
-  return [
-    { id: "all", name: "All", slug: "all", description: null, sortOrder: 0 },
-    { id: "breakfast", name: "Breakfast", slug: "breakfast", description: null, sortOrder: 1 },
-    { id: "mains", name: "Mains", slug: "mains", description: null, sortOrder: 2 },
-    { id: "desserts", name: "Desserts", slug: "desserts", description: null, sortOrder: 3 },
-    { id: "drinks", name: "Drinks", slug: "drinks", description: null, sortOrder: 4 },
-  ];
+function mapCategory(row: Record<string, unknown>): MenuCategoryData {
+  return {
+    id: row.id as string,
+    name: row.name as string,
+    slug: row.slug as string,
+    description: (row.description as string | null) ?? null,
+    sortOrder: (row.sort_order as number) ?? 0,
+  };
 }
 
-async function fetchMenuItems(): Promise<MenuItemData[]> {
-  // Placeholder — real action: getMenuItems(categoryId?) from src/app/actions/menu.ts
-  return [
-    {
-      id: "1",
-      name: "Classic Eggs Benedict",
-      description: "Poached eggs, Canadian bacon, hollandaise sauce on toasted English muffin",
-      price: 22,
-      categoryId: "breakfast",
-      categoryName: "breakfast",
-      imageUrl: null,
-      isPopular: true,
-      isAvailable: true,
-      allergens: ["eggs", "gluten", "dairy"],
-      hotelId: "hotel-1",
-    },
-    {
-      id: "2",
-      name: "Grilled Salmon",
-      description: "Atlantic salmon with lemon herb butter, seasonal vegetables and wild rice",
-      price: 38,
-      categoryId: "mains",
-      categoryName: "mains",
-      imageUrl: null,
-      isPopular: true,
-      isAvailable: true,
-      allergens: ["fish"],
-      hotelId: "hotel-1",
-    },
-    {
-      id: "3",
-      name: "Wagyu Beef Burger",
-      description: "8oz wagyu patty, aged cheddar, truffle aioli, brioche bun with fries",
-      price: 34,
-      categoryId: "mains",
-      categoryName: "mains",
-      imageUrl: null,
-      isPopular: false,
-      isAvailable: true,
-      allergens: ["gluten", "dairy", "eggs"],
-      hotelId: "hotel-1",
-    },
-    {
-      id: "4",
-      name: "Chocolate Lava Cake",
-      description: "Warm dark chocolate fondant with vanilla bean ice cream and raspberry coulis",
-      price: 16,
-      categoryId: "desserts",
-      categoryName: "desserts",
-      imageUrl: null,
-      isPopular: true,
-      isAvailable: true,
-      allergens: ["gluten", "dairy", "eggs"],
-      hotelId: "hotel-1",
-    },
-    {
-      id: "5",
-      name: "Fresh Orange Juice",
-      description: "Freshly squeezed Valencia oranges, 300ml",
-      price: 8,
-      categoryId: "drinks",
-      categoryName: "drinks",
-      imageUrl: null,
-      isPopular: false,
-      isAvailable: true,
-      allergens: [],
-      hotelId: "hotel-1",
-    },
-    {
-      id: "6",
-      name: "Avocado Toast",
-      description: "Smashed avocado, poached egg, cherry tomatoes, feta, sourdough",
-      price: 18,
-      categoryId: "breakfast",
-      categoryName: "breakfast",
-      imageUrl: null,
-      isPopular: true,
-      isAvailable: true,
-      allergens: ["gluten", "dairy", "eggs"],
-      hotelId: "hotel-1",
-    },
-  ];
+function mapMenuItem(row: Record<string, unknown>): MenuItemData {
+  return {
+    id: row.id as string,
+    name: row.name as string,
+    description: (row.description as string | null) ?? null,
+    price: row.price as number,
+    categoryId: (row.category_id as string | null) ?? null,
+    categoryName: (row.category_id as string) ?? undefined,
+    imageUrl: (row.image_url as string | null) ?? null,
+    isPopular: (row.is_popular as boolean) ?? false,
+    isAvailable: (row.is_available as boolean) ?? true,
+    allergens: (row.allergens as string[] | null) ?? null,
+    hotelId: row.hotel_id as string,
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -147,11 +79,21 @@ export default function RoomServiceMenuPage(): React.ReactElement {
 
     async function load() {
       try {
-        const [cats, items] = await Promise.all([
-          fetchMenuCategories(),
-          fetchMenuItems(),
+        const [catsResult, itemsResult] = await Promise.all([
+          getMenuCategories(),
+          getMenuItems(),
         ]);
         if (cancelled) return;
+
+        if (!catsResult.success || !itemsResult.success) {
+          setError(catsResult.error ?? itemsResult.error ?? "Unable to load menu.");
+          return;
+        }
+
+        const allCategory: MenuCategoryData = { id: "all", name: "All", slug: "all", description: null, sortOrder: -1 };
+        const cats = [allCategory, ...(catsResult.data as Record<string, unknown>[]).map(mapCategory)];
+        const items = (itemsResult.data as Record<string, unknown>[]).map(mapMenuItem);
+
         setCategories(cats);
         setAllItems(items);
       } catch {
@@ -280,8 +222,15 @@ export default function RoomServiceMenuPage(): React.ReactElement {
             onClick={() => {
               setError(null);
               setLoading(true);
-              fetchMenuItems()
-                .then((items) => { setAllItems(items); setLoading(false); })
+              getMenuItems()
+                .then((result) => {
+                  if (result.success && result.data) {
+                    setAllItems((result.data as Record<string, unknown>[]).map(mapMenuItem));
+                  } else {
+                    setError(result.error ?? "Unable to load menu.");
+                  }
+                  setLoading(false);
+                })
                 .catch(() => { setError("Unable to load menu. Please try again."); setLoading(false); });
             }}
           >

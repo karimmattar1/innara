@@ -1,26 +1,21 @@
 # Innara -- Primer
 
 ## Current State
-- **Phase:** Phase 2: Core Features — Waves 1+2 COMPLETE (20/29), Wave 3 next
+- **Phase:** Phase 2: Core Features — ALL 29/29 COMPLETE, awaiting /phase-review
 - **Last Updated:** 2026-03-28
 - **Linear Team:** INN
 
 ## What's Done
 - Phase 1: Foundation — completed 2026-03-28, passed phase review
-- Phase 2 Wave 1 (7 tickets): server actions (requests, orders, menu), welcome screen, services grid, stay verification, AI concierge API
-- Phase 2 Wave 2 (13 tickets): all guest screens (housekeeping, maintenance, service detail, requests list, request detail+timeline, room service menu+checkout, explore, profile, feedback, checkout), AI chat UI, realtime hooks
+- Phase 2: Core Features — completed 2026-03-28 (29/29 tickets across 3 waves)
+  - Wave 1 (7 tickets): server actions (requests, orders, menu), welcome screen, services grid, stay verification, AI concierge API
+  - Wave 2 (13 tickets): all guest screens (housekeeping, maintenance, service detail, requests list, request detail+timeline, room service menu+checkout, explore, profile, feedback, checkout), AI chat UI, realtime hooks
+  - Wave 3 (9 tickets): QR codes, request reopen, AI fallback, order cancel guards, AI prompt injection protection, image upload, form idempotency, adversarial AI testing, E2E test suite
 
-## What's Next (Phase 2 Wave 3 — 9 tickets)
-Edge cases + E2E tests:
-- INN-128: QR codes + deep links
-- INN-129: Request reopen flow
-- INN-130: AI fallback handling
-- INN-131: Order cancellation guards
-- INN-132: AI prompt injection protection
-- INN-133: Image upload pipeline
-- INN-134: Form idempotency
-- INN-149: Adversarial AI testing
-- INN-75: E2E test suite
+## What's Next
+- Run /phase-review for Phase 2 (mandatory quality gate)
+- Fix any critical issues from review
+- Phase 3: Supporting Features (20 tickets — Staff portal screens, notifications, escalation, shifts)
 
 ## Key Technical Notes
 - **Next.js 16** (not 14) with React 19

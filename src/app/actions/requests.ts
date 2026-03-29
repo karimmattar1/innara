@@ -60,7 +60,7 @@ export async function createRequest(
     const { data: stay, error: stayError } = await supabase
       .from("stays")
       .select("id, hotel_id, room_number")
-      .eq("guest_id", user.id)
+      .eq("user_id", user.id)
       .eq("status", "active")
       .order("created_at", { ascending: false })
       .limit(1)

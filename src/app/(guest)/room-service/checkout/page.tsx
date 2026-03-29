@@ -18,28 +18,8 @@ import { SectionHeader } from "@/components/innara/SectionHeader";
 import { EmptyCartState } from "@/components/innara/EmptyState";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { createOrder } from "@/app/actions/orders";
 import type { CartItem } from "@/types/domain";
-
-// ---------------------------------------------------------------------------
-// Placeholder server action (real action wired in a later ticket)
-// ---------------------------------------------------------------------------
-
-interface CreateOrderResult {
-  success: boolean;
-  orderId?: string;
-  error?: string;
-}
-
-async function submitOrder(input: {
-  items: CartItem[];
-  notes: string;
-  tip: number;
-  paymentMethod: string;
-}): Promise<CreateOrderResult> {
-  // Placeholder — real action: createOrder(input) from src/app/actions/orders.ts
-  await new Promise((resolve) => setTimeout(resolve, 1200));
-  return { success: true, orderId: `ORD-${Date.now().toString(36).toUpperCase()}` };
-}
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -157,16 +137,25 @@ export default function RoomServiceCheckoutPage(): React.ReactElement {
     setSubmitError(null);
 
     try {
-      const result = await submitOrder({
-        items: cart,
-        notes,
-        tip: effectiveTip,
-        paymentMethod: selectedPayment,
+      const paymentMethodMap: Record<string, "room_charge" | "card" | "cash"> = {
+        room: "room_charge",
+        card: "card",
+        cash: "cash",
+      };
+
+      const result = await createOrder({
+        items: cart.map((item) => ({
+          menuItemId: item.menuItemId,
+          quantity: item.quantity,
+        })),
+        paymentMethod: paymentMethodMap[selectedPayment] ?? "room_charge",
+        specialInstructions: notes || undefined,
+        tip: effectiveTip > 0 ? effectiveTip : undefined,
       });
 
-      if (result.success && result.orderId) {
+      if (result.success && result.data) {
         sessionStorage.removeItem("room-service-cart");
-        setConfirmedOrderId(result.orderId);
+        setConfirmedOrderId(result.data.id);
       } else {
         setSubmitError(result.error ?? "Failed to place order. Please try again.");
       }
