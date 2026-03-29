@@ -1,33 +1,37 @@
 # Innara -- Primer
 
 ## Current State
-- **Phase:** Phase 3: Supporting Features — REVIEW PASSED (20/20), fixes applied
+- **Phase:** Phase 4: Manager Portal + Billing — Wave 0 complete, Wave 1 next
 - **Last Updated:** 2026-03-29
 - **Linear Team:** INN
 
 ## What's Done
 - Phase 1: Foundation — completed 2026-03-28, passed phase review
 - Phase 2: Core Features — completed 2026-03-29, passed phase review
-- Phase 3: Supporting Features — completed 2026-03-29, review passed after 5 critical fixes
+- Phase 3: Supporting Features — completed 2026-03-29, review passed (score 71/100)
 
-## Phase 3 Summary
-**Wave 1 — Backend (5 tickets):** Staff server actions (staff.ts, messaging.ts, shifts.ts, claim-request.ts), enhanced RLS, optimistic locking
-**Wave 2 — Staff Portal (6 tickets):** Dashboard, request queue, messaging, shift management, profile, seed data
-**Wave 3 — Features (9 tickets):** Notifications (backend + drawer), break/away status, escalation, shift handoff, department scoping, request detail view, E2E + concurrency tests
-**New files:** actions/{staff,messaging,shifts,claim-request,notifications,staff-status,escalation,shift-handoff}.ts, components/innara/NotificationDrawer.tsx, hooks/use-notifications.ts, staff portal pages (5), e2e/staff-portal.spec.ts, tests/concurrency/claim-race.test.ts
-**Migrations:** enhanced_staff_rls, request_version_column, notifications_table, staff_availability_status, escalation_and_handoff
-**Tests:** 73 Vitest (all pass), 70 Playwright specs
+## Phase 4 Progress
+**Wave 0 — Debt Cleanup (1 ticket, DONE):**
+- Extracted shared auth helpers → `src/lib/auth-context.ts` (resolveStaffContext, resolveHotelId, isManagerRole)
+- Added shared formatting utils → `src/lib/utils.ts` (getTimeAgo, getInitials)
+- Added VALID_TRANSITIONS to `src/constants/app.ts`
+- Refactored 6 action files + 8 page/component files to use shared helpers
+- Deleted dead code: ErrorBoundary.tsx, NavLink.tsx
+- Converted concurrency test stubs to it.skip
+- Net: -469 lines, 73 tests pass, build clean
 
 ## Key Technical Notes
 - **Next.js 16** (not 14) with React 19
 - **Tailwind CSS v4** with shadcn base-nova style (@base-ui/react — NO `asChild` prop)
 - **Shared PortalHeader** component with thin wrappers (StaffHeader, ManagerHeader, AdminHeader)
+- **Shared helpers:** `src/lib/auth-context.ts` (auth), `src/lib/utils.ts` (formatting), `src/constants/app.ts` (transitions)
 - Guest paths: /guest/*, Staff: /staff/*, Manager: /manager/*, Admin: /admin/*
 - JWT claims inject app_role, hotel_id, department via custom_access_token_hook
 - Middleware redirects: guest portal → /auth/guest/login, staff/manager/admin → /auth/staff/login
 - Supabase project: hbqcujxpphwgkgrqpjmo (ap-south-1, ai-solutions org)
 - RLS uses `is_manager_of_hotel()` SECURITY DEFINER function
 - ROLES constant: GUEST, STAFF, FRONT_DESK, MANAGER, SUPER_ADMIN
+- Playwright: port 3001 (avoid conflict with other ventures)
 - Stub API routes deleted — recreate when implementing features
 
 ## Manual Steps Needed
