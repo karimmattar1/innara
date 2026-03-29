@@ -60,12 +60,12 @@ export async function verifyBookingReference(
   try {
     const supabase = await createClient();
 
-    // 2. Look up booking by confirmation_number (case-insensitive)
-    //    We use .ilike for case-insensitive matching on confirmation_number.
+    // 2. Look up booking by confirmation_number + guest_last_name (case-insensitive)
     const { data: booking, error: queryError } = await supabase
       .from("bookings")
       .select("id, hotel_id, status")
       .ilike("confirmation_number", parsed.data.confirmationNumber)
+      .ilike("guest_last_name", parsed.data.lastName)
       .in("status", ["confirmed", "checked_in"])
       .maybeSingle();
 

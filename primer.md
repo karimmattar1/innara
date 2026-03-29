@@ -1,42 +1,29 @@
 # Innara -- Primer
 
 ## Current State
-- **Phase:** Phase 1: Foundation — COMPLETE
+- **Phase:** Phase 2: Core Features — NOT STARTED
 - **Last Updated:** 2026-03-28
 - **Linear Team:** INN
 
-## What's Done (Phase 1)
-- INN-14: Next.js 16 project scaffolded with App Router
-- INN-15: Tailwind v4, DM Sans, design tokens configured
-- INN-16: 48 shadcn/ui components installed (base-nova style, @base-ui/react)
-- INN-17: 42 custom Innara components migrated from design-static
-- INN-19: Constants (app.ts 342 lines, navigation.ts), types (domain.ts 489 lines, database.ts auto-gen)
-- INN-21: Supabase baseline schema — 29 tables with RLS
-- INN-24: New tables (ai_conversations, ai_messages, subscriptions, audit_logs, hotel_branding, shifts, shift_assignments, integration_configs)
-- INN-26: Custom JWT claims hook (custom_access_token_hook + 5 helper functions)
-- INN-28: Supabase Auth client setup (@supabase/ssr, client + server)
-- INN-32: Role-based middleware (JWT decoding, portal routing, PUBLIC_PATHS, admin redirect fix)
-- INN-35: Guest login + registration pages (glassmorphism, form validation)
-- INN-37: Staff/Manager login + invite accept page
-- INN-41: Guest portal shell layout (gradient bg, mobile-first, AppBackground)
-- INN-44: Staff portal shell layout (dark theme, StaffHeader)
-- INN-47: Manager portal shell layout (dark theme, ManagerHeader)
-- INN-49: Admin portal shell layout (dark theme, AdminHeader)
-- INN-63: CI/CD — GitHub Actions (ci.yml + e2e.yml) + Vercel config
-- INN-65: Auth E2E tests — 18 Playwright tests, all passing
-- INN-116: Password reset flow (forgot password + reset confirmation pages)
-- INN-117: Email verification flow — callback route + verify-email page (success/error states)
-- INN-127: Guest booking ref verification — 3-step flow at /auth/guest/verify (booking ref → email → magic link)
-- INN-148: RLS tenant isolation — tested with 2 hotels, 6 users. Found + fixed 20 policies with global manager access. Migration: fix_rls_manager_tenant_isolation. Added is_manager_of_hotel() SECURITY DEFINER function.
-- Logo assets copied to public/ (4 files: icon + wordmark, light + dark)
-- Sonner toast provider added to root layout
-- Glassmorphism CSS (glass-card, glass-card-dark, glass-panel, gradient orbs, mobile-header, bottom-nav)
-- Server actions: verifyBookingReference, sendGuestMagicLink (src/app/actions/auth.ts)
+## What's Done
+- Phase 1: Foundation — completed 2026-03-28, passed phase review (codex + QA + scorer + self-learner)
 
-## What's Next
-- Run `/phase-review` (codex-reviewer + qa-tester + scorer + self-learner)
-- If phase passes: move Phase 2 tickets from Backlog → Todo
-- Begin Phase 2: Core Features (AI concierge, service requests, room service)
+## Phase 1 Review Summary
+- Codex: PASS WITH NOTES (0 critical, 5 important, 5 minor)
+- QA: PASS (0 critical, 4 important, 6 minor)
+- Post-review fixes applied: deleted 5 stub API routes, fixed lastName verification in booking flow, fixed ROLES constant mismatch (5 roles not 4), standardized password min to 8 chars, fixed Logo image warning, added /api/health endpoint, fixed lint warnings
+
+## What's Next (Phase 2: Core Features — 29 tickets)
+Phase 2 builds the guest-facing experience and core backend:
+- AI concierge (Claude API streaming + tools) — INN-38, INN-40
+- Service requests (CRUD + real-time) — INN-20, INN-42, INN-45, INN-56, INN-59
+- Room service (menu + checkout) — INN-23, INN-51, INN-53
+- Guest screens (welcome, concierge grid, explore, profile, feedback, checkout) — INN-18, INN-30, INN-34, INN-48, INN-61, INN-62, INN-67, INN-118
+- Server actions for orders — INN-22
+- Realtime hooks — INN-70
+- QR codes + deep links — INN-128
+- Edge cases: request reopen (INN-129), AI fallback (INN-130), order cancellation (INN-131), AI security (INN-132), image upload (INN-133), form idempotency (INN-134), adversarial AI testing (INN-149)
+- E2E test suite — INN-75
 
 ## Key Technical Notes
 - **Next.js 16** (not 14) with React 19
@@ -46,7 +33,9 @@
 - JWT claims inject app_role, hotel_id, department via custom_access_token_hook
 - Middleware redirects: guest portal → /auth/guest/login, staff/manager/admin → /auth/staff/login
 - Supabase project: hbqcujxpphwgkgrqpjmo (ap-south-1, ai-solutions org)
-- RLS uses `is_manager_of_hotel()` SECURITY DEFINER function to avoid infinite recursion on staff_assignments and scope managers to their hotel
+- RLS uses `is_manager_of_hotel()` SECURITY DEFINER function
+- ROLES constant: GUEST, STAFF, FRONT_DESK, MANAGER, SUPER_ADMIN
+- Stub API routes deleted — recreate when implementing features
 
 ## Manual Steps Needed
 - Enable JWT hook in Supabase Dashboard → Authentication → Hooks → Custom Access Token
@@ -54,8 +43,8 @@
 - Configure Supabase email templates for verification + password reset
 
 ## Phase Progress
-- [x] Phase 1: Foundation (22 tickets — complete 2026-03-28)
-- [ ] Phase 2: Core Features (29 tickets)
+- [x] Phase 1: Foundation (22 tickets — completed 2026-03-28, review passed)
+- [ ] Phase 2: Core Features (29 tickets — Todo in Linear)
 - [ ] Phase 3: Supporting Features (20 tickets)
 - [ ] Phase 4: Manager Portal + Billing (30 tickets)
 - [ ] Phase 5: Admin + PWA + PMS (23 tickets)

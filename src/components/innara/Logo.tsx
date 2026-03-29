@@ -60,7 +60,7 @@ export function InnaraLogo({
             width={config.wordLogoHeight * 3}
             height={config.wordLogoHeight}
             className="w-auto object-contain"
-            style={{ height: config.wordLogoHeight }}
+            style={{ height: config.wordLogoHeight, width: "auto" }}
             priority
           />
           <span className="sr-only">INNARA</span>

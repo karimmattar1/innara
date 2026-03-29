@@ -6,11 +6,12 @@ describe("App Constants", () => {
     expect(APP_NAME).toBe("Innara");
   });
 
-  it("has all four roles defined", () => {
+  it("has all five roles defined", () => {
     expect(ROLES.GUEST).toBe("guest");
     expect(ROLES.STAFF).toBe("staff");
+    expect(ROLES.FRONT_DESK).toBe("front_desk");
     expect(ROLES.MANAGER).toBe("manager");
-    expect(ROLES.ADMIN).toBe("admin");
+    expect(ROLES.SUPER_ADMIN).toBe("super_admin");
   });
 
   it("has portal routes for each role", () => {

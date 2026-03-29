@@ -10,8 +10,9 @@ export const APP_DESCRIPTION =
 export const ROLES = {
   GUEST: "guest",
   STAFF: "staff",
+  FRONT_DESK: "front_desk",
   MANAGER: "manager",
-  ADMIN: "admin",
+  SUPER_ADMIN: "super_admin",
 } as const;
 
 export const PORTAL_ROUTES = {
