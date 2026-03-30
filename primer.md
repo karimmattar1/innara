@@ -1,7 +1,7 @@
 # Innara -- Primer
 
 ## Current State
-- **Phase:** Phase 4: Manager Portal + Billing — Wave 0 complete, Wave 1 next
+- **Phase:** Phase 4: Manager Portal + Billing — Wave 2 complete, Wave 3 next
 - **Last Updated:** 2026-03-29
 - **Linear Team:** INN
 
@@ -11,14 +11,18 @@
 - Phase 3: Supporting Features — completed 2026-03-29, review passed (score 71/100)
 
 ## Phase 4 Progress
-**Wave 0 — Debt Cleanup (1 ticket, DONE):**
-- Extracted shared auth helpers → `src/lib/auth-context.ts` (resolveStaffContext, resolveHotelId, isManagerRole)
-- Added shared formatting utils → `src/lib/utils.ts` (getTimeAgo, getInitials)
-- Added VALID_TRANSITIONS to `src/constants/app.ts`
-- Refactored 6 action files + 8 page/component files to use shared helpers
-- Deleted dead code: ErrorBoundary.tsx, NavLink.tsx
-- Converted concurrency test stubs to it.skip
-- Net: -469 lines, 73 tests pass, build clean
+**Wave 0 — Debt Cleanup (DONE):** Shared helpers, dead code removal, -469 lines
+
+**Wave 1 — Backend Actions (DONE):** analytics.ts, staff-management.ts, billing.ts, branding.ts, email.ts, Stripe webhook
+
+**Wave 2 — Manager Portal Core Screens (6 tickets, DONE):**
+- INN-80: Manager Dashboard — KPI MetricCards, period selector, recent requests, quick actions
+- INN-82: Manager Requests — filters, bulk ops, status transitions, pagination, staff assignment
+- INN-83: Manager Analytics — recharts line/bar/area charts, staff performance table, revenue, SLA compliance
+- INN-85: Manager Catalog — Menu items tab (category filter + grid), Services tab (CRUD dialog + inline Switch toggle)
+- INN-87: Manager Staff — roster table, invite dialog, invitation management, department change, deactivate/reactivate
+- INN-88: Manager Ops — SLA config with inline editing, color-coded target times, grouped by category
+- Also fixed: installed @types/qrcode (pre-existing missing types)
 
 ## Key Technical Notes
 - **Next.js 16** (not 14) with React 19
