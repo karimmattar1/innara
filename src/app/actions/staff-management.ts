@@ -790,6 +790,154 @@ export async function reactivateStaff(
 }
 
 // ---------------------------------------------------------------------------
+// changeStaffRole
+// ---------------------------------------------------------------------------
+
+const CHANGEABLE_ROLES = [
+  ROLES.STAFF,
+  ROLES.FRONT_DESK,
+  ROLES.MANAGER,
+] as const;
+
+type ChangeableRole = (typeof CHANGEABLE_ROLES)[number];
+
+const changeRoleSchema = z.object({
+  staffId: uuidSchema,
+  newRole: z.enum(CHANGEABLE_ROLES),
+});
+
+export async function changeStaffRole(
+  staffId: string,
+  newRole: ChangeableRole,
+): Promise<ActionResult> {
+  const parsed = changeRoleSchema.safeParse({ staffId, newRole });
+  if (!parsed.success) {
+    return { success: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
+  }
+
+  try {
+    const supabase = await createClient();
+    const ctx = await resolveStaffContext(supabase);
+    if (ctx.error) return { success: false, error: ctx.error };
+
+    const isManager = await isManagerRole(supabase, ctx.user!.id);
+    if (!isManager) return { success: false, error: "Unauthorized" };
+
+    const userId = ctx.user!.id;
+    const hotelId = ctx.assignment!.hotel_id;
+
+    // Prevent manager from changing their own role
+    if (parsed.data.staffId === userId) {
+      return { success: false, error: "Cannot change your own role" };
+    }
+
+    // Fetch current role for this staff member at this hotel
+    const { data: currentRole, error: roleError } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", parsed.data.staffId)
+      .eq("hotel_id", hotelId)
+      .single();
+
+    if (roleError || !currentRole) {
+      return { success: false, error: "Staff member not found at this hotel." };
+    }
+
+    if (parsed.data.newRole === currentRole.role) {
+      return { success: false, error: "Staff member already has this role" };
+    }
+
+    // Update the role in user_roles
+    const { error: updateError } = await supabase
+      .from("user_roles")
+      .update({ role: parsed.data.newRole })
+      .eq("user_id", parsed.data.staffId)
+      .eq("hotel_id", hotelId);
+
+    if (updateError) {
+      return { success: false, error: "Failed to update staff role." };
+    }
+
+    // Note: The user's JWT claims (app_role) will update on next token refresh.
+    // The custom_access_token_hook reads from user_roles at token generation time.
+    // For immediate effect, the user should sign out and back in.
+
+    void logAudit(supabase, {
+      hotelId,
+      actorId: userId,
+      action: "staff.role_change",
+      tableName: "user_roles",
+      recordId: parsed.data.staffId,
+      oldData: { role: currentRole.role },
+      newData: { role: parsed.data.newRole },
+    });
+
+    return { success: true };
+  } catch {
+    return { success: false, error: "Something went wrong." };
+  }
+}
+
+// ---------------------------------------------------------------------------
+// getStaffRole
+// ---------------------------------------------------------------------------
+
+export async function getStaffRole(
+  staffId: string,
+): Promise<ActionResult<{ role: string; department: string | null }>> {
+  const parsedId = uuidSchema.safeParse(staffId);
+  if (!parsedId.success) {
+    return { success: false, error: "Invalid staff ID" };
+  }
+
+  try {
+    const supabase = await createClient();
+    const ctx = await resolveStaffContext(supabase);
+    if (ctx.error) return { success: false, error: ctx.error };
+
+    const isManager = await isManagerRole(supabase, ctx.user!.id);
+    if (!isManager) return { success: false, error: "Unauthorized" };
+
+    const hotelId = ctx.assignment!.hotel_id;
+
+    // Fetch role from user_roles for this staff member at this hotel
+    const { data: roleRow, error: roleError } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", parsedId.data)
+      .eq("hotel_id", hotelId)
+      .single();
+
+    if (roleError || !roleRow) {
+      return { success: false, error: "Staff member not found at this hotel." };
+    }
+
+    // Fetch department from staff_assignments
+    const { data: assignment, error: assignError } = await supabase
+      .from("staff_assignments")
+      .select("department")
+      .eq("user_id", parsedId.data)
+      .eq("hotel_id", hotelId)
+      .eq("is_active", true)
+      .maybeSingle();
+
+    if (assignError) {
+      return { success: false, error: "Unable to load staff assignment." };
+    }
+
+    return {
+      success: true,
+      data: {
+        role: roleRow.role as string,
+        department: (assignment?.department as string | null) ?? null,
+      },
+    };
+  } catch {
+    return { success: false, error: "Something went wrong." };
+  }
+}
+
+// ---------------------------------------------------------------------------
 // updateStaffDepartment
 // ---------------------------------------------------------------------------
 
