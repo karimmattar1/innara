@@ -80,6 +80,7 @@ export interface InvitationRecord {
   email: string;
   token: string;
   expiresAt: string;
+  updatedAt: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -253,7 +254,7 @@ export async function inviteStaff(
     // Check for an existing PENDING invitation for this email + hotel
     const { data: existingInvite, error: inviteCheckError } = await supabase
       .from("staff_invitations")
-      .select("id")
+      .select("id, status, expires_at")
       .eq("hotel_id", hotelId)
       .eq("email", email)
       .eq("status", "pending")
@@ -264,10 +265,24 @@ export async function inviteStaff(
     }
 
     if (existingInvite) {
-      return {
-        success: false,
-        error: "A pending invitation already exists for this email address.",
-      };
+      const isExpired = new Date(existingInvite.expires_at as string) < new Date();
+
+      if (!isExpired) {
+        return {
+          success: false,
+          error: "An invitation is already pending for this email.",
+        };
+      }
+
+      // Expired pending invitation — delete it so we can create a fresh one
+      const { error: deleteError } = await supabase
+        .from("staff_invitations")
+        .delete()
+        .eq("id", existingInvite.id);
+
+      if (deleteError) {
+        return { success: false, error: "Unable to replace expired invitation." };
+      }
     }
 
     // Check if the email already belongs to an active staff member at this hotel
@@ -317,7 +332,7 @@ export async function inviteStaff(
         status: "pending",
         expires_at: expiresAt,
       })
-      .select("id, email, token, expires_at")
+      .select("id, email, token, expires_at, updated_at")
       .single();
 
     if (insertError) {
@@ -340,6 +355,7 @@ export async function inviteStaff(
         email: invitation.email as string,
         token: invitation.token as string,
         expiresAt: invitation.expires_at as string,
+        updatedAt: invitation.updated_at as string,
       },
     };
   } catch {
@@ -406,6 +422,64 @@ export async function revokeInvitation(
 }
 
 // ---------------------------------------------------------------------------
+// expireInvitation
+// ---------------------------------------------------------------------------
+
+export async function expireInvitation(
+  invitationId: string,
+): Promise<ActionResult<{ id: string }>> {
+  const parsedId = uuidSchema.safeParse(invitationId);
+  if (!parsedId.success) {
+    return { success: false, error: "Invalid invitation ID" };
+  }
+
+  try {
+    const supabase = await createClient();
+    const ctx = await resolveStaffContext(supabase);
+    if (ctx.error) return { success: false, error: ctx.error };
+
+    const isManager = await isManagerRole(supabase, ctx.user!.id);
+    if (!isManager) return { success: false, error: "Unauthorized" };
+
+    const hotelId = ctx.assignment!.hotel_id;
+
+    const { data: updated, error: updateError } = await supabase
+      .from("staff_invitations")
+      .update({ status: "expired", updated_at: new Date().toISOString() })
+      .eq("id", parsedId.data)
+      .eq("hotel_id", hotelId)
+      .eq("status", "pending")
+      .select("id")
+      .maybeSingle();
+
+    if (updateError) {
+      return { success: false, error: "Failed to expire invitation." };
+    }
+
+    if (!updated) {
+      return {
+        success: false,
+        error: "Invitation not found or is no longer pending.",
+      };
+    }
+
+    void logAudit(supabase, {
+      hotelId: hotelId,
+      actorId: ctx.user!.id,
+      action: "staff.expire_invitation",
+      tableName: "staff_invitations",
+      recordId: updated.id as string,
+      oldData: { status: "pending" },
+      newData: { status: "expired" },
+    });
+
+    return { success: true, data: { id: updated.id as string } };
+  } catch {
+    return { success: false, error: "Something went wrong." };
+  }
+}
+
+// ---------------------------------------------------------------------------
 // resendInvitation
 // ---------------------------------------------------------------------------
 
@@ -426,20 +500,51 @@ export async function resendInvitation(
     if (!isManager) return { success: false, error: "Unauthorized" };
 
     const hotelId = ctx.assignment!.hotel_id;
+
+    // Fetch the invitation to check cooldown before updating
+    const { data: invitation, error: fetchError } = await supabase
+      .from("staff_invitations")
+      .select("id, updated_at")
+      .eq("id", parsedId.data)
+      .eq("hotel_id", hotelId)
+      .eq("status", "pending")
+      .maybeSingle();
+
+    if (fetchError) {
+      return { success: false, error: "Failed to refresh invitation." };
+    }
+
+    if (!invitation) {
+      return {
+        success: false,
+        error: "Invitation not found or is no longer pending.",
+      };
+    }
+
+    // Enforce 5-minute resend cooldown based on last updated_at
+    const lastSent = new Date(invitation.updated_at as string);
+    const cooldownMs = 5 * 60 * 1000;
+    const elapsed = Date.now() - lastSent.getTime();
+    if (elapsed < cooldownMs) {
+      const remainingSeconds = Math.ceil((cooldownMs - elapsed) / 1000);
+      return { success: false, error: `Please wait ${remainingSeconds}s before resending.` };
+    }
+
     const newToken = generateInvitationToken();
     const newExpiresAt = sevenDaysFromNow();
+    const now = new Date().toISOString();
 
     const { data: updated, error: updateError } = await supabase
       .from("staff_invitations")
       .update({
         token: newToken,
         expires_at: newExpiresAt,
-        updated_at: new Date().toISOString(),
+        updated_at: now,
       })
       .eq("id", parsedId.data)
       .eq("hotel_id", hotelId)
       .eq("status", "pending")
-      .select("id, email, token, expires_at")
+      .select("id, email, token, expires_at, updated_at")
       .maybeSingle();
 
     if (updateError) {
@@ -460,6 +565,7 @@ export async function resendInvitation(
         email: updated.email as string,
         token: updated.token as string,
         expiresAt: updated.expires_at as string,
+        updatedAt: updated.updated_at as string,
       },
     };
   } catch {
@@ -493,7 +599,7 @@ export async function getInvitations(
 
     let query = supabase
       .from("staff_invitations")
-      .select("id, email, role, department, status, invited_by, expires_at, created_at")
+      .select("id, email, role, department, status, invited_by, expires_at, created_at, updated_at")
       .eq("hotel_id", hotelId)
       .order("created_at", { ascending: false });
 
@@ -509,6 +615,29 @@ export async function getInvitations(
 
     if (!invitations || invitations.length === 0) {
       return { success: true, data: [] };
+    }
+
+    // Auto-expire any pending invitations whose expires_at has passed
+    const now = new Date();
+    const expiredIds: string[] = [];
+    for (const inv of invitations) {
+      if (inv.status === "pending" && new Date(inv.expires_at as string) < now) {
+        expiredIds.push(inv.id as string);
+      }
+    }
+
+    if (expiredIds.length > 0) {
+      await supabase
+        .from("staff_invitations")
+        .update({ status: "expired", updated_at: now.toISOString() })
+        .in("id", expiredIds);
+
+      // Update the in-memory data so the returned list reflects the new status
+      for (const inv of invitations) {
+        if (expiredIds.includes(inv.id as string)) {
+          inv.status = "expired";
+        }
+      }
     }
 
     // Resolve invited_by names from profiles
