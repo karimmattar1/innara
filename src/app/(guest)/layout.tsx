@@ -1,5 +1,7 @@
 import { Suspense } from "react";
 import { AppBackground } from "@/components/innara/AppBackground";
+import { BrandingStyles } from "@/components/innara/BrandingStyles";
+import { resolveGuestHotelId } from "@/lib/branding";
 import { Loader2 } from "lucide-react";
 
 function GuestLoading(): React.ReactElement {
@@ -13,13 +15,19 @@ function GuestLoading(): React.ReactElement {
   );
 }
 
-export default function GuestLayout({
+export default async function GuestLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>): React.ReactElement {
+}>): Promise<React.ReactElement> {
+  // Resolve hotel ID from the guest's active stay so we can inject
+  // hotel-specific branding. Null-safe: if unauthenticated or no active stay,
+  // BrandingStyles is simply omitted and the portal falls back to defaults.
+  const hotelId = await resolveGuestHotelId();
+
   return (
     <div className="min-h-screen relative">
+      {hotelId && <BrandingStyles hotelId={hotelId} />}
       <AppBackground />
       <div className="relative z-10 min-h-screen flex flex-col max-w-md mx-auto">
         <Suspense fallback={<GuestLoading />}>{children}</Suspense>
