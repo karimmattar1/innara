@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { resolveStaffContext, isManagerRole } from "@/lib/auth-context";
 import type { ActionResult } from "@/app/actions/requests";
 import { DEPARTMENTS, ROLES } from "@/constants/app";
+import { logAudit } from "@/lib/audit";
 
 // ---------------------------------------------------------------------------
 // Enums (mirror DB enums exactly)
@@ -323,6 +324,15 @@ export async function inviteStaff(
       return { success: false, error: "Failed to create invitation." };
     }
 
+    void logAudit(supabase, {
+      hotelId: hotelId,
+      actorId: ctx.user!.id,
+      action: "staff.invite",
+      tableName: "staff_invitations",
+      recordId: invitation.id as string,
+      newData: { email, role, department },
+    });
+
     return {
       success: true,
       data: {
@@ -378,6 +388,16 @@ export async function revokeInvitation(
         error: "Invitation not found or is no longer pending.",
       };
     }
+
+    void logAudit(supabase, {
+      hotelId: hotelId,
+      actorId: ctx.user!.id,
+      action: "staff.revoke_invitation",
+      tableName: "staff_invitations",
+      recordId: updated.id as string,
+      oldData: { status: "pending" },
+      newData: { status: "revoked" },
+    });
 
     return { success: true, data: { id: updated.id as string } };
   } catch {
@@ -578,6 +598,15 @@ export async function deactivateStaff(
       return { success: false, error: "Failed to deactivate staff member." };
     }
 
+    void logAudit(supabase, {
+      hotelId: hotelId,
+      actorId: ctx.user!.id,
+      action: "staff.deactivate",
+      tableName: "staff_assignments",
+      recordId: parsedId.data,
+      newData: { is_active: false },
+    });
+
     return { success: true, data: { id: parsedId.data } };
   } catch {
     return { success: false, error: "Something went wrong." };
@@ -616,6 +645,15 @@ export async function reactivateStaff(
       return { success: false, error: "Failed to reactivate staff member." };
     }
 
+    void logAudit(supabase, {
+      hotelId: hotelId,
+      actorId: ctx.user!.id,
+      action: "staff.reactivate",
+      tableName: "staff_assignments",
+      recordId: parsedId.data,
+      newData: { is_active: true },
+    });
+
     return { success: true, data: { id: parsedId.data } };
   } catch {
     return { success: false, error: "Something went wrong." };
@@ -650,6 +688,16 @@ export async function updateStaffDepartment(
 
     const hotelId = ctx.assignment!.hotel_id;
 
+    // Fetch current department for audit old_data
+    const { data: currentAssignment } = await supabase
+      .from("staff_assignments")
+      .select("department")
+      .eq("id", parsedId.data)
+      .eq("hotel_id", hotelId)
+      .maybeSingle();
+
+    const previousDept = (currentAssignment?.department as string | null) ?? null;
+
     const { error: updateError } = await supabase
       .from("staff_assignments")
       .update({
@@ -662,6 +710,16 @@ export async function updateStaffDepartment(
     if (updateError) {
       return { success: false, error: "Failed to update department." };
     }
+
+    void logAudit(supabase, {
+      hotelId: hotelId,
+      actorId: ctx.user!.id,
+      action: "staff.change_department",
+      tableName: "staff_assignments",
+      recordId: parsedId.data,
+      oldData: { department: previousDept },
+      newData: { department: parsedDept.data.department },
+    });
 
     return { success: true, data: { id: parsedId.data } };
   } catch {

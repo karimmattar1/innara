@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { logAudit } from "@/lib/audit";
 
 // ---------------------------------------------------------------------------
 // Schemas
@@ -159,6 +160,15 @@ export async function createOrder(
       return { success: false, error: "Failed to place order. Please try again." };
     }
 
+    void logAudit(supabase, {
+      hotelId: stay.hotel_id as string,
+      actorId: user.id,
+      action: "order.create",
+      tableName: "orders",
+      recordId: order.id as string,
+      newData: { status: "pending", total, payment_method: parsed.data.paymentMethod },
+    });
+
     return { success: true, data: { id: order.id, total } };
   } catch {
     return { success: false, error: "Something went wrong. Please try again." };
@@ -261,6 +271,16 @@ export async function cancelOrder(orderId: string): Promise<ActionResult> {
     if (updateError) {
       return { success: false, error: "Failed to cancel order. Please try again." };
     }
+
+    void logAudit(supabase, {
+      hotelId: null,
+      actorId: user.id,
+      action: "order.status_change",
+      tableName: "orders",
+      recordId: parsed.data.orderId,
+      oldData: { status: "pending" },
+      newData: { status: "cancelled" },
+    });
 
     return { success: true };
   } catch {

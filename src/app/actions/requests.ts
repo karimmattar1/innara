@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { REQUEST_CATEGORIES, REQUEST_PRIORITIES } from "@/constants/app";
+import { logAudit } from "@/lib/audit";
 
 // ---------------------------------------------------------------------------
 // Schemas
@@ -240,6 +241,16 @@ export async function cancelRequest(
       return { success: false, error: "Failed to cancel request. Please try again." };
     }
 
+    void logAudit(supabase, {
+      hotelId: null,
+      actorId: user.id,
+      action: "request.status_change",
+      tableName: "requests",
+      recordId: parsed.data.requestId,
+      oldData: { status: existing.status as string },
+      newData: { status: "cancelled" },
+    });
+
     return { success: true, data: { id: parsed.data.requestId } };
   } catch {
     return { success: false, error: "Something went wrong. Please try again." };
@@ -293,6 +304,16 @@ export async function reopenRequest(
     if (updateError) {
       return { success: false, error: "Failed to reopen request. Please try again." };
     }
+
+    void logAudit(supabase, {
+      hotelId: null,
+      actorId: user.id,
+      action: "request.status_change",
+      tableName: "requests",
+      recordId: parsed.data.requestId,
+      oldData: { status: "completed" },
+      newData: { status: "pending" },
+    });
 
     // Log the reopen event
     await supabase.from("request_events").insert({
