@@ -13,9 +13,9 @@ Hotels use 5-15 disconnected tools for guest communication, service requests, ho
 - **Admins:** Innara platform admins managing tenants, billing, onboarding
 
 ## Tech Stack
-- **Framework:** Next.js 14+ (App Router, Server Components)
+- **Framework:** Next.js 16 (App Router, Server Components, React 19)
 - **Language:** TypeScript (strict mode)
-- **Styling:** Tailwind CSS v4 + shadcn/ui
+- **Styling:** Tailwind CSS v4 + shadcn base-nova style (@base-ui/react — NO `asChild` prop)
 - **Database:** Supabase (PostgreSQL + Auth + Realtime + Storage + Edge Functions)
 - **AI:** Claude API (Anthropic) for AI concierge
 - **Payments:** Stripe (subscription billing per property)
@@ -37,20 +37,21 @@ Hotels use 5-15 disconnected tools for guest communication, service requests, ho
   - `auth` pages = standard auth pages
 
 ## Existing Assets
-- **Design Static:** ~/Desktop/innara-design-static (React/Vite components to migrate)
-- **Schema:** ~/Desktop/innara-service-hub-main/supabase/migrations/ (existing migration files)
-- These are REFERENCE material. We are building fresh in Next.js, not copying code wholesale.
+- **Design Static:** ~/Desktop/innara-design-static (React/Vite components — reference only, migration complete)
+- **Schema:** ~/Desktop/innara-service-hub-main/supabase/migrations/ (baseline migrations — already applied)
+- These were REFERENCE material. Component migration is complete.
 
 ## Architecture
 - **4 Portals:** Guest (mobile PWA), Staff (desktop), Manager (desktop), Admin (desktop)
 - **50 screens** across all portals
-- **91 components** to migrate from design static
 - **Multi-tenant:** Every table has hotel_id, RLS enforced everywhere
-- **Roles:** guest, staff, manager, admin (JWT custom claims)
+- **5 Roles:** guest, staff, front_desk, manager, super_admin (JWT custom claims via custom_access_token_hook)
 - **Middleware:** Role-based routing, redirect unauthorized users
+- **Audit logging:** `src/lib/audit.ts` — shared `logAudit()` utility, fire-and-forget
+- **Dynamic branding:** `src/lib/branding.ts` + `BrandingStyles.tsx` — CSS var injection for guest portal
 
 ## Current Phase
-Phase 1: Foundation (22 tickets, ~2.5 weeks)
+Phase 4: Manager Portal + Billing (feature work complete, testing/design tickets remaining)
 
 ## Phase Plan (6 phases, ~155 tickets total)
 1. **Foundation** (22 tickets) -- Project setup, schema, auth (booking ref verification, magic link, password reset, email verification), middleware, component migration, portal shells, CI/CD, RLS verification

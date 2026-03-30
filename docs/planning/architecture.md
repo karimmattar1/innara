@@ -1,8 +1,8 @@
 # Innara -- Production Architecture
 
-> **Last updated:** 2026-03-26
-> **Stack:** Next.js 14+ / Supabase / Claude API / Stripe / Vercel
-> **Status:** Phase 1 (Foundation)
+> **Last updated:** 2026-03-30
+> **Stack:** Next.js 16 (React 19) / Supabase / Claude API / Stripe / Vercel
+> **Status:** Phase 4 (Manager Portal + Billing) — feature work complete
 
 ---
 
@@ -31,7 +31,7 @@
 
 ## 1. System Overview
 
-Innara is a single Next.js 14+ App Router monolith that serves four distinct portals through route groups. All portals share one codebase, one deployment, and one database. There are no microservices, no separate frontend/backend repos, and no BFF layer.
+Innara is a single Next.js 16 (React 19) App Router monolith that serves four distinct portals through route groups. All portals share one codebase, one deployment, and one database. There are no microservices, no separate frontend/backend repos, and no BFF layer.
 
 ```
                           +-----------------+
