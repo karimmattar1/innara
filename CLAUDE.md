@@ -66,7 +66,7 @@ Phase 4: Manager Portal + Billing (feature work complete, testing/design tickets
 - **Ticket Prefix:** INN-
 
 ## Development Rules
-- Follow all SwampStudios quality standards (see ~/SwampStudios/CLAUDE.md)
+- All rules auto-load from `~/.claude/CLAUDE.md` (global). Detailed reference: `~/SwampStudios/CLAUDE.md`.
 - Phase-based development -- one phase at a time
 - Codex review after every phase
 - QA testing after every phase
