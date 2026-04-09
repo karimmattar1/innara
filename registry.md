@@ -30,7 +30,7 @@
 - **Status:** Active (scaffolded 2026-03-26)
 - **Repo:** `~/SwampStudios/ventures/innara`
 - **GitHub:** https://github.com/karimmattar1/innara
-- **Linear Team:** INN
+- **Notion:** INN project
 - **Supabase:** innara (ref: hbqcujxpphwgkgrqpjmo, region: ap-south-1, ai-solutions org)
 - **Tech Stack:** Next.js 14+ (App Router), Supabase (PostgreSQL + Auth + Realtime + Storage + Edge Functions), Tailwind CSS + shadcn/ui, Claude API (Anthropic), Stripe, Resend, Upstash, Sentry, Vitest + Playwright, GitHub Actions + Vercel
 - **Revenue Model:** B2B SaaS subscription to hotels — Starter $4/room/mo, Pro $8/room/mo, Enterprise $12-15/room/mo

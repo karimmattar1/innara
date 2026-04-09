@@ -61,8 +61,8 @@ Phase 4: Manager Portal + Billing (feature work complete, testing/design tickets
 5. **Admin + PWA + PMS** (23 tickets) -- Admin portal, PWA, PMS integration, i18n, GDPR export, admin audit, PWA install prompt, hotel deactivation cascade, role change workflow, PMS sync recovery, network resilience, PMS malformed data
 6. **Testing & Launch** (18 tickets) -- E2E test suites, security audit, performance testing, launch checklist, empty state designs, external pentest, OWASP Top 10 audit, PII data protection audit
 
-## Linear Team
-- **Team Key:** INN
+## Notion Tickets
+- **Project Key:** INN
 - **Ticket Prefix:** INN-
 
 ## Development Rules
@@ -80,5 +80,5 @@ If you're starting a new session:
 1. Read this file (CLAUDE.md)
 2. Read primer.md
 3. Read the current phase plan in docs/planning/
-4. Check Linear for active tasks (team: INN)
+4. Check Notion for active tickets (INN project)
 5. Resume work

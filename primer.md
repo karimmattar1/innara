@@ -3,7 +3,7 @@
 ## Current State
 - **Phase:** Phase 4: Manager Portal + Billing — feature work complete, testing next
 - **Last Updated:** 2026-03-29
-- **Linear Team:** INN
+- **Notion:** INN project (migrated from Linear)
 
 ## What's Done
 - Phase 1: Foundation — completed 2026-03-28, passed phase review
@@ -89,7 +89,7 @@ Layout: PageHeader + staff filter dropdown → 4 KPI cards → 2-col row → 2-c
 - [ ] Phase 6: Testing & Launch (18 tickets)
 
 ## Links
-- Linear: INN team
+- Notion: https://www.notion.so/338364b9014781ff92fdeba0e8cf7bbe (INN project, migrated from Linear)
 - GitHub: https://github.com/karimmattar1/innara
 - Supabase: innara (ref: hbqcujxpphwgkgrqpjmo, region: ap-south-1, ai-solutions org)
 - Figma: https://www.figma.com/design/p6rGnzuVAssEL9eCdq14RE/
