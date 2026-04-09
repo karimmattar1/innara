@@ -15,7 +15,7 @@ export default function StaffLayout({
   children: React.ReactNode;
 }>): React.ReactElement {
   return (
-    <div className="min-h-screen bg-background dark">
+    <div className="min-h-screen bg-background text-foreground dark">
       <Suspense fallback={<StaffLoading />}>{children}</Suspense>
     </div>
   );

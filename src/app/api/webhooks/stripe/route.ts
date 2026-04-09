@@ -1,22 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import * as Sentry from "@sentry/nextjs";
 
 // ---------------------------------------------------------------------------
-// Clients
+// Clients — lazy-initialized to avoid throwing during `next build` page-data
+// collection when STRIPE_SECRET_KEY is absent from the build environment.
 // ---------------------------------------------------------------------------
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-03-25.dahlia" as Stripe.LatestApiVersion,
-});
+let stripeClient: Stripe | null = null;
+function getStripe(): Stripe {
+  if (stripeClient) return stripeClient;
+  stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: "2026-03-25.dahlia" as Stripe.LatestApiVersion,
+  });
+  return stripeClient;
+}
 
 // Service-role client bypasses RLS — required for webhook writes
-// (subscriptions table: only service_role can INSERT/UPDATE)
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-);
+// (subscriptions table: only service_role can INSERT/UPDATE).
+// Lazy-initialized to avoid throwing during `next build` page-data collection
+// when SUPABASE_SERVICE_ROLE_KEY is absent from the build environment.
+let supabaseAdminClient: SupabaseClient | null = null;
+function supabaseAdmin(): SupabaseClient {
+  if (supabaseAdminClient) return supabaseAdminClient;
+  supabaseAdminClient = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+  );
+  return supabaseAdminClient;
+}
 
 // ---------------------------------------------------------------------------
 // POST handler
@@ -32,7 +45,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
   let event: Stripe.Event;
   try {
-    event = stripe.webhooks.constructEvent(
+    event = getStripe().webhooks.constructEvent(
       body,
       signature,
       process.env.STRIPE_WEBHOOK_SECRET!,
@@ -122,7 +135,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
  * event_id in new_data. Returns true if the event was already handled.
  */
 async function checkIdempotency(eventId: string): Promise<boolean> {
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await supabaseAdmin()
     .from("audit_logs")
     .select("id")
     .eq("action", "stripe_webhook")
@@ -154,7 +167,7 @@ async function logWebhookEvent(
   status: "success" | "failed",
   errorMessage?: string,
 ): Promise<void> {
-  const { error } = await supabaseAdmin.from("audit_logs").insert({
+  const { error } = await supabaseAdmin().from("audit_logs").insert({
     hotel_id: hotelId,
     actor_id: null, // System action — no authenticated user
     action: "stripe_webhook",
@@ -234,7 +247,7 @@ async function handleCheckoutComplete(
     );
   }
 
-  const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+  const subscription = await getStripe().subscriptions.retrieve(subscriptionId);
   const customerId =
     typeof session.customer === "string"
       ? session.customer
@@ -245,7 +258,7 @@ async function handleCheckoutComplete(
 
   // upsert with onConflict: "hotel_id" is inherently retry-safe — repeated
   // calls with the same data produce the same outcome (idempotent write).
-  const { error } = await supabaseAdmin.from("subscriptions").upsert(
+  const { error } = await supabaseAdmin().from("subscriptions").upsert(
     {
       hotel_id: hotelId,
       stripe_customer_id: customerId,
@@ -282,7 +295,7 @@ async function handleSubscriptionUpdated(
 async function handleSubscriptionDeleted(
   subscription: Stripe.Subscription,
 ): Promise<void> {
-  const { error } = await supabaseAdmin
+  const { error } = await supabaseAdmin()
     .from("subscriptions")
     .update({
       status: "cancelled",
@@ -305,7 +318,7 @@ async function handleInvoicePaymentFailed(
   const subscriptionId = extractSubscriptionIdFromInvoice(invoice);
   if (!subscriptionId) return;
 
-  const { error } = await supabaseAdmin
+  const { error } = await supabaseAdmin()
     .from("subscriptions")
     .update({
       status: "past_due",
@@ -344,7 +357,7 @@ async function upsertSubscription(
 
   // upsert with onConflict: "hotel_id" is inherently retry-safe — repeated
   // calls with the same data produce the same outcome (idempotent write).
-  const { error } = await supabaseAdmin.from("subscriptions").upsert(
+  const { error } = await supabaseAdmin().from("subscriptions").upsert(
     {
       hotel_id: hotelId,
       stripe_subscription_id: subscription.id,
@@ -369,7 +382,7 @@ async function updateSubscriptionByStripeId(
   const plan = mapStripePlanFromSubscription(subscription);
   const period = getSubscriptionPeriod(subscription);
 
-  const { error } = await supabaseAdmin
+  const { error } = await supabaseAdmin()
     .from("subscriptions")
     .update({
       plan,

@@ -6,12 +6,19 @@ import { resolveStaffContext, isManagerRole } from "@/lib/auth-context";
 import type { ActionResult } from "@/app/actions/requests";
 
 // ---------------------------------------------------------------------------
-// Stripe client — pinned to the version shipped with stripe@21.0.1
+// Stripe client — pinned to the version shipped with stripe@21.0.1.
+// Lazy-initialized to avoid throwing during `next build` page-data collection
+// when STRIPE_SECRET_KEY is absent from the build environment.
 // ---------------------------------------------------------------------------
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-03-25.dahlia" as Stripe.LatestApiVersion,
-});
+let stripeClient: Stripe | null = null;
+function getStripe(): Stripe {
+  if (stripeClient) return stripeClient;
+  stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: "2026-03-25.dahlia" as Stripe.LatestApiVersion,
+  });
+  return stripeClient;
+}
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -154,7 +161,7 @@ export async function createCheckoutSession(
     // Get or create Stripe customer
     let customerId = existingCustomerId;
     if (!customerId) {
-      const customer = await stripe.customers.create({
+      const customer = await getStripe().customers.create({
         name: hotel.name,
         metadata: {
           hotel_id: ctx.hotelId,
@@ -164,7 +171,7 @@ export async function createCheckoutSession(
     }
 
     // Resolve price ID from lookup key
-    const prices = await stripe.prices.list({
+    const prices = await getStripe().prices.list({
       lookup_keys: [PRICE_LOOKUP_KEYS[plan]],
       limit: 1,
     });
@@ -179,7 +186,7 @@ export async function createCheckoutSession(
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL!;
 
-    const session = await stripe.checkout.sessions.create({
+    const session = await getStripe().checkout.sessions.create({
       customer: customerId,
       mode: "subscription",
       line_items: [{ price: price.id, quantity: 1 }],
@@ -233,7 +240,7 @@ export async function createBillingPortalSession(): Promise<
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL!;
 
-    const portalSession = await stripe.billingPortal.sessions.create({
+    const portalSession = await getStripe().billingPortal.sessions.create({
       customer: subscription.stripe_customer_id,
       return_url: `${appUrl}/manager/billing`,
     });
@@ -278,7 +285,7 @@ export async function cancelSubscription(): Promise<ActionResult> {
       };
     }
 
-    await stripe.subscriptions.update(subscription.stripe_subscription_id, {
+    await getStripe().subscriptions.update(subscription.stripe_subscription_id, {
       cancel_at_period_end: true,
     });
 
