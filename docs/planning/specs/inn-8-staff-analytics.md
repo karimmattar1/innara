@@ -16,7 +16,7 @@ Give housekeeping / F&B / maintenance / front-desk staff a **department-scoped a
 Staff open this screen from the staff portal left nav (or bottom tab) to:
 - See their department's current load at a glance (KPI row)
 - Spot time-of-day bottlenecks (peak hours chart)
-- Identify slow responders (response-time breakdown)
+- Identify slow resolvers (resolution-time breakdown)
 - Recognize top performers (recognition panel)
 - Drill into an individual staff member's recent activity when needed
 
@@ -42,9 +42,10 @@ The ticket's "mobile-first" clause is therefore superseded by this spec. The scr
 | Page route | `/staff/analytics` |
 | Page component | `src/app/(staff)/staff/analytics/page.tsx` |
 | Server action file | `src/app/actions/staff-analytics.ts` (NEW) |
-| Acceptance test | `tests/acceptance/INN-43.spec.ts` (NEW — written before the page) |
+| Acceptance test | `e2e/acceptance/INN-43.spec.ts` (NEW — written before the page; Playwright `testDir` is `./e2e`) |
+| Test helpers | `e2e/helpers/staff-analytics-helpers.ts` (NEW — fixtures + supabase-admin seeding) |
 | Shared components reused | `StaffHeader`, `PageContainer`, `PageHeader` from `src/components/innara/` |
-| Shared constants | `CATEGORY_LABELS`, `CATEGORY_COLORS`, `STATUS_CONFIG`, `DEPARTMENT_LABELS` from `src/constants/app.ts` |
+| Shared constants | `CATEGORY_LABELS`, `CATEGORY_COLORS`, `STATUS_CONFIG`, `DEPARTMENT_LABELS`, `DEPARTMENT_CATEGORY_MAP` from `src/constants/app.ts` |
 
 No new components needed beyond the page itself — everything is composed from existing atoms + inline sub-components following the Manager Analytics pattern.
 
@@ -58,8 +59,8 @@ No new components needed beyond the page itself — everything is composed from 
 │  subtitle: "Team performance and workload for the last 7 days"     │
 ├────────────────────────────────────────────────────────────────────┤
 │  ┌─ KPI Card ─┐ ┌─ KPI Card ─┐ ┌─ KPI Card ─┐ ┌─ KPI Card ─┐        │
-│  │ Open Reqs  │ │ SLA %   ↗  │ │ Avg Resp   │ │ Comp %  ↗  │        │
-│  │    24      │ │   94 %     │ │  4.2 min   │ │    87 %    │        │
+│  │ Open Reqs  │ │ SLA %   ↗  │ │ Avg Resol. │ │ Comp %  ↗  │        │
+│  │    24      │ │   94 %     │ │  12.4 min  │ │    87 %    │        │
 │  └────────────┘ └────────────┘ └────────────┘ └────────────┘        │
 ├────────────────────────────────────────────────────────────────────┤
 │  ┌─ Task Breakdown ────────┐  ┌─ Workload Overview ──────────────┐ │
@@ -68,9 +69,9 @@ No new components needed beyond the page itself — everything is composed from 
 │  │                         │  │ progress / completed)            │ │
 │  └─────────────────────────┘  └──────────────────────────────────┘ │
 ├────────────────────────────────────────────────────────────────────┤
-│  ┌─ Peak Hours ────────────┐  ┌─ Response Time Breakdown ────────┐ │
+│  ┌─ Peak Hours ────────────┐  ┌─ Resolution Time Breakdown ──────┐ │
 │  │ recharts BarChart        │  │ horizontal bars:                 │ │
-│  │ x=hour (0-23)           │  │   <5m / 5-15m / 15-30m / >30m    │ │
+│  │ x=hour (0-23)           │  │   <15m / 15-30m / 30-60m / >60m  │ │
 │  │ y=request count         │  │   color: green → red             │ │
 │  │ single Bronze color     │  │                                  │ │
 │  └─────────────────────────┘  └──────────────────────────────────┘ │
@@ -115,8 +116,10 @@ Each card is a `glass-card-dark rounded-2xl p-5` block with icon, label, big val
 |---|-------|--------------|------|-----------------|
 | 1 | Open Requests | integer, tabular-nums | `ClipboardList` | none |
 | 2 | SLA Compliance | `{pct} %` (0 decimals) | `ShieldCheck` | vs previous 7-day window, shown as `↗ +3.2%` (green) or `↘ -1.1%` (red) |
-| 3 | Avg Response Time | `{min} min` (1 decimal), or `{sec}s` when < 60 s | `Clock` | none |
+| 3 | Avg Resolution Time | `{min} min` (1 decimal) when ≥ 1 min, or `{sec}s` when < 60 s, or `—` when no completed requests in window | `Clock` | none |
 | 4 | Completion Rate | `{pct} %` (0 decimals) | `CheckCircle2` | vs previous 7-day window, same arrow pattern as #2 |
+
+**Resolution time definition.** `completed_at − created_at`, averaged across requests in the window where `status = 'completed'`. Requests in non-terminal states are excluded from this average. This matches the existing `getDashboardStats` metric in `src/app/actions/analytics.ts`. (We do NOT have an `acknowledged_at` column — the schema has no first-response timestamp, so "Avg Response Time" cannot be computed. Use resolution time instead.)
 
 **Empty-state rule:** if the department has zero requests in the window, all cards render `—` (em dash) and the trend indicators are omitted.
 
@@ -157,12 +160,12 @@ Towels        ██████         8
 1. Big completion rate at top: `{pct}% completed` with a horizontal progress bar beneath (same Bronze → green color ramp as INN-83 SlaComplianceCard).
 2. Status pills below, each row `{StatusIcon} {label} {count}`:
    - New (`status = 'new'`)
-   - Acknowledged (`status = 'acknowledged'`)
+   - Accepted (`status = 'pending'`) — label per `STATUS_CONFIG.pending.label`
    - In Progress (`status = 'in_progress'`)
    - Completed (`status = 'completed'`)
-   - Omit `cancelled` and `rejected` — they're rare and noise here.
+   - Omit `cancelled` — rare and noise here.
 
-**Status colors** come from `STATUS_CONFIG` (existing).
+**Status colors + labels** come from `STATUS_CONFIG` in `src/constants/app.ts` (existing — single source of truth). The `request_status` enum is `('new', 'pending', 'in_progress', 'completed', 'cancelled')` — there is no `acknowledged` value.
 
 ### 7.3 Peak Hours (Row 2, left)
 
@@ -178,23 +181,23 @@ Towels        ██████         8
 
 **Empty state:** if all 24 hours are zero, swap the chart for the standard `EmptyState` block.
 
-### 7.4 Response Time Breakdown (Row 2, right)
+### 7.4 Resolution Time Breakdown (Row 2, right)
 
-**What it shows:** distribution of response times for requests in the window, bucketed.
+**What it shows:** distribution of resolution times for **completed** requests in the window, bucketed.
 
 **Buckets:**
 | Bucket | Range | Color |
 |--------|-------|-------|
-| Fast | `< 5 min` | green `#7aaa8a` |
-| Normal | `5–15 min` | lime `#a8c07f` |
-| Slow | `15–30 min` | amber `#c4a06a` |
-| Critical | `> 30 min` | red `#a35060` |
+| Fast | `< 15 min` | green `#7aaa8a` |
+| Normal | `15–30 min` | lime `#a8c07f` |
+| Slow | `30–60 min` | amber `#c4a06a` |
+| Critical | `> 60 min` | red `#a35060` |
 
 **Layout:** horizontal bar list (same visual pattern as Task Breakdown), each row shows bucket label, bar, and `{count} ({pct}%)` on the right.
 
-**Response time definition (v1):** `acknowledged_at - created_at` when the request has been acknowledged, otherwise `completed_at - created_at` for direct-to-complete requests. Requests still in `new` status at query time are **excluded** from this chart (they haven't been responded to yet).
+**Resolution time definition (v1):** `(completed_at − created_at) / 60_000` — in minutes. Only requests with `status = 'completed'` contribute; open requests are excluded. Bucket thresholds were chosen to align with the default SLA targets in `DEFAULT_SLA` (`src/constants/app.ts`), where most categories have a 15–60 minute target. If the schema later adds a first-response timestamp (e.g. `acknowledged_at`), this panel can be upgraded to show response time instead.
 
-**Empty state:** same `EmptyState` block.
+**Empty state:** same `EmptyState` block with copy `"No completed requests in this window"`.
 
 ### 7.5 Recognition Panel (full-width)
 
@@ -222,6 +225,12 @@ Towels        ██████         8
 
 **New file:** `src/app/actions/staff-analytics.ts`
 
+**Schema reality check.** The `requests` table does NOT have a `department` column. Department scoping is achieved via **`assigned_staff_id`** — joining to `staff_assignments` to resolve which staff members belong to the caller's department, then filtering requests where `assigned_staff_id IN (deptStaffIds)`. This is the same multi-tenant isolation pattern that already works in the schema.
+
+The `request_status` enum is `('new', 'pending', 'in_progress', 'completed', 'cancelled')` — **there is no `acknowledged` status and no `acknowledged_at` column**. The action MUST NOT reference either.
+
+The `requests` table has no `sla_breached_at` column either. SLA compliance is computed at query time from `sla_configs` (`hotel_id + category + priority → target_minutes`) — copy the pattern verbatim from `getRequestAnalytics` in `src/app/actions/analytics.ts` lines 324–367.
+
 **Single exported action:**
 
 ```typescript
@@ -232,21 +241,21 @@ export interface StaffAnalyticsResult {
     openRequests: number;
     slaCompliancePct: number;          // 0-100
     slaCompliancePrevPct: number;      // 0-100 (for trend)
-    avgResponseMinutes: number;        // 0 = no data
+    avgResolutionMinutes: number;      // 0 = no completed requests in window
     completionRatePct: number;         // 0-100
     completionRatePrevPct: number;     // 0-100 (for trend)
   };
   taskBreakdown: Array<{ category: string; count: number }>;
   workload: {
-    byStatus: Record<"new" | "acknowledged" | "in_progress" | "completed", number>;
+    byStatus: Record<"new" | "pending" | "in_progress" | "completed", number>;
     completionRatePct: number;
   };
   peakHours: Array<{ hour: number; count: number }>;   // length 24
-  responseTimeBuckets: {
-    fast: number;      // < 5 min
-    normal: number;    // 5-15 min
-    slow: number;      // 15-30 min
-    critical: number;  // > 30 min
+  resolutionTimeBuckets: {
+    fast: number;      // < 15 min
+    normal: number;    // 15-30 min
+    slow: number;      // 30-60 min
+    critical: number;  // > 60 min
   };
   topStaff: Array<{
     staffId: string;
@@ -276,23 +285,68 @@ export async function getStaffAnalytics(
 ```
 
 **Auth & scoping rules:**
-1. Use `resolveStaffContext(supabase)` — same pattern as every existing staff action.
+1. Use `resolveStaffContext(supabase)` — same pattern as every existing staff action. If `ctx.error`, return `{ success: false, error: ctx.error }`.
 2. **No manager gate.** Staff, front_desk, AND manager roles can call this (managers get the same view of their department as staff do — no special behavior).
-3. Scope every query to `hotel_id = ctx.assignment.hotel_id` AND `department = ctx.assignment.department`.
-4. RLS must enforce this independently — the action double-scopes defense-in-depth.
-5. If `staffId` param is provided AND the staffId is not in the caller's department, return `{ success: false, error: "Staff member not found in your department." }` — do NOT leak data from other departments.
+3. Read `hotelId = ctx.assignment.hotel_id` and `department = ctx.assignment.department`.
+4. **Fetch department staff list first** — `SELECT user_id FROM staff_assignments WHERE hotel_id = $1 AND department = $2 AND is_active = true`. This becomes the `deptStaffIds` array. Every downstream request query filters by `assigned_staff_id IN (deptStaffIds)`.
+5. If `staffId` param is provided AND `staffId` is not in `deptStaffIds`, return `{ success: false, error: "Staff member not found in your department." }` — do NOT leak data from other departments.
+6. RLS must enforce hotel_id isolation independently — the action's explicit filters are defense-in-depth.
 
-**Period:** hardcoded to 7 days for v1. No period selector in the UI for this iteration (see §14).
+**Query composition:**
+
+```sql
+-- Current window requests (for KPIs, task breakdown, workload, peak hours, buckets)
+SELECT id, category, priority, status, assigned_staff_id, eta_minutes, created_at, completed_at, room_number
+FROM requests
+WHERE hotel_id = $1
+  AND assigned_staff_id = ANY($2::uuid[])  -- deptStaffIds (or single [staffId] if individual mode)
+  AND created_at >= $3;                     -- periodStart (7 days ago)
+
+-- Previous window (aggregate counts only, for trend deltas)
+-- Same filter but created_at BETWEEN prevPeriodStart AND periodStart
+```
+
+**SLA compliance logic (copy verbatim from `getRequestAnalytics`):**
+
+```ts
+// Fetch sla_configs scoped to hotel
+const { data: slaConfigs } = await supabase
+  .from("sla_configs")
+  .select("category, priority, target_minutes")
+  .eq("hotel_id", hotelId);
+
+const slaMap = new Map<string, number>();
+for (const cfg of slaConfigs ?? []) {
+  slaMap.set(`${cfg.category}:${cfg.priority}`, cfg.target_minutes);
+}
+
+let onTime = 0, breached = 0;
+for (const req of currentWindowRequests) {
+  if (req.status !== "completed") continue;
+  const key = `${req.category}:${req.priority}`;
+  const target = slaMap.get(key) ?? req.eta_minutes ?? null;
+  if (target === null) continue;
+  if (!req.created_at || !req.completed_at) continue;
+  const resolutionMin = (new Date(req.completed_at).getTime() - new Date(req.created_at).getTime()) / 60_000;
+  if (resolutionMin <= target) onTime++;
+  else breached++;
+}
+const slaCompliancePct = (onTime + breached) > 0 ? Math.round((onTime / (onTime + breached)) * 100) : 0;
+```
+
+**Period:** hardcoded to 7 days for v1. Use `getPeriodStart("week")` from `src/app/actions/analytics.ts` (re-export or import). No period selector in the UI for this iteration (see §14).
 
 **Performance:**
 - Single round-trip where possible. At minimum:
-  - 1 query for requests in the window (pulls rows for KPIs, task breakdown, workload, peak hours, response time buckets, top staff).
-  - 1 query for `staff_assignments` to get department staff list (for the filter dropdown + top staff names).
-  - 1 query for `profiles` for staff names (joined or separate).
-  - 1 query for previous-window SLA + completion rate (for trend deltas) — limited to aggregate columns only.
+  - 1 query for `staff_assignments` (department staff list — feeds both the filter dropdown AND the `assigned_staff_id IN (...)` filter below).
+  - 1 query for `profiles` (staff names, joined to staff_assignments OR fetched separately by IDs).
+  - 1 query for current-window requests with `assigned_staff_id = ANY(deptStaffIds)` filter.
+  - 1 query for previous-window requests with the same filter (aggregate needs only).
+  - 1 query for `sla_configs` (hotel-scoped).
+  - 1 query for `ratings` (hotel average — same caveat as `getStaffPerformance`).
 - Target: p95 < 400 ms on a hotel with 1000 requests in the window.
 
-**Error handling:** follow the existing `ActionResult<T>` pattern — no exceptions leak to the caller. Log internal errors via `console.error` (existing staff portal pattern; Sentry wiring is already global).
+**Error handling:** follow the existing `ActionResult<T>` pattern — no exceptions leak to the caller. Log internal errors via `console.error("[staff-analytics]", err)` (existing staff portal pattern; Sentry wiring is already global).
 
 ## 9. Interaction Model
 
@@ -324,17 +378,17 @@ export async function getStaffAnalytics(
 
 ## 12. Acceptance Criteria (behavioral)
 
-These criteria are what the INN-43 acceptance test (`tests/acceptance/INN-43.spec.ts`) must verify BEFORE implementation begins (Rule 14, spec-first testing). Every criterion must verify a user-visible **behavior**, not just structure.
+These criteria are what the INN-43 acceptance test (`e2e/acceptance/INN-43.spec.ts`) must verify BEFORE implementation begins (Rule 14, spec-first testing). Every criterion must verify a user-visible **behavior**, not just structure.
 
 1. **Page loads with department-scoped data.** Logged in as a staff user in "housekeeping", navigating to `/staff/analytics` shows a page titled `"Housekeeping Analytics"` and 4 KPI cards with non-placeholder values (if seed data exists).
-2. **KPI values match server-side truth.** The Open Requests count displayed equals the count returned by a direct Supabase query `SELECT count(*) FROM requests WHERE hotel_id = $1 AND department = $2 AND status IN ('new','acknowledged','in_progress')`. Fetched via a test helper and asserted equal.
+2. **KPI values match server-side truth.** The Open Requests count displayed equals the count returned by a direct Supabase query that mirrors the server action's filter: `SELECT count(*) FROM requests r JOIN staff_assignments sa ON sa.user_id = r.assigned_staff_id WHERE r.hotel_id = $1 AND sa.hotel_id = $1 AND sa.department = $2 AND r.status IN ('new','pending','in_progress')`. Fetched via a test helper and asserted equal.
 3. **Staff filter dropdown re-scopes the data.** Selecting an individual staff member from the dropdown triggers a refetch, the page title updates to `"{Name} — Housekeeping"`, and at least one KPI card value changes vs the aggregate view (unless the selected staff handled 100% of department traffic, in which case document and assert that).
 4. **Recognition panel mode-switches correctly.** In all-department mode the panel shows a 3-col `"Top Performing Staff"` header. After selecting an individual it shows `"Recent Activity"` header and a table, not cards.
 5. **Empty department shows empty state, not a broken page.** Logged in as a staff user whose department has zero requests, the page renders without errors, KPI cards show `"—"`, and every panel shows its EmptyState block.
-6. **Cross-department isolation.** A staff user from housekeeping cannot see front-desk data. Assertion: attempt to call `getStaffAnalytics("{frontDeskStaffId}")` as a housekeeping user → returns `{ success: false }`.
+6. **Cross-department isolation.** A staff user from housekeeping cannot see front-desk data. Assertion: attempt to call `getStaffAnalytics("{frontDeskStaffId}")` as a housekeeping user → returns `{ success: false, error: "Staff member not found in your department." }`.
 7. **Unauthorized role rejected.** A guest user calling the action directly (simulated via a test client) gets `{ success: false, error: "Unauthorized" }` — never gets department data.
 8. **Build + typecheck pass.** `npm run build` exits 0 and `npx tsc --noEmit` exits 0 after the implementation.
-9. **The Playwright test file `tests/acceptance/INN-43.spec.ts` exists, was committed BEFORE the page.tsx implementation, and passes against the final build.**
+9. **The Playwright test file `e2e/acceptance/INN-43.spec.ts` exists, was committed BEFORE the page.tsx implementation, and passes against the final build** (use `--project=chromium` when running — Playwright has a `mobile-chrome` project that is not relevant to this desktop page).
 
 ## 13. Out of Scope (Explicitly Deferred)
 
@@ -363,21 +417,22 @@ These are real needs but not in INN-43. Document here so they can become their o
 - `src/components/ui/skeleton.tsx`, `src/components/ui/select.tsx` — shadcn primitives.
 
 **Database tables touched (read-only):**
-- `requests` (hotel_id, department, status, category, created_at, acknowledged_at, completed_at, assigned_staff_id)
-- `staff_assignments` (user_id, hotel_id, department)
+- `requests` (hotel_id, status, category, priority, eta_minutes, created_at, completed_at, assigned_staff_id, room_number) — **no `department`, no `acknowledged_at`, no `sla_breached_at`**
+- `staff_assignments` (user_id, hotel_id, department, is_active) — used to resolve department → staff IDs
 - `profiles` (id, full_name)
-- `ratings` (hotel_id, rating) — hotel-level only
+- `ratings` (hotel_id, rating) — hotel-level only (same caveat as `getStaffPerformance`)
+- `sla_configs` (hotel_id, category, priority, target_minutes) — for SLA compliance computation
 
-**RLS expectations:** all four tables already have RLS policies from Phase 1. The action layer adds explicit `hotel_id` + `department` filters as defense-in-depth; it does not depend on RLS alone.
+**RLS expectations:** all five tables already have RLS policies from Phase 1. The action layer adds explicit `hotel_id` + `assigned_staff_id IN (deptStaffIds)` filters as defense-in-depth; it does not depend on RLS alone.
 
 ## 15. Implementation Order
 
 See the separate INN-43 implementation plan at `docs/superpowers/plans/2026-04-09-inn-43-staff-analytics.md`. Brief summary:
 
-1. Write `tests/acceptance/INN-43.spec.ts` from §12 criteria — tests MUST be red before step 2.
-2. Build `src/app/actions/staff-analytics.ts` (backend agent).
+1. Write `e2e/acceptance/INN-43.spec.ts` + `e2e/helpers/staff-analytics-helpers.ts` from §12 criteria — tests MUST be red before step 2.
+2. Build `src/app/actions/staff-analytics.ts` (backend agent). Include Vitest unit tests at `tests/unit/staff-analytics.test.ts`.
 3. Build `src/app/(staff)/staff/analytics/page.tsx` (frontend agent).
-4. Run the Playwright test — it must go green.
+4. Run the Playwright test with `npx playwright test e2e/acceptance/INN-43.spec.ts --project=chromium` — it must go green.
 5. Visual pipeline Stage 2: screenshot at 1440 px, review against the layout in §4.
 6. Run `npm run build` and `npx tsc --noEmit`.
 7. Visual baseline lock via `lock-visual-baseline.sh`.
