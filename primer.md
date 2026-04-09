@@ -1,8 +1,8 @@
 # Innara -- Primer
 
 ## Current State
-- **Phase:** Phase 4: Manager Portal + Billing — feature work complete, testing next
-- **Last Updated:** 2026-03-29
+- **Phase:** Phase 4: Manager Portal + Billing — feature work complete, INN-8 design approved, ready to build INN-43
+- **Last Updated:** 2026-04-09
 - **Notion:** INN project (migrated from Linear)
 
 ## What's Done
@@ -44,21 +44,13 @@
 - INN-108: Manager portal E2E suite (19 screens) — Todo
 - INN-94: Cross-portal integration E2E tests — Todo
 - INN-11: Manager notification center design — Todo (not yet started)
-- INN-8: Staff analytics design — **Design proposed, awaiting approval + spec write** (see below)
-- INN-43: Staff analytics screen — Todo (blocked on INN-8)
+- INN-8: Staff analytics design — **✅ DONE 2026-04-09** — desktop layout approved, spec at `docs/planning/specs/inn-8-staff-analytics.md`
+- INN-43: Staff analytics screen — **Ready to build** — plan at `docs/superpowers/plans/2026-04-09-inn-43-staff-analytics.md`
 
-**INN-8 Design Proposal (needs approval in next session):**
-Layout: PageHeader + staff filter dropdown → 4 KPI cards → 2-col row → 2-col row → full-width bottom panel
+**INN-8 Resolution Summary (2026-04-09):**
+Karim approved the desktop layout via AskUserQuestion. Key architectural decision: the staff portal is **desktop** per Innara CLAUDE.md (only Guest is mobile PWA), so the original ticket's "mobile-first per Stitch" wording is superseded. Final layout follows the Manager Analytics pattern: PageHeader + 4 KPI cards + 2-col panel rows + full-width recognition panel. Department-scoped only (no per-staff rating, no personal stats — deferred per spec §13). Spec written, Notion ticket updated to Done, Phase 4 parent table updated.
 
-- **Top bar:** Dynamic title (e.g. "Housekeeping Analytics"). Right side: staff member dropdown — defaults to "All Department", select individual to re-scope all metrics to that person.
-- **4 KPI Cards:** Open Requests · SLA Compliance % · Avg Response Time (min) · Completion Rate %. Trend indicators on SLA and completion rate.
-- **Row 1 (2-col):** Left = Task Breakdown (horizontal bar list, dept-scoped or individual). Right = Workload Overview (completion rate progress bar + status distribution New/In Progress/Completed).
-- **Row 2 (2-col):** Left = Peak Hours (single recharts BarChart, x=hour, y=request count, bronze bars). Right = Response Time Breakdown (horizontal bars, <5m / 5-15m / 15-30m / >30m, green→red).
-- **Bottom (full-width):** When all dept = Top Performing Staff (3-col grid, rank/name/tasks/avg time/rating). When individual selected = Recent Activity (last 10 requests for that person).
-- Stays department-scoped only (no personal login-user stats — deferred since not all staff have individual accounts).
-- Uses `glass-card-dark` + existing staff portal patterns (StaffHeader, PageContainer, PageHeader).
-
-**Next session:** Present INN-8 design to Karim → approve → write spec doc → write implementation plan → build INN-43. Then design INN-11 (Manager notification center).
+**Next session:** Build INN-43 per the plan. Start with the pre-written acceptance test (Rule 14, spec-first) → backend action → page component → visual verification. Then design INN-11 (Manager notification center) and resume testing tickets (INN-94, INN-108).
 
 ## Key Technical Notes
 - **Next.js 16** (not 14) with React 19
