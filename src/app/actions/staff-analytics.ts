@@ -32,6 +32,10 @@ export interface StaffAnalyticsData {
   topStaff: ReturnType<typeof aggregateTopStaff>;
   slaCompliance: ReturnType<typeof computeSlaCompliance>;
   totalRequestsThisPeriod: number;
+  /** Per-status counts for the workload panel. */
+  statusCounts: Record<string, number>;
+  /** Per-category counts for the task breakdown panel, sorted descending. */
+  categoryBreakdown: Array<{ category: string; count: number }>;
 }
 
 // ---------------------------------------------------------------------------
@@ -230,7 +234,23 @@ export async function getStaffAnalytics(
           ) / 10
         : 0;
 
-    // ---- Step 7: Compose and return ----
+    // ---- Step 7a: Compute status counts for workload panel ----
+    const statusCounts: Record<string, number> = {};
+    for (const req of currentRequests) {
+      statusCounts[req.status] = (statusCounts[req.status] ?? 0) + 1;
+    }
+
+    // ---- Step 7b: Compute per-category breakdown for task breakdown panel ----
+    const categoryMap: Record<string, number> = {};
+    for (const req of currentRequests) {
+      categoryMap[req.category] = (categoryMap[req.category] ?? 0) + 1;
+    }
+    const categoryBreakdown = Object.entries(categoryMap)
+      .map(([category, count]) => ({ category, count }))
+      .filter((entry) => entry.count > 0)
+      .sort((a, b) => b.count - a.count);
+
+    // ---- Step 8: Compose and return ----
     return {
       success: true,
       data: {
@@ -242,6 +262,8 @@ export async function getStaffAnalytics(
         topStaff: aggregateTopStaff(currentRequests, staffNames, hotelAvgRating),
         slaCompliance: computeSlaCompliance(currentRequests, slaMap),
         totalRequestsThisPeriod: currentRequests.length,
+        statusCounts,
+        categoryBreakdown,
       },
     };
   } catch (err) {
