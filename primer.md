@@ -1,8 +1,8 @@
 # Innara -- Primer
 
 ## Current State
-- **Phase:** Phase 4: Manager Portal + Billing — feature work complete, INN-8 design approved, ready to build INN-43
-- **Last Updated:** 2026-04-09
+- **Phase:** Phase 4: Manager Portal + Billing — INN-43 built + visually verified, testing/design tickets remaining
+- **Last Updated:** 2026-04-10
 - **Notion:** INN project (migrated from Linear)
 
 ## What's Done
@@ -45,12 +45,15 @@
 - INN-94: Cross-portal integration E2E tests — Todo
 - INN-11: Manager notification center design — Todo (not yet started)
 - INN-8: Staff analytics design — **✅ DONE 2026-04-09** — desktop layout approved, spec at `docs/planning/specs/inn-8-staff-analytics.md`
-- INN-43: Staff analytics screen — **Ready to build** — plan at `docs/superpowers/plans/2026-04-09-inn-43-staff-analytics.md`
+- INN-43: Staff analytics screen — **✅ DONE 2026-04-10** — built spec-first, 37/37 acceptance tests pass, visually verified at 1440×900 desktop (week + month views) and 768×1024 tablet
 
 **INN-8 Resolution Summary (2026-04-09):**
-Karim approved the desktop layout via AskUserQuestion. Key architectural decision: the staff portal is **desktop** per Innara CLAUDE.md (only Guest is mobile PWA), so the original ticket's "mobile-first per Stitch" wording is superseded. Final layout follows the Manager Analytics pattern: PageHeader + 4 KPI cards + 2-col panel rows + full-width recognition panel. Department-scoped only (no per-staff rating, no personal stats — deferred per spec §13). Spec written, Notion ticket updated to Done, Phase 4 parent table updated.
+Karim approved the desktop layout via AskUserQuestion. Key architectural decision: the staff portal is **desktop** per Innara CLAUDE.md (only Guest is mobile PWA), so the original ticket's "mobile-first per Stitch" wording is superseded. Final layout follows the Manager Analytics pattern: PageHeader + 4 KPI cards + 2-col panel rows + full-width recognition panel. Department-scoped only (no per-staff rating, no personal stats — deferred per spec §13).
 
-**Next session:** Build INN-43 per the plan. Start with the pre-written acceptance test (Rule 14, spec-first) → backend action → page component → visual verification. Then design INN-11 (Manager notification center) and resume testing tickets (INN-94, INN-108).
+**INN-43 Resolution Summary (2026-04-10):**
+Built spec-first per Rule 14: 37 pre-written acceptance tests → `src/lib/staff-analytics-compute.ts` pure helpers → `src/app/actions/staff-analytics.ts` server action → `src/app/(staff)/staff/analytics/page.tsx` component. Pure-helper pattern enables full unit test coverage without Supabase mocks. Visual verification captured 3 authenticated screenshots (desktop week, desktop month, tablet) after enabling the JWT custom_access_token_hook in Supabase Dashboard. Discovered and fixed a pre-existing dark-mode text bug: `.dark` wrapper div in `(staff)/layout.tsx` and `(manager)/layout.tsx` was redefining `--foreground` but not applying `color: var(--foreground)`, so children inherited the body's light-theme color. Single-word fix: added `text-foreground` to both layout wrappers. Also discovered pre-existing responsive nav overlap in shared `PortalHeader.tsx:68` at exactly 768px (hidden md:flex absolute left-1/2) — filed as separate ticket, out of scope for INN-43.
+
+**Next session:** INN-11 (Manager notification center design) → INN-94 (cross-portal integration E2E tests) → INN-108 (Manager portal E2E suite, 19 screens). Phase 4 closes after those three.
 
 ## Key Technical Notes
 - **Next.js 16** (not 14) with React 19
@@ -68,7 +71,7 @@ Karim approved the desktop layout via AskUserQuestion. Key architectural decisio
 - Playwright: port 3001 (avoid conflict with other ventures)
 
 ## Manual Steps Needed
-- Enable JWT hook in Supabase Dashboard → Authentication → Hooks → Custom Access Token
+- ~~Enable JWT hook in Supabase Dashboard → Authentication → Hooks → Custom Access Token~~ — **DONE 2026-04-09**, custom_access_token_hook now injecting app_role/hotel_id/department claims
 - Set GitHub Secrets: NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY
 - Configure Supabase email templates for verification + password reset
 
