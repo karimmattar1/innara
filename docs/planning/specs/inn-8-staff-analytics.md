@@ -40,10 +40,11 @@ The ticket's "mobile-first" clause is therefore superseded by this spec. The scr
 | Role | Path |
 |------|------|
 | Page route | `/staff/analytics` |
-| Page component | `src/app/(staff)/staff/analytics/page.tsx` |
-| Server action file | `src/app/actions/staff-analytics.ts` (NEW) |
-| Acceptance test | `e2e/acceptance/INN-43.spec.ts` (NEW — written before the page; Playwright `testDir` is `./e2e`) |
-| Test helpers | `e2e/helpers/staff-analytics-helpers.ts` (NEW — fixtures + supabase-admin seeding) |
+| Page component | `src/app/(staff)/staff/analytics/page.tsx` (NEW) |
+| Server action | `src/app/actions/staff-analytics.ts` (NEW — `"use server"`, async exports only) |
+| Pure compute helpers | `src/lib/staff-analytics-compute.ts` (NEW — pure functions, constants, types; unit-tested in isolation) |
+| Vitest unit tests | `tests/unit/staff-analytics.test.ts` (NEW — imports pure helpers from `@/lib/staff-analytics-compute`) |
+| Playwright redirect test | `e2e/acceptance/INN-43.spec.ts` (NEW — Playwright `testDir` is `./e2e`, run with `--project=chromium`) |
 | Shared components reused | `StaffHeader`, `PageContainer`, `PageHeader` from `src/components/innara/` |
 | Shared constants | `CATEGORY_LABELS`, `CATEGORY_COLORS`, `STATUS_CONFIG`, `DEPARTMENT_LABELS`, `DEPARTMENT_CATEGORY_MAP` from `src/constants/app.ts` |
 
@@ -378,17 +379,25 @@ const slaCompliancePct = (onTime + breached) > 0 ? Math.round((onTime / (onTime 
 
 ## 12. Acceptance Criteria (behavioral)
 
-These criteria are what the INN-43 acceptance test (`e2e/acceptance/INN-43.spec.ts`) must verify BEFORE implementation begins (Rule 14, spec-first testing). Every criterion must verify a user-visible **behavior**, not just structure.
+These criteria are what INN-43 must satisfy. **Test-coverage scope decision (2026-04-09 — Karim approved Hybrid):** innara currently has NO Playwright auth fixtures and no `SUPABASE_SERVICE_ROLE_KEY` in `.env.local`, so ACs that require authenticated session + seeded data (#1-5) are verified **manually during Task 4 visual review** rather than via automated Playwright tests. ACs #6-9 are covered by the automated test suite.
 
-1. **Page loads with department-scoped data.** Logged in as a staff user in "housekeeping", navigating to `/staff/analytics` shows a page titled `"Housekeeping Analytics"` and 4 KPI cards with non-placeholder values (if seed data exists).
-2. **KPI values match server-side truth.** The Open Requests count displayed equals the count returned by a direct Supabase query that mirrors the server action's filter: `SELECT count(*) FROM requests r JOIN staff_assignments sa ON sa.user_id = r.assigned_staff_id WHERE r.hotel_id = $1 AND sa.hotel_id = $1 AND sa.department = $2 AND r.status IN ('new','pending','in_progress')`. Fetched via a test helper and asserted equal.
-3. **Staff filter dropdown re-scopes the data.** Selecting an individual staff member from the dropdown triggers a refetch, the page title updates to `"{Name} — Housekeeping"`, and at least one KPI card value changes vs the aggregate view (unless the selected staff handled 100% of department traffic, in which case document and assert that).
-4. **Recognition panel mode-switches correctly.** In all-department mode the panel shows a 3-col `"Top Performing Staff"` header. After selecting an individual it shows `"Recent Activity"` header and a table, not cards.
-5. **Empty department shows empty state, not a broken page.** Logged in as a staff user whose department has zero requests, the page renders without errors, KPI cards show `"—"`, and every panel shows its EmptyState block.
-6. **Cross-department isolation.** A staff user from housekeeping cannot see front-desk data. Assertion: attempt to call `getStaffAnalytics("{frontDeskStaffId}")` as a housekeeping user → returns `{ success: false, error: "Staff member not found in your department." }`.
-7. **Unauthorized role rejected.** A guest user calling the action directly (simulated via a test client) gets `{ success: false, error: "Unauthorized" }` — never gets department data.
-8. **Build + typecheck pass.** `npm run build` exits 0 and `npx tsc --noEmit` exits 0 after the implementation.
-9. **The Playwright test file `e2e/acceptance/INN-43.spec.ts` exists, was committed BEFORE the page.tsx implementation, and passes against the final build** (use `--project=chromium` when running — Playwright has a `mobile-chrome` project that is not relevant to this desktop page).
+Each criterion below is tagged with how it is verified.
+
+| # | Criterion | Verification |
+|---|-----------|--------------|
+| 1 | **Page loads with department-scoped data.** Logged in as a staff user in "housekeeping", navigating to `/staff/analytics` shows a page titled `"Housekeeping Analytics"` and 4 KPI cards with non-placeholder values. | **Manual (Task 4 visual review)** — covered by screenshot pipeline, not an automated test. Seeded data verified by live Supabase query during review. |
+| 2 | **KPI values match server-side truth.** The Open Requests count displayed equals a direct query `SELECT count(*) FROM requests r JOIN staff_assignments sa ON sa.user_id = r.assigned_staff_id WHERE r.hotel_id = $1 AND sa.hotel_id = $1 AND sa.department = $2 AND r.status IN ('new','pending','in_progress')`. | **Manual (Task 4)** — Karim validates during review. Action-level logic is unit-tested instead. |
+| 3 | **Staff filter dropdown re-scopes the data.** Selecting an individual staff member triggers a refetch, the page title updates to `"{Name} — Housekeeping"`, and at least one KPI card value changes vs the aggregate view. | **Manual (Task 4)** — screenshot before/after state. |
+| 4 | **Recognition panel mode-switches correctly.** In all-department mode the panel shows a 3-col `"Top Performing Staff"` header. After selecting an individual it shows `"Recent Activity"` header and a table, not cards. | **Manual (Task 4)** — screenshot both modes. |
+| 5 | **Empty department shows empty state, not a broken page.** Staff user whose department has zero requests sees KPI cards showing `"—"` and every panel shows its EmptyState block. | **Manual (Task 4)** — Karim switches to an empty dept during review. |
+| 6 | **Cross-department isolation.** A staff user from housekeeping cannot see front-desk data. The action returns `{ success: false, error: "Staff member not found in your department." }` when called with a staffId from a different dept. | **Vitest unit test** — `computeDeptIsolationGuard(deptStaffIds, staffId)` pure helper tested in `tests/unit/staff-analytics.test.ts`. |
+| 7 | **Unauthorized role rejected.** An unauthenticated user navigating to `/staff/analytics` is redirected to `/auth/staff/login` (matches existing staff portal auth guard pattern). | **Playwright test** — `e2e/acceptance/INN-43.spec.ts` redirect assertion (matches `e2e/staff-portal.spec.ts` pattern). |
+| 8 | **Build + typecheck pass.** `npm run build` exits 0 and `npx tsc --noEmit` exits 0 after the implementation. | **Global Verification** — run in final turn before completion claim. |
+| 9 | **Vitest unit coverage for pure logic.** All pure helpers exported from `staff-analytics.ts` have unit tests covering: period boundaries, bucket boundaries (14.99→fast, 15.0→normal, 29.99→normal, 30.0→slow, 59.99→slow, 60.0→critical), peak hours array length, SLA compliance lookup + fallback, top-staff aggregation, empty-department zeroed result. | **Vitest** — `tests/unit/staff-analytics.test.ts`. |
+
+**Deferred to a later ticket:** Full authenticated Playwright coverage of ACs #1-5. Will be addressed when innara gets Playwright auth fixtures (separate future ticket — not created yet because Hybrid scope may be sufficient long-term if Karim's visual review cadence is reliable).
+
+**Spec-first testing (Rule 14):** Tests for ACs #6, #7, #9 MUST be written, committed, and run BEFORE the implementation files exist. They must be RED (for #6, #9 — imports fail because the action file doesn't exist) or GREEN (for #7 — middleware redirect already works) before Task 2 starts.
 
 ## 13. Out of Scope (Explicitly Deferred)
 

@@ -18,10 +18,10 @@
 
 | Task | Ticket | File | Purpose | Agent |
 |------|--------|------|---------|-------|
-| 1 | INN-43 | `e2e/acceptance/INN-43.spec.ts` | Pre-written acceptance test from spec §12 (Playwright `testDir` is `./e2e`) | testing |
-| 1 | INN-43 | `e2e/helpers/staff-analytics-helpers.ts` | Test seed helpers (hotel + dept + requests + staff) | testing |
-| 2 | INN-43 | `src/app/actions/staff-analytics.ts` | `getStaffAnalytics(staffId?)` server action | backend |
-| 2 | INN-43 | `tests/unit/staff-analytics.test.ts` | Vitest unit tests for period/bucket boundaries | backend |
+| 1 | INN-43 | `tests/unit/staff-analytics.test.ts` | Vitest unit tests for pure helpers (RED before Task 2) | testing |
+| 1 | INN-43 | `e2e/acceptance/INN-43.spec.ts` | Playwright redirect test (unauth → /auth/staff/login) | testing |
+| 2 | INN-43 | `src/lib/staff-analytics-compute.ts` | Pure helpers + constants + types (imported by action + tests) | backend |
+| 2 | INN-43 | `src/app/actions/staff-analytics.ts` | `"use server"` — `getStaffAnalytics(staffId?)` action, composes pure helpers with Supabase queries | backend |
 | 3 | INN-43 | `src/app/(staff)/staff/analytics/page.tsx` | Page component + inline sub-components | frontend |
 
 ## Existing Code to Reuse (do not duplicate)
@@ -80,32 +80,103 @@ export default function StaffAnalyticsPage(): React.ReactElement {
 
 ## Task List
 
-### Task 1 — Pre-written Acceptance Tests (testing agent)
+### Task 1 — Pre-written Acceptance Tests (testing agent) — HYBRID SCOPE
 
-**Spec-first testing rule (Rule 14):** this file MUST be written, committed, and verified RED before Task 2 starts. The test suite encodes spec §12 as executable Playwright assertions.
+**Scope decision (Karim, 2026-04-09):** innara has NO Playwright auth fixtures and no `SUPABASE_SERVICE_ROLE_KEY` in `.env.local`. Test coverage for this ticket is Hybrid:
+- **Vitest unit tests** — cover all pure computation helpers (ACs #6, #9). These test the business logic in isolation without needing the Next.js runtime or a real database.
+- **Playwright redirect test** — covers AC #7 (unauthorized → redirect). One tiny test matching the existing `e2e/staff-portal.spec.ts` pattern.
+- **ACs #1-5** — verified manually during Task 4 visual review. Documented as a gap in spec §12.
 
-**Playwright config note:** `playwright.config.ts` has `testDir: "./e2e"`, `baseURL: "http://localhost:3001"`, and two projects: `chromium` and `mobile-chrome`. The staff analytics screen is desktop-only, so run tests with `--project=chromium` to skip the mobile project. Tests live at `e2e/acceptance/INN-43.spec.ts` — **NOT `tests/acceptance/`** (Vitest lives in `tests/`, Playwright lives in `e2e/`).
+**This requires Task 2 (backend agent) to export pure helper functions** as named exports at the top of `src/app/actions/staff-analytics.ts`, so the unit tests can import them directly. The helpers must be pure (no I/O, no Supabase client) — the action function itself composes them with the database layer. See Task 2 for the required exports.
 
-- [ ] Create `e2e/helpers/staff-analytics-helpers.ts` with:
-  - `seedStaffAnalyticsFixtures(hotelId, department)` — creates N requests across categories, statuses, priorities, and timestamps (via `assigned_staff_id` so the department scoping works). Include at least one `completed` request per category so the SLA pattern has data. Returns the seeded IDs for cleanup.
-  - `createTestStaffUser(hotelId, department, role)` — returns `{ userId, email, password }` for logging in via the UI. Creates an entry in `staff_assignments` linking the user to the department.
-  - `countOpenRequestsForDepartment(hotelId, department)` — helper that mirrors the server action's filter: joins `requests` → `staff_assignments` via `assigned_staff_id = user_id` and counts `status IN ('new','pending','in_progress')`. Used by test #2 to assert rendered value equals server truth.
-  - `cleanupStaffAnalyticsFixtures(hotelId)` — deletes the test data (requests, staff_assignments, user_roles rows, auth users).
-  - Uses the Supabase admin client (service role via `@supabase/supabase-js` + `SUPABASE_SERVICE_ROLE_KEY` env var) — test-only, never in prod code.
-- [ ] Create `e2e/acceptance/INN-43.spec.ts` with one `test.describe('INN-43 staff analytics', ...)` block containing one `test(...)` per criterion in spec §12 (9 tests total).
-- [ ] Each test must verify a **behavior**: perform a user action (log in, click, select) and assert a **visible outcome** (rendered value, page title, pill text, table rows). Do NOT assert element presence alone — that's structure, not behavior.
-- [ ] Test #2 (KPI values match server-side truth) uses `countOpenRequestsForDepartment` and compares to the rendered `Open Requests` KPI value.
-- [ ] Test #6 (cross-department isolation) calls `getStaffAnalytics({staffIdFromOtherDept})` via a server-action test helper (import from `@/app/actions/staff-analytics` or fetch through an API route) and asserts `{success: false, error: "Staff member not found in your department."}`.
-- [ ] Test #7 (unauthorized role) logs in as a guest user and expects the page to redirect to `/auth/staff/login` (match the `e2e/staff-portal.spec.ts` redirect pattern).
-- [ ] Run the suite: `npx playwright test e2e/acceptance/INN-43.spec.ts --project=chromium`. Expected: ALL tests FAIL (red), because the page and action do not exist yet.
-- [ ] Commit the test file and helpers with message: `test(INN-43): pre-written acceptance tests for staff analytics (spec-first)`. Do NOT bundle with the implementation commit.
+**Playwright config note:** `playwright.config.ts` has `testDir: "./e2e"`, `baseURL: "http://localhost:3001"`, and two projects: `chromium` and `mobile-chrome`. Run all analytics tests with `--project=chromium` to skip the mobile project. Tests live at `e2e/acceptance/INN-43.spec.ts` — **NOT `tests/acceptance/`** (Vitest lives in `tests/`, Playwright lives in `e2e/`).
 
-**Verification:** `npx playwright test e2e/acceptance/INN-43.spec.ts --project=chromium` exits nonzero with failures reported for every test. Paste the output into the task report.
+#### Part A — Vitest unit tests (`tests/unit/staff-analytics.test.ts`)
+
+- [ ] Create `tests/unit/staff-analytics.test.ts` that imports from `@/lib/staff-analytics-compute`:
+  ```ts
+  import {
+    computeResolutionBuckets,
+    computeSlaCompliance,
+    computePeakHours,
+    aggregateTopStaff,
+    computeKpis,
+    assertStaffInDepartment,
+    BUCKET_THRESHOLDS_MINUTES,
+    type StaffAnalyticsRequest,
+  } from "@/lib/staff-analytics-compute";
+  ```
+  **CRITICAL:** Import from `@/lib/staff-analytics-compute`, NOT `@/app/actions/staff-analytics`. Pure helpers live in `src/lib/` because Next.js `"use server"` files cannot export non-async values. These imports WILL fail at first run because the module doesn't exist yet — that is the intended RED state.
+- [ ] Unit test: `computeResolutionBuckets` bucket boundaries — feed in requests with resolution times of 14.99, 15.0, 29.99, 30.0, 59.99, 60.0, 60.01 minutes. Assert bucket counts: fast=1, normal=2, slow=2, critical=2 (one at 60.0 is still slow because `<= 60`, adjust logic if spec says otherwise).
+- [ ] Unit test: `computeResolutionBuckets` only includes completed requests — feed in a mix of statuses, assert non-completed are skipped.
+- [ ] Unit test: `computeSlaCompliance` uses `sla_configs` lookup first — feed in a `slaMap` with `housekeeping:medium → 30`, a completed request that took 25 minutes → on-time. A completed request that took 35 minutes → breached.
+- [ ] Unit test: `computeSlaCompliance` falls back to `eta_minutes` when no sla config — feed in an empty `slaMap` and a request with `eta_minutes=20`, resolution=15 → on-time. Resolution=25 → breached.
+- [ ] Unit test: `computeSlaCompliance` skips requests with no target (no slaMap entry AND no eta_minutes) — should not count as either.
+- [ ] Unit test: `computeSlaCompliance` with zero completed requests returns `{onTime: 0, breached: 0, pct: 0}`.
+- [ ] Unit test: `computePeakHours` always returns length 24 — feed in a request at hour 3, assert `result[3].count === 1`, `result[0].count === 0`, `result.length === 24`.
+- [ ] Unit test: `computePeakHours` sums equal request count — feed 10 requests across various hours, assert `result.reduce((s, h) => s + h.count, 0) === 10`.
+- [ ] Unit test: `aggregateTopStaff` sorts by requestsHandled desc, then by lower avgResolutionMinutes — feed in 4 staff with varied counts + resolution times, assert top 3 in correct order.
+- [ ] Unit test: `aggregateTopStaff` only counts completed requests toward avg resolution — feed in a mix, verify `avgResolutionMinutes` only averages completed rows.
+- [ ] Unit test: `assertStaffInDepartment` (AC #6) — given `deptStaffIds = ['a', 'b']`, `staffId = 'a'` returns `true`. Given `staffId = 'c'` returns `false`. Given `staffId = undefined` returns `true` (no filter).
+- [ ] Unit test: `computeKpis` with empty request array returns `{openRequests: 0, slaCompliancePct: 0, avgResolutionMinutes: 0, completionRatePct: 0}`.
+- [ ] Unit test: `BUCKET_THRESHOLDS_MINUTES` constant matches spec §7.4: `{fast: 15, normal: 30, slow: 60}` (or similar shape — verify against Task 2 implementation).
+- [ ] Run: `npx vitest run tests/unit/staff-analytics.test.ts`. Expected: ALL tests FAIL with import errors (the action file doesn't exist yet).
+- [ ] **Do NOT stub the import with a mock module** — the RED failure must come from the missing file, not a mock that always fails.
+
+#### Part B — Playwright redirect test (`e2e/acceptance/INN-43.spec.ts`)
+
+- [ ] Create `e2e/acceptance/INN-43.spec.ts` with a single `test.describe('INN-43 staff analytics', ...)` block containing these tests:
+  - [ ] `test("unauthenticated access to /staff/analytics redirects to staff login")` — `page.goto("/staff/analytics")`, assert `expect(page).toHaveURL(/\/auth\/staff\/login/)`. Match the existing `e2e/staff-portal.spec.ts` pattern exactly.
+  - [ ] `test("redirect destination renders the staff login form")` — after redirect, assert `page.getByRole("heading", { name: "Staff Console" })` is visible. Same as `e2e/staff-portal.spec.ts` line 78.
+- [ ] Run: `npx playwright test e2e/acceptance/INN-43.spec.ts --project=chromium`. Expected: BOTH tests PASS (the middleware redirect already works — the page doesn't need to exist for the redirect to fire).
+- [ ] This is NOT "red → green" in the traditional sense — the Playwright test is a compliance check that the middleware is doing its job. The RED comes from Part A (Vitest).
+
+#### Commit
+
+- [ ] Commit both files with message: `test(INN-43): pre-written acceptance tests for staff analytics (spec-first, hybrid scope)`. Do NOT bundle with the implementation commit.
+- [ ] The commit MUST land before Task 2 starts. Verify via `git log --oneline -1`.
+
+**Verification:**
+1. `npx vitest run tests/unit/staff-analytics.test.ts` → exits nonzero with import errors (RED — module not found).
+2. `npx playwright test e2e/acceptance/INN-43.spec.ts --project=chromium` → exits 0 with 2 passing tests (redirect works).
+3. `git log --oneline -1` → shows the test commit.
+4. Paste all 3 outputs into the task report.
 
 ### Task 2 — Server Action `getStaffAnalytics` (backend agent)
 
 **Schema reality check (MUST read spec §8 first):** The `requests` table has NO `department`, NO `acknowledged_at`, and NO `sla_breached_at` columns. The `request_status` enum has NO `acknowledged` value. Department scoping is done via `staff_assignments.user_id` → `requests.assigned_staff_id`. SLA compliance is computed at query time via `sla_configs`.
 
+**Pure-helper module (for Task 1's unit tests):** Next.js `"use server"` files can ONLY export async functions. Pure synchronous helpers, constants, types, and interfaces MUST live in a separate module. Create:
+
+**File 1:** `src/lib/staff-analytics-compute.ts` (plain TypeScript, no `"use server"`)
+
+```ts
+// Constants
+export const BUCKET_THRESHOLDS_MINUTES = { fast: 15, normal: 30, slow: 60 } as const;
+
+// Types
+export interface StaffAnalyticsRequest { id: string; status: string; category: string; priority: string; assigned_staff_id: string | null; eta_minutes: number | null; created_at: string; completed_at: string | null; room_number: string | null; }
+
+// Pure helpers (unit-tested via tests/unit/staff-analytics.test.ts)
+export function computeResolutionBuckets(requests: StaffAnalyticsRequest[]): { fast: number; normal: number; slow: number; critical: number };
+export function computeSlaCompliance(requests: StaffAnalyticsRequest[], slaMap: Map<string, number>): { onTime: number; breached: number; pct: number };
+export function computePeakHours(requests: StaffAnalyticsRequest[]): Array<{ hour: number; count: number }>;
+export function aggregateTopStaff(requests: StaffAnalyticsRequest[], staffNames: Map<string, string>, hotelAvgRating: number): Array<{ staffId: string; name: string; requestsHandled: number; avgResolutionMinutes: number; rating: number }>;
+export function computeKpis(
+  requests: StaffAnalyticsRequest[],
+  prevRequests: StaffAnalyticsRequest[],
+  slaMap: Map<string, number>,
+): { openRequests: number; slaCompliancePct: number; slaCompliancePrevPct: number; avgResolutionMinutes: number; completionRatePct: number; completionRatePrevPct: number };
+export function assertStaffInDepartment(deptStaffIds: string[], staffId: string | undefined): boolean;
+```
+
+These helpers MUST NOT call Supabase, read env vars, or do any I/O. They take data in, return computed values out.
+
+**File 2:** `src/app/actions/staff-analytics.ts` (`"use server"`) imports the helpers and interfaces from `@/lib/staff-analytics-compute` and composes them with Supabase queries. The action function is the only thing that touches Supabase — it fetches rows, then passes them to the pure helpers.
+
+**Important:** The Task 1 unit tests import from `@/lib/staff-analytics-compute`, NOT from `@/app/actions/staff-analytics`. Update Task 1 imports accordingly when writing tests.
+
+- [ ] Create `src/lib/staff-analytics-compute.ts` with all the pure helpers + constants + types above.
 - [ ] Create `src/app/actions/staff-analytics.ts` starting with `"use server"`.
 - [ ] Copy imports from `src/app/actions/analytics.ts` (`resolveStaffContext`, `ActionResult`, `createClient`, `z`, `getPeriodStart`, `buildDateRange`). If `getPeriodStart` / `buildDateRange` are not exported, export them from `analytics.ts` in this task (do not duplicate the logic — single source of truth).
 - [ ] Export the `StaffAnalyticsResult` interface exactly as defined in spec §8.
