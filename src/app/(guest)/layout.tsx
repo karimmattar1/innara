@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import { AppBackground } from "@/components/innara/AppBackground";
 import { BrandingStyles } from "@/components/innara/BrandingStyles";
+import { InstallPrompt } from "@/components/guest/InstallPrompt";
+import { ServiceWorkerRegistration } from "@/components/guest/ServiceWorkerRegistration";
 import { resolveGuestHotelId } from "@/lib/branding";
 import { Loader2 } from "lucide-react";
 
@@ -31,6 +33,8 @@ export default async function GuestLayout({
       <AppBackground />
       <div className="relative z-10 min-h-screen flex flex-col max-w-md mx-auto">
         <Suspense fallback={<GuestLoading />}>{children}</Suspense>
+        <InstallPrompt />
+        <ServiceWorkerRegistration />
       </div>
     </div>
   );

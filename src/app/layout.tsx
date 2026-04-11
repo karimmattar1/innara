@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { DM_Sans, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
@@ -14,6 +14,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const viewport: Viewport = {
+  themeColor: "#1a1d3a",
+};
+
 export const metadata: Metadata = {
   title: "Innara | AI-Powered Hospitality Platform",
   description:
@@ -25,6 +29,12 @@ export const metadata: Metadata = {
     "guest experience",
     "hotel operations",
   ],
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Innara",
+  },
 };
 
 export default function RootLayout({

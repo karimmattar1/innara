@@ -1,0 +1,25 @@
+{
+  "name": "Innara — Hotel Guest Portal",
+  "short_name": "Innara",
+  "description": "AI-powered hotel concierge and service request portal",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1a1d3a",
+  "orientation": "portrait",
+  "categories": ["travel", "hospitality"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
