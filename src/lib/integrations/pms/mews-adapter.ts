@@ -35,18 +35,6 @@ const mewsReservationSchema = z.object({
   Notes: z.string().nullable().optional(),
 });
 
-const mewsCustomerSchema = z.object({
-  Id: z.string().min(1),
-  FirstName: z.string().nullable().optional(),
-  LastName: z.string().nullable().optional(),
-  Email: z.string().email().nullable().optional(),
-});
-
-const mewsResourceSchema = z.object({
-  Id: z.string().min(1),
-  Name: z.string().nullable().optional(),
-});
-
 const mewsWebhookPayloadSchema = z.object({
   Events: z.array(
     z.object({
@@ -87,6 +75,7 @@ function mapEventType(
 export class MewsAdapter implements IPMSAdapter {
   name = "mews" as const;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- signature param required by IPMSAdapter interface; HMAC verification will use it in production
   validateWebhook(payload: unknown, signature: string | null): boolean {
     // Mews uses a shared secret for webhook verification
     // In production, compute HMAC-SHA256 of the payload body using the webhook secret

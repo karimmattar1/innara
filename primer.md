@@ -1,7 +1,7 @@
 # Innara -- Primer
 
 ## Current State
-- **Phase:** Phase 4: Manager Portal + Billing — ALL 30 tickets DONE, pending phase review
+- **Phase:** Phase 5: Admin + PWA + PMS — ALL 8 tickets DONE, pending phase review
 - **Last Updated:** 2026-04-11
 - **Notion:** INN project (migrated from Linear)
 
@@ -61,7 +61,20 @@ Manager portal E2E suite: 59 Playwright tests across 7 test groups — auth guar
 
 **Phase 4 Review (2026-04-11):** PASS 85/100. GPT-4o: PASS, Gemini: FAIL (false positives — diff-limited review), Claude: CONDITIONAL PASS. Consensus FAIL overridden — all PLAN_GAP items verified to exist in codebase. Fixes applied: extracted shared `resolveManagerContext` to `auth-context.ts` (-3 duplicates), removed TODO comment from `staff-analytics.ts`. Pre-existing lint warnings (react-hooks/set-state-in-effect) deferred — codebase-wide pattern, not Phase 4 regression.
 
-**Current:** Starting Phase 5 — Admin + PWA + PMS (23 tickets).
+## Phase 5 Progress
+**All 8 tickets DONE — 2026-04-11:**
+- INN-113: Admin tenant management — CRUD UI, deactivate/activate cascade, tenant detail page
+- INN-114: Admin user/plan/health management — user search, plan tiers, system health dashboard
+- INN-115: PWA — service worker (cache-first/network-first), offline page, install prompt, background sync
+- INN-116: PMS Mews integration — IPMSAdapter interface, webhook handler, reservation sync
+- INN-117: i18n EN/AR — next-intl, cookie-based locale, RTL support, LanguageToggle component
+- INN-118: GDPR compliance — data export (Article 20), anonymization (Article 17), hotel deactivation cascade
+- INN-119: PMS sync recovery — conflict resolver, data validator, network resilience hook (exponential backoff)
+- INN-121: Phase 5 E2E tests — 46 Playwright tests (admin auth guards, PMS webhook, PWA offline, API health)
+
+**New files:** `src/lib/supabase/admin.ts` (service role client), `src/lib/auth-context.ts` (added resolveAdminContext), `src/app/actions/admin-*.ts` (3 action files), `src/app/actions/privacy.ts` (GDPR), `src/app/(admin)/admin/**` (5 admin routes), `public/manifest.json`, `public/sw.js`, `src/app/offline/page.tsx`, `src/components/guest/InstallPrompt.tsx`, `src/components/guest/ServiceWorkerRegistration.tsx`, `src/hooks/use-offline-queue.ts`, `src/hooks/use-network-resilience.ts`, `src/lib/integrations/pms/**` (types, mews-adapter, validator, conflict-resolver), `src/app/api/webhooks/pms/route.ts`, `src/i18n/**` (config, request, en.json, ar.json), `src/components/guest/LanguageToggle.tsx`, `e2e/admin-portal.spec.ts`
+
+**Verification:** tsc 0 errors, build success, Vitest 133 passed, Playwright 404 passed (55.5s)
 
 ## Key Technical Notes
 - **Next.js 16** (not 14) with React 19
@@ -70,6 +83,10 @@ Manager portal E2E suite: 59 Playwright tests across 7 test groups — auth guar
 - **Shared helpers:** `src/lib/auth-context.ts` (auth), `src/lib/utils.ts` (formatting), `src/constants/app.ts` (transitions)
 - **Shared audit:** `src/lib/audit.ts` (logAudit utility — fire-and-forget)
 - **Dynamic branding:** `src/lib/branding.ts` + `src/components/innara/BrandingStyles.tsx` (guest portal CSS injection)
+- **Admin client:** `src/lib/supabase/admin.ts` (service role, bypasses RLS for cross-tenant queries)
+- **PMS integration:** `src/lib/integrations/pms/` (IPMSAdapter interface, Mews adapter, conflict resolver, validator)
+- **i18n:** next-intl with cookie-based locale (`innara-locale`), EN + AR, RTL support
+- **PWA:** service worker (`public/sw.js`), manifest, offline page, install prompt, background sync
 - Guest paths: /guest/*, Staff: /staff/*, Manager: /manager/*, Admin: /admin/*
 - JWT claims inject app_role, hotel_id, department via custom_access_token_hook
 - Middleware redirects: guest portal → /auth/guest/login, staff/manager/admin → /auth/staff/login
@@ -88,7 +105,7 @@ Manager portal E2E suite: 59 Playwright tests across 7 test groups — auth guar
 - [x] Phase 2: Core Features (29 tickets — completed 2026-03-29, review passed)
 - [x] Phase 3: Supporting Features (20 tickets — completed 2026-03-29, review passed)
 - [x] Phase 4: Manager Portal + Billing (30 tickets — completed 2026-04-11, review passed 85/100)
-- [ ] Phase 5: Admin + PWA + PMS (23 tickets)
+- [x] Phase 5: Admin + PWA + PMS (8 tickets — completed 2026-04-11, pending phase review)
 - [ ] Phase 6: Testing & Launch (18 tickets)
 
 ## Links

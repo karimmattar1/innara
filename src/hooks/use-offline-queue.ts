@@ -44,6 +44,28 @@ export function useOfflineQueue(): {
     setQueueSize(getQueue().length);
   }, []);
 
+  const replayQueue = useCallback(async (): Promise<void> => {
+    const queue = getQueue();
+    if (queue.length === 0) return;
+
+    const remaining: QueuedRequest[] = [];
+
+    for (const req of queue) {
+      try {
+        await fetch(req.url, {
+          method: req.method,
+          headers: { "Content-Type": "application/json" },
+          body: req.body,
+        });
+      } catch {
+        remaining.push(req);
+      }
+    }
+
+    saveQueue(remaining);
+    setQueueSize(remaining.length);
+  }, []);
+
   // Online/offline listeners
   useEffect(() => {
     function handleOnline(): void {
@@ -70,29 +92,7 @@ export function useOfflineQueue(): {
       window.removeEventListener("offline", handleOffline);
       navigator.serviceWorker?.removeEventListener("message", handleMessage);
     };
-  }, []);
-
-  async function replayQueue(): Promise<void> {
-    const queue = getQueue();
-    if (queue.length === 0) return;
-
-    const remaining: QueuedRequest[] = [];
-
-    for (const req of queue) {
-      try {
-        await fetch(req.url, {
-          method: req.method,
-          headers: { "Content-Type": "application/json" },
-          body: req.body,
-        });
-      } catch {
-        remaining.push(req);
-      }
-    }
-
-    saveQueue(remaining);
-    setQueueSize(remaining.length);
-  }
+  }, [replayQueue]);
 
   const enqueue = useCallback(
     (url: string, method: string, body: string) => {

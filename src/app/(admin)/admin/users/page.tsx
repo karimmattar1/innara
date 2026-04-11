@@ -5,7 +5,6 @@ import {
   Search,
   Users,
   Building2,
-  Shield,
   UserX,
   UserCheck,
   Loader2,

@@ -9,22 +9,6 @@ import { logAudit } from "@/lib/audit";
 import type { ActionResult } from "@/app/actions/requests";
 
 // ---------------------------------------------------------------------------
-// Schemas
-// ---------------------------------------------------------------------------
-
-const planSchema = z.object({
-  name: z.string().min(1).max(50),
-  displayName: z.string().min(1).max(100),
-  monthlyPrice: z.number().min(0),
-  features: z.array(z.string().min(1).max(200)),
-  maxRooms: z.number().int().positive().nullable(),
-  maxStaff: z.number().int().positive().nullable(),
-  isActive: z.boolean().optional().default(true),
-});
-
-const planIdSchema = z.string().uuid("Invalid plan ID");
-
-// ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
@@ -56,17 +40,6 @@ export async function getPlans(): Promise<ActionResult<PlanTier[]>> {
     // Fetch plans from subscriptions to derive unique plans
     // Since there's no dedicated plans table yet, we derive from existing data
     // and use a settings-based approach stored in a plans JSONB on a config row
-    const { data: hotels, error: hotelsError } = await adminClient
-      .from("hotels")
-      .select("id, settings");
-
-    if (hotelsError) {
-      Sentry.captureException(hotelsError, {
-        tags: { action: "getPlans", stage: "hotels-query" },
-      });
-      return { success: false, error: "Failed to load plans." };
-    }
-
     // Get subscription counts per plan
     const { data: subs, error: subsError } = await adminClient
       .from("subscriptions")
