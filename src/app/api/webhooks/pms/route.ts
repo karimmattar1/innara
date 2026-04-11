@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import * as Sentry from "@sentry/nextjs";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { MewsAdapter } from "@/lib/integrations/pms/mews-adapter";
@@ -9,18 +10,29 @@ import type { PMSSyncResult } from "@/lib/integrations/pms/types";
 // ---------------------------------------------------------------------------
 
 const mewsAdapter = new MewsAdapter();
+const hotelIdSchema = z.string().uuid("Invalid hotel ID format");
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
-  const hotelId = request.headers.get("x-hotel-id");
+  const rawHotelId = request.headers.get("x-hotel-id");
   const provider = request.headers.get("x-pms-provider") ?? "mews";
   const signature = request.headers.get("x-webhook-signature");
 
-  if (!hotelId) {
+  if (!rawHotelId) {
     return NextResponse.json(
       { error: "Missing x-hotel-id header" },
       { status: 400 },
     );
   }
+
+  const parsedHotelId = hotelIdSchema.safeParse(rawHotelId);
+  if (!parsedHotelId.success) {
+    return NextResponse.json(
+      { error: "Invalid x-hotel-id format — must be UUID" },
+      { status: 400 },
+    );
+  }
+
+  const hotelId = parsedHotelId.data;
 
   let body: unknown;
   try {
@@ -128,7 +140,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     )
     .then(({ error }) => {
       if (error) {
-        console.error("[pms-webhook] Failed to update sync status:", error.message);
+        Sentry.captureMessage("Failed to update PMS sync status", {
+          level: "warning",
+          tags: { provider, hotelId },
+          extra: { error: error.message },
+        });
       }
     });
 

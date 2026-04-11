@@ -1,4 +1,5 @@
 import { z } from "zod";
+import * as Sentry from "@sentry/nextjs";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { logAudit } from "@/lib/audit";
 import type {
@@ -96,10 +97,11 @@ export class MewsAdapter implements IPMSAdapter {
         // Each event Value contains the reservation data
         const reservationData = mewsReservationSchema.safeParse(event.Value);
         if (!reservationData.success) {
-          console.error(
-            `[mews] Skipping malformed reservation ${event.Id}:`,
-            reservationData.error.issues,
-          );
+          Sentry.captureMessage(`Mews: skipping malformed reservation ${event.Id}`, {
+            level: "warning",
+            tags: { provider: "mews", eventId: event.Id },
+            extra: { issues: reservationData.error.issues },
+          });
           continue;
         }
 
@@ -132,7 +134,9 @@ export class MewsAdapter implements IPMSAdapter {
           rawPayload: event.Value,
         });
       } catch (err) {
-        console.error(`[mews] Error parsing event ${event.Id}:`, err);
+        Sentry.captureException(err, {
+          tags: { provider: "mews", eventId: event.Id },
+        });
       }
     }
 

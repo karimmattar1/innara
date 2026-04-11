@@ -89,7 +89,7 @@ test.describe("PMS Webhook — Integration", () => {
       data: "not json",
       headers: {
         "Content-Type": "text/plain",
-        "x-hotel-id": "00000000-0000-0000-0000-000000000001",
+        "x-hotel-id": "10000000-1000-4000-8000-100000000001",
       },
     });
     expect(response.status()).toBe(400);
@@ -100,7 +100,7 @@ test.describe("PMS Webhook — Integration", () => {
       data: { Events: [] },
       headers: {
         "Content-Type": "application/json",
-        "x-hotel-id": "00000000-0000-0000-0000-000000000001",
+        "x-hotel-id": "10000000-1000-4000-8000-100000000001",
         "x-pms-provider": "unknown_pms",
       },
     });
@@ -114,7 +114,7 @@ test.describe("PMS Webhook — Integration", () => {
       data: { invalid: "structure" },
       headers: {
         "Content-Type": "application/json",
-        "x-hotel-id": "00000000-0000-0000-0000-000000000001",
+        "x-hotel-id": "10000000-1000-4000-8000-100000000001",
         "x-pms-provider": "mews",
       },
     });

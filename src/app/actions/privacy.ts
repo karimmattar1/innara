@@ -157,16 +157,30 @@ export async function anonymizeUser(
     }
 
     // Deactivate all staff assignments
-    await adminClient
+    const { error: staffError } = await adminClient
       .from("staff_assignments")
       .update({ is_active: false })
       .eq("user_id", uid);
 
+    if (staffError) {
+      Sentry.captureException(staffError, {
+        tags: { action: "anonymizeUser", stage: "staff-deactivate" },
+      });
+      return { success: false, error: "Profile anonymized but failed to deactivate staff assignments. Manual cleanup required." };
+    }
+
     // Anonymize messages content
-    await adminClient
+    const { error: messagesError } = await adminClient
       .from("messages")
       .update({ content: "[deleted]" })
       .eq("sender_id", uid);
+
+    if (messagesError) {
+      Sentry.captureException(messagesError, {
+        tags: { action: "anonymizeUser", stage: "messages-anonymize" },
+      });
+      return { success: false, error: "Profile and staff anonymized but failed to redact messages. Manual cleanup required." };
+    }
 
     await logAudit(adminClient, {
       hotelId: null,
@@ -221,12 +235,19 @@ export async function deactivateHotelCascade(
     }
 
     // 1. Deactivate hotel
-    await adminClient
+    const { error: hotelUpdateError } = await adminClient
       .from("hotels")
       .update({ is_active: false, updated_at: new Date().toISOString() })
       .eq("id", hid);
 
-    // 2. Deactivate all staff assignments
+    if (hotelUpdateError) {
+      Sentry.captureException(hotelUpdateError, {
+        tags: { action: "deactivateHotelCascade", stage: "hotel-update" },
+      });
+      return { success: false, error: "Failed to deactivate hotel." };
+    }
+
+    // 2. Count then deactivate all staff assignments
     const { data: staffRows } = await adminClient
       .from("staff_assignments")
       .select("id")
@@ -235,14 +256,21 @@ export async function deactivateHotelCascade(
 
     const staffCount = staffRows?.length ?? 0;
 
-    await adminClient
+    const { error: staffUpdateError } = await adminClient
       .from("staff_assignments")
       .update({ is_active: false })
       .eq("hotel_id", hid)
       .eq("is_active", true);
 
+    if (staffUpdateError) {
+      Sentry.captureException(staffUpdateError, {
+        tags: { action: "deactivateHotelCascade", stage: "staff-deactivate" },
+      });
+      return { success: false, error: "Hotel deactivated but failed to deactivate staff. Manual cleanup required." };
+    }
+
     // 3. Mark subscription as cancelled
-    await adminClient
+    const { error: subError } = await adminClient
       .from("subscriptions")
       .update({
         status: "cancelled",
@@ -250,6 +278,13 @@ export async function deactivateHotelCascade(
         updated_at: new Date().toISOString(),
       })
       .eq("hotel_id", hid);
+
+    if (subError) {
+      Sentry.captureException(subError, {
+        tags: { action: "deactivateHotelCascade", stage: "subscription-cancel" },
+      });
+      return { success: false, error: "Hotel and staff deactivated but failed to cancel subscription. Manual cleanup required." };
+    }
 
     // 4. Audit log
     await logAudit(adminClient, {

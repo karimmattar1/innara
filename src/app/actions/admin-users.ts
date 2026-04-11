@@ -68,8 +68,9 @@ export async function searchUsers(
     const { query: q, page: pg, pageSize: ps } = parsed.data;
     const offset = (pg - 1) * ps;
 
-    // Search profiles by email or full_name (case-insensitive)
-    const searchPattern = `%${q}%`;
+    // Sanitize ilike wildcards to prevent pattern injection
+    const sanitized = q.replace(/[%_\\]/g, (ch) => `\\${ch}`);
+    const searchPattern = `%${sanitized}%`;
 
     const { data: profiles, error: profileError, count } = await adminClient
       .from("profiles")
