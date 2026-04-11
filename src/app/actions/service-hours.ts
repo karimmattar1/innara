@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
-import { resolveStaffContext, isManagerRole } from "@/lib/auth-context";
+import { resolveManagerContext } from "@/lib/auth-context";
 import type { ActionResult } from "@/app/actions/requests";
 
 // ---------------------------------------------------------------------------
@@ -71,22 +71,6 @@ const serviceScheduleInputSchema = z.object({
 });
 
 // ---------------------------------------------------------------------------
-// Auth helper — mirrors resolveManagerContext in branding.ts
-// ---------------------------------------------------------------------------
-
-async function resolveManagerContext(
-  supabase: Awaited<ReturnType<typeof createClient>>,
-): Promise<{ hotelId: string; error: null } | { hotelId: null; error: string }> {
-  const ctx = await resolveStaffContext(supabase);
-  if (ctx.error || !ctx.user) return { hotelId: null, error: ctx.error ?? "Unauthorized" };
-
-  const manager = await isManagerRole(supabase, ctx.user.id);
-  if (!manager) return { hotelId: null, error: "Unauthorized" };
-
-  return { hotelId: ctx.assignment!.hotel_id, error: null };
-}
-
-// ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
@@ -109,8 +93,9 @@ function buildDefaultSchedules(): ServiceSchedule[] {
 export async function getServiceSchedules(): Promise<ActionResult<ServiceSchedule[]>> {
   try {
     const supabase = await createClient();
-    const { hotelId, error } = await resolveManagerContext(supabase);
-    if (error) return { success: false, error };
+    const ctx = await resolveManagerContext(supabase);
+    if ("error" in ctx) return { success: false, error: ctx.error };
+    const { hotelId } = ctx;
 
     const { data, error: queryError } = await supabase
       .from("hotels")
@@ -151,8 +136,9 @@ export async function updateServiceSchedule(
 
   try {
     const supabase = await createClient();
-    const { hotelId, error } = await resolveManagerContext(supabase);
-    if (error) return { success: false, error };
+    const ctx = await resolveManagerContext(supabase);
+    if ("error" in ctx) return { success: false, error: ctx.error };
+    const { hotelId } = ctx;
 
     // Read current settings to perform a safe merge
     const { data: hotelData, error: readError } = await supabase

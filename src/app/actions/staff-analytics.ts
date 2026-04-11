@@ -218,7 +218,7 @@ export async function getStaffAnalytics(
 
     // ---- Step 6: Hotel average rating ----
     // ratings table is hotel-level; per-staff rating deferred per spec §13.
-    // TODO: hook up ratings once table is confirmed
+    // Per-staff rating deferred per INN-8 spec §13 — hotel-level aggregate only
     const { data: ratingsData } = await supabase
       .from("ratings")
       .select("rating")

@@ -89,3 +89,30 @@ export async function isManagerRole(
   if (error || !data) return false;
   return data.role === "manager" || data.role === "super_admin";
 }
+
+// ---------------------------------------------------------------------------
+// Manager context — authenticate + verify manager role + return hotel scope
+// ---------------------------------------------------------------------------
+
+export interface ManagerContext {
+  userId: string;
+  hotelId: string;
+}
+
+export interface ManagerContextError {
+  error: string;
+}
+
+export async function resolveManagerContext(
+  supabase: SupabaseClient,
+): Promise<(ManagerContext & { error?: undefined }) | ManagerContextError> {
+  const ctx = await resolveStaffContext(supabase);
+  if (ctx.error || !ctx.user || !ctx.assignment) {
+    return { error: ctx.error ?? "Unauthorized" };
+  }
+
+  const managerCheck = await isManagerRole(supabase, ctx.user.id);
+  if (!managerCheck) return { error: "Unauthorized" };
+
+  return { userId: ctx.user.id, hotelId: ctx.assignment.hotel_id };
+}

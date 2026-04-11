@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   Bell,
@@ -545,13 +546,25 @@ export function NotificationDrawer({
           )}
         </div>
 
-        {/* Footer — count when content is loaded */}
+        {/* Footer — count + view all link when content is loaded */}
         {state === "loaded" && (
           <div className={cn("flex-shrink-0 px-5 py-3 border-t", headerBorderClass)}>
             <p className={cn("text-[11px] text-center", subtitleColor)}>
               Showing {notifications.length} notification
               {notifications.length !== 1 ? "s" : ""}
             </p>
+            {isDark && (
+              <Link
+                href="/manager/notifications"
+                onClick={() => onOpenChange(false)}
+                className={cn(
+                  "block text-center text-xs font-medium mt-2 transition-colors",
+                  "text-[#9B7340] hover:text-[#b8924f]",
+                )}
+              >
+                View all notifications
+              </Link>
+            )}
           </div>
         )}
       </div>

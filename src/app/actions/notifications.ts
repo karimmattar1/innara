@@ -15,6 +15,19 @@ const notificationIdSchema = z.object({
 
 const getMyNotificationsSchema = z.object({
   unreadOnly: z.boolean().optional().default(false),
+  notificationTypes: z
+    .array(
+      z.enum([
+        "request_update",
+        "new_request",
+        "guest_message",
+        "staff_message",
+        "sla_breach",
+        "assignment",
+        "other",
+      ]),
+    )
+    .optional(),
   page: z.number().int().positive().optional().default(1),
   pageSize: z.number().int().min(1).max(100).optional().default(20),
 });
@@ -89,7 +102,7 @@ export async function getMyNotifications(
       return { success: false, error: "Unauthorized" };
     }
 
-    const { unreadOnly, page, pageSize } = parsed.data;
+    const { unreadOnly, notificationTypes, page, pageSize } = parsed.data;
     const from = (page - 1) * pageSize;
     const to = from + pageSize - 1;
 
@@ -105,6 +118,10 @@ export async function getMyNotifications(
       listQuery = listQuery.eq("read", false);
     }
 
+    if (notificationTypes && notificationTypes.length > 0) {
+      listQuery = listQuery.in("notification_type", notificationTypes);
+    }
+
     const { data: notifications, error: listError, count } = await listQuery;
 
     if (listError) {
@@ -112,11 +129,17 @@ export async function getMyNotifications(
     }
 
     // Separate count query for unread (always needed regardless of unreadOnly filter)
-    const { count: unreadCount, error: unreadError } = await supabase
+    let unreadQuery = supabase
       .from("notifications")
       .select("id", { count: "exact", head: true })
       .eq("user_id", user.id)
       .eq("read", false);
+
+    if (notificationTypes && notificationTypes.length > 0) {
+      unreadQuery = unreadQuery.in("notification_type", notificationTypes);
+    }
+
+    const { count: unreadCount, error: unreadError } = await unreadQuery;
 
     if (unreadError) {
       return { success: false, error: "Unable to retrieve unread count. Please try again." };

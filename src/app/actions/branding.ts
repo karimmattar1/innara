@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
-import { resolveStaffContext, isManagerRole } from "@/lib/auth-context";
+import { resolveManagerContext } from "@/lib/auth-context";
 import { REQUEST_CATEGORIES, REQUEST_PRIORITIES } from "@/constants/app";
 import type { ActionResult } from "@/app/actions/requests";
 
@@ -133,31 +133,15 @@ const createServiceOptionSchema = z.object({
 });
 
 // ---------------------------------------------------------------------------
-// Auth helper — resolves staff context and verifies manager role
-// Returns { hotelId, error } — hotelId is only present when error is null
-// ---------------------------------------------------------------------------
-
-async function resolveManagerContext(
-  supabase: Awaited<ReturnType<typeof createClient>>,
-): Promise<{ hotelId: string; error: null } | { hotelId: null; error: string }> {
-  const ctx = await resolveStaffContext(supabase);
-  if (ctx.error || !ctx.user) return { hotelId: null, error: ctx.error ?? "Unauthorized" };
-
-  const manager = await isManagerRole(supabase, ctx.user.id);
-  if (!manager) return { hotelId: null, error: "Unauthorized" };
-
-  return { hotelId: ctx.assignment!.hotel_id, error: null };
-}
-
-// ---------------------------------------------------------------------------
 // getBranding
 // ---------------------------------------------------------------------------
 
 export async function getBranding(): Promise<ActionResult<HotelBranding>> {
   try {
     const supabase = await createClient();
-    const { hotelId, error } = await resolveManagerContext(supabase);
-    if (error) return { success: false, error };
+    const ctx = await resolveManagerContext(supabase);
+    if ("error" in ctx) return { success: false, error: ctx.error };
+    const { hotelId } = ctx;
 
     const { data, error: queryError } = await supabase
       .from("hotel_branding")
@@ -219,8 +203,9 @@ export async function updateBranding(
 
   try {
     const supabase = await createClient();
-    const { hotelId, error } = await resolveManagerContext(supabase);
-    if (error) return { success: false, error };
+    const ctx = await resolveManagerContext(supabase);
+    if ("error" in ctx) return { success: false, error: ctx.error };
+    const { hotelId } = ctx;
 
     // Sanitize customCss — strip any HTML tags to prevent XSS
     const sanitizedCss =
@@ -283,8 +268,9 @@ export async function updateBranding(
 export async function getHotelSettings(): Promise<ActionResult<HotelSettings>> {
   try {
     const supabase = await createClient();
-    const { hotelId, error } = await resolveManagerContext(supabase);
-    if (error) return { success: false, error };
+    const ctx = await resolveManagerContext(supabase);
+    if ("error" in ctx) return { success: false, error: ctx.error };
+    const { hotelId } = ctx;
 
     const { data, error: queryError } = await supabase
       .from("hotels")
@@ -333,8 +319,9 @@ export async function updateHotelSettings(
 
   try {
     const supabase = await createClient();
-    const { hotelId, error } = await resolveManagerContext(supabase);
-    if (error) return { success: false, error };
+    const ctx = await resolveManagerContext(supabase);
+    if ("error" in ctx) return { success: false, error: ctx.error };
+    const { hotelId } = ctx;
 
     // Build update payload with only provided fields
     const updatePayload: Record<string, unknown> = {
@@ -387,8 +374,9 @@ export async function updateHotelSettings(
 export async function getSlaConfigs(): Promise<ActionResult<SlaConfig[]>> {
   try {
     const supabase = await createClient();
-    const { hotelId, error } = await resolveManagerContext(supabase);
-    if (error) return { success: false, error };
+    const ctx = await resolveManagerContext(supabase);
+    if ("error" in ctx) return { success: false, error: ctx.error };
+    const { hotelId } = ctx;
 
     const { data, error: queryError } = await supabase
       .from("sla_configs")
@@ -430,8 +418,9 @@ export async function updateSlaConfig(
 
   try {
     const supabase = await createClient();
-    const { hotelId, error } = await resolveManagerContext(supabase);
-    if (error) return { success: false, error };
+    const ctx = await resolveManagerContext(supabase);
+    if ("error" in ctx) return { success: false, error: ctx.error };
+    const { hotelId } = ctx;
 
     const { data, error: upsertError } = await supabase
       .from("sla_configs")
@@ -472,8 +461,9 @@ export async function updateSlaConfig(
 export async function getServiceOptions(): Promise<ActionResult<ServiceOption[]>> {
   try {
     const supabase = await createClient();
-    const { hotelId, error } = await resolveManagerContext(supabase);
-    if (error) return { success: false, error };
+    const ctx = await resolveManagerContext(supabase);
+    if ("error" in ctx) return { success: false, error: ctx.error };
+    const { hotelId } = ctx;
 
     const { data, error: queryError } = await supabase
       .from("service_options")
@@ -527,8 +517,9 @@ export async function updateServiceOption(
 
   try {
     const supabase = await createClient();
-    const { hotelId, error } = await resolveManagerContext(supabase);
-    if (error) return { success: false, error };
+    const ctx = await resolveManagerContext(supabase);
+    if ("error" in ctx) return { success: false, error: ctx.error };
+    const { hotelId } = ctx;
 
     // Build update payload with only provided fields
     const updatePayload: Record<string, unknown> = {
@@ -589,8 +580,9 @@ export async function createServiceOption(
 
   try {
     const supabase = await createClient();
-    const { hotelId, error } = await resolveManagerContext(supabase);
-    if (error) return { success: false, error };
+    const ctx = await resolveManagerContext(supabase);
+    if ("error" in ctx) return { success: false, error: ctx.error };
+    const { hotelId } = ctx;
 
     // Derive sort_order as max existing + 1 for this service type
     const { data: existing } = await supabase

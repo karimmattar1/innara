@@ -2,7 +2,7 @@
 
 import Stripe from "stripe";
 import { createClient } from "@/lib/supabase/server";
-import { resolveStaffContext, isManagerRole } from "@/lib/auth-context";
+import { resolveManagerContext } from "@/lib/auth-context";
 import type { ActionResult } from "@/app/actions/requests";
 
 // ---------------------------------------------------------------------------
@@ -48,38 +48,6 @@ export interface SubscriptionData {
 }
 
 // ---------------------------------------------------------------------------
-// Auth helper — authenticate user, verify manager role, return hotel context
-// ---------------------------------------------------------------------------
-
-interface ManagerContext {
-  ok: true;
-  userId: string;
-  hotelId: string;
-}
-
-interface ManagerContextError {
-  ok: false;
-  error: string;
-}
-
-async function resolveManagerContext(
-  supabase: Awaited<ReturnType<typeof createClient>>,
-): Promise<ManagerContext | ManagerContextError> {
-  const ctx = await resolveStaffContext(supabase);
-  if (ctx.error) return { ok: false, error: ctx.error };
-
-  const user = ctx.user!;
-  const managerCheck = await isManagerRole(supabase, user.id);
-  if (!managerCheck) return { ok: false, error: "Unauthorized" };
-
-  return {
-    ok: true,
-    userId: user.id,
-    hotelId: ctx.assignment!.hotel_id,
-  };
-}
-
-// ---------------------------------------------------------------------------
 // getSubscription
 // ---------------------------------------------------------------------------
 
@@ -89,7 +57,7 @@ export async function getSubscription(): Promise<
   try {
     const supabase = await createClient();
     const ctx = await resolveManagerContext(supabase);
-    if (!ctx.ok) return { success: false, error: ctx.error };
+    if ("error" in ctx) return { success: false, error: ctx.error };
 
     const { data, error } = await supabase
       .from("subscriptions")
@@ -138,7 +106,7 @@ export async function createCheckoutSession(
   try {
     const supabase = await createClient();
     const ctx = await resolveManagerContext(supabase);
-    if (!ctx.ok) return { success: false, error: ctx.error };
+    if ("error" in ctx) return { success: false, error: ctx.error };
 
     // Fetch hotel name and existing Stripe customer ID in a single query
     const { data: hotel, error: hotelError } = await supabase
@@ -219,7 +187,7 @@ export async function createBillingPortalSession(): Promise<
   try {
     const supabase = await createClient();
     const ctx = await resolveManagerContext(supabase);
-    if (!ctx.ok) return { success: false, error: ctx.error };
+    if ("error" in ctx) return { success: false, error: ctx.error };
 
     const { data: subscription, error: subError } = await supabase
       .from("subscriptions")
@@ -259,7 +227,7 @@ export async function cancelSubscription(): Promise<ActionResult> {
   try {
     const supabase = await createClient();
     const ctx = await resolveManagerContext(supabase);
-    if (!ctx.ok) return { success: false, error: ctx.error };
+    if ("error" in ctx) return { success: false, error: ctx.error };
 
     const { data: subscription, error: subError } = await supabase
       .from("subscriptions")
