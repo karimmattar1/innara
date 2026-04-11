@@ -91,6 +91,46 @@ export async function isManagerRole(
 }
 
 // ---------------------------------------------------------------------------
+// Admin context — authenticate + verify super_admin role (no hotel scope)
+// ---------------------------------------------------------------------------
+
+export interface AdminContext {
+  userId: string;
+  email: string;
+}
+
+export interface AdminContextError {
+  error: string;
+}
+
+export async function resolveAdminContext(
+  supabase: SupabaseClient,
+): Promise<(AdminContext & { error?: undefined }) | AdminContextError> {
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+
+  if (authError || !user) {
+    return { error: "Unauthorized" };
+  }
+
+  const { data: roleRow, error: roleError } = await supabase
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", user.id)
+    .eq("role", "super_admin")
+    .limit(1)
+    .maybeSingle();
+
+  if (roleError || !roleRow) {
+    return { error: "Forbidden" };
+  }
+
+  return { userId: user.id, email: user.email ?? "" };
+}
+
+// ---------------------------------------------------------------------------
 // Manager context — authenticate + verify manager role + return hotel scope
 // ---------------------------------------------------------------------------
 
