@@ -12,7 +12,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 const PUBLIC_PATHS = [
   "/auth",
-  "/api/webhooks",
+  "/api/",
   "/offline",
   "/_next",
   "/favicon.ico",
