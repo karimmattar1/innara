@@ -69,7 +69,7 @@ export async function searchUsers(
     const offset = (pg - 1) * ps;
 
     // Sanitize ilike wildcards to prevent pattern injection
-    const sanitized = q.replace(/[%_\\]/g, (ch) => `\\${ch}`);
+    const sanitized = q.replace(/[%_\\,().]/g, (ch) => `\\${ch}`);
     const searchPattern = `%${sanitized}%`;
 
     const { data: profiles, error: profileError, count } = await adminClient

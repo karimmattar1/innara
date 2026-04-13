@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { resolveStaffContext } from "@/lib/auth-context";
 import { generateQRCodeDataURL } from "@/lib/qr";
 
 // ---------------------------------------------------------------------------
@@ -50,33 +51,9 @@ export async function generateGuestEntryQR(
   try {
     const supabase = await createClient();
 
-    // 2. Authenticate
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return { success: false, error: "Unauthorized" };
-    }
-
-    // 3. Authorize — only staff/manager/admin can generate QR codes
-    const session = await supabase.auth.getSession();
-    const jwt = session.data.session?.access_token;
-    let userRole = "guest";
-
-    if (jwt) {
-      try {
-        const payload = JSON.parse(
-          Buffer.from(jwt.split(".")[1], "base64url").toString(),
-        ) as Record<string, unknown>;
-        userRole = typeof payload.app_role === "string" ? payload.app_role : "guest";
-      } catch {
-        // JWT decode failure defaults to guest
-      }
-    }
-
-    const authorizedRoles = ["staff", "front_desk", "manager", "super_admin"];
-    if (!authorizedRoles.includes(userRole)) {
+    // 2. Authenticate + authorize via DB (not JWT — avoids stale role after demotion)
+    const ctx = await resolveStaffContext(supabase);
+    if ("error" in ctx) {
       return { success: false, error: "Insufficient permissions to generate QR codes" };
     }
 
