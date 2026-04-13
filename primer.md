@@ -127,8 +127,8 @@ Manager portal E2E suite: 59 Playwright tests across 7 test groups — auth guar
 - GitHub: https://github.com/karimmattar1/innara
 - Supabase: innara (ref: hbqcujxpphwgkgrqpjmo, region: ap-south-1, ai-solutions org)
 - Figma: https://www.figma.com/design/p6rGnzuVAssEL9eCdq14RE/
-- Staging: TBD (Vercel)
-- Production: TBD
+- Staging: https://innara-ai-platforms.vercel.app (preview deployments via PR)
+- Production: https://innara-two.vercel.app (ai-platforms team, iad1 region)
 
 ## Venture Docs
 

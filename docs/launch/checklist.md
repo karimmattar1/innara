@@ -4,7 +4,7 @@
 
 ### Infrastructure
 - [x] Supabase project created and configured — ref: hbqcujxpphwgkgrqpjmo (ap-south-1)
-- [ ] Vercel deployment set up (preview + production)
+- [x] Vercel deployment set up (preview + production) — `innara-two.vercel.app`, GitHub connected, ai-platforms team
 - [ ] Custom domain configured (app.innara.io, DNS + SSL)
 - [ ] Environment variables set in Vercel (see .env.production.example)
 - [ ] Stripe account configured (products, prices, webhooks)
@@ -43,7 +43,7 @@
 - [x] Images optimized — next/image used throughout
 - [x] Bundle size acceptable — 4.6MB total static, no chunk >500KB
 - [x] Database queries indexed — hotel_id, user_id, created_at, status indexed
-- [ ] CDN caching configured — Vercel Edge Network (auto with deployment)
+- [x] CDN caching configured — Vercel Edge Network (auto with deployment)
 
 ### Content & Legal
 - [ ] Privacy policy published
@@ -79,13 +79,13 @@
 
 | Category | Done | Total | % |
 |----------|------|-------|---|
-| Infrastructure | 2 | 8 | 25% |
+| Infrastructure | 3 | 8 | 38% |
 | Security | 11 | 11 | 100% |
 | Testing | 10 | 10 | 100% |
-| Performance | 5 | 6 | 83% |
+| Performance | 6 | 6 | 100% |
 | Content & Legal | 1 | 6 | 17% |
 | Monitoring | 2 | 4 | 50% |
-| **Total** | **31** | **45** | **69%** |
+| **Total** | **33** | **45** | **73%** |
 
-Remaining items require manual setup: Vercel deployment, domain DNS, Stripe products,
+Remaining items require manual setup: domain DNS, Stripe products, env vars in Vercel,
 Resend, Upstash, legal pages, and production smoke tests.
