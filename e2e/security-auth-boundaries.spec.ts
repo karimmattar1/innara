@@ -22,11 +22,12 @@ import { test, expect } from "@playwright/test";
 // ---------------------------------------------------------------------------
 
 test.describe("Unauthenticated access to protected routes", () => {
-  test("guest portal root redirects to guest login", async ({ page }) => {
+  test("landing page is publicly accessible", async ({ page }) => {
     const response = await page.goto("/");
-    // Middleware redirects to /auth/guest/login?redirect=/
+    // Landing page is public — should NOT redirect to login
+    expect(response?.status()).toBeLessThan(400);
     const url = page.url();
-    expect(url).toContain("/auth/guest/login");
+    expect(url).not.toContain("/auth/guest/login");
   });
 
   test("guest room service page redirects to guest login", async ({ page }) => {

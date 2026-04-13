@@ -33,6 +33,7 @@ const ROLE_HOME: Record<string, string> = {
 };
 
 function isPublicPath(pathname: string): boolean {
+  if (pathname === "/") return true;
   return PUBLIC_PATHS.some((path) => pathname.startsWith(path));
 }
 
