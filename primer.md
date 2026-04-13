@@ -1,8 +1,8 @@
 # Innara -- Primer
 
 ## Current State
-- **Phase:** Phase 5: Admin + PWA + PMS — ALL 8 tickets DONE, pending phase review
-- **Last Updated:** 2026-04-11
+- **Phase:** Phase 6: Testing & Launch — ALL 5 tickets DONE, pending phase review
+- **Last Updated:** 2026-04-13
 - **Notion:** INN project (migrated from Linear)
 
 ## What's Done
@@ -76,6 +76,20 @@ Manager portal E2E suite: 59 Playwright tests across 7 test groups — auth guar
 
 **Verification:** tsc 0 errors, build success, Vitest 133 passed, Playwright 404 passed (55.5s)
 
+## Phase 6 Progress
+**All 5 tickets DONE — 2026-04-13:**
+- INN-122: E2E test suites — guest-flows (55 tests), staff-flows (55 tests), enhanced GitHub Actions workflow
+- INN-123: Security audit — OWASP Top 10, RLS audit (33 tables), input validation audit, auth boundary tests
+- INN-124: Performance benchmarks — Lighthouse CI config, Core Web Vitals tests (FCP, CLS, page load budgets)
+- INN-125: PII data protection — cross-tenant isolation tests (26 tests), pentest scope doc, PII audit doc
+- INN-126: Launch checklist — 31/45 items complete (69%), .env.production.example, status summary
+
+**New files:** `e2e/guest-flows.spec.ts`, `e2e/staff-flows.spec.ts`, `e2e/performance.spec.ts`, `e2e/cross-tenant-isolation.spec.ts`, `e2e/security-auth-boundaries.spec.ts`, `lighthouserc.json`, `.env.production.example`, `tests/security/rls-audit.ts`, `tests/security/input-validation-audit.ts`, `docs/security/pii-audit.md`, `docs/security/pentest-scope.md`, `docs/launch/checklist.md`
+
+**Phase 5 review fixes (pre-Phase 6):** UUID validation on PMS webhook, Sentry logging in Mews adapter, ilike pattern sanitization, GDPR cascade error handling, hotel deactivation cascade error handling
+
+**Verification:** tsc 0 errors, build success, Vitest 133 passed, Playwright 634 passed (1.2m)
+
 ## Key Technical Notes
 - **Next.js 16** (not 14) with React 19
 - **Tailwind CSS v4** with shadcn base-nova style (@base-ui/react — NO `asChild` prop)
@@ -105,8 +119,8 @@ Manager portal E2E suite: 59 Playwright tests across 7 test groups — auth guar
 - [x] Phase 2: Core Features (29 tickets — completed 2026-03-29, review passed)
 - [x] Phase 3: Supporting Features (20 tickets — completed 2026-03-29, review passed)
 - [x] Phase 4: Manager Portal + Billing (30 tickets — completed 2026-04-11, review passed 85/100)
-- [x] Phase 5: Admin + PWA + PMS (8 tickets — completed 2026-04-11, pending phase review)
-- [ ] Phase 6: Testing & Launch (18 tickets)
+- [x] Phase 5: Admin + PWA + PMS (8 tickets — completed 2026-04-11, review passed)
+- [x] Phase 6: Testing & Launch (5 tickets — completed 2026-04-13, pending phase review)
 
 ## Links
 - Notion: https://www.notion.so/338364b9014781ff92fdeba0e8cf7bbe (INN project, migrated from Linear)
