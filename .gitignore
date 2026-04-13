@@ -41,6 +41,7 @@ yarn-error.log*
 /blob-report/
 /playwright/.cache/
 /screenshots/
+/e2e/screenshots/
 
 # sentry
 .sentryclirc

@@ -20,7 +20,7 @@
 - [x] CORS configured correctly — Next.js defaults + middleware
 - [x] Secrets encrypted (no plaintext in code or env) — verified via grep, no hardcoded secrets
 - [x] SQL injection prevention verified — Supabase parameterized queries, Zod validation
-- [x] XSS prevention verified — React auto-escaping, no `dangerouslySetInnerHTML`
+- [x] XSS prevention verified — React auto-escaping; 2 `dangerouslySetInnerHTML` usages audited and sanitized (`BrandingStyles.tsx`, `chart.tsx`)
 - [x] PMS webhook UUID validation — `src/app/api/webhooks/pms/route.ts`
 - [x] ilike pattern sanitization — `src/app/actions/admin-users.ts`
 - [x] GDPR cascade error handling — `src/app/actions/privacy.ts`

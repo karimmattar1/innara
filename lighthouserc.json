@@ -7,7 +7,7 @@
         "http://localhost:3001/auth/staff/login",
         "http://localhost:3001/offline"
       ],
-      "startServerCommand": "npm run dev -- --port 3001",
+      "startServerCommand": "npm run build && npm run start -- --port 3001",
       "startServerReadyPattern": "Ready",
       "numberOfRuns": 3
     },
