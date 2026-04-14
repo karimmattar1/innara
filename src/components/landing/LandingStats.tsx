@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
+import { Meteors } from "@/components/ui/meteors";
 
 interface StatItemProps {
   value: number;
@@ -64,9 +65,15 @@ const stats = [
 
 export function LandingStats(): React.ReactElement {
   return (
-    <section className="relative py-16 border-y border-white/[0.06]">
+    <section className="relative py-16 border-y border-white/[0.06] overflow-hidden">
       {/* Glass background */}
       <div className="absolute inset-0 bg-white/[0.04] backdrop-blur-sm" />
+
+      {/* Meteor shower effect */}
+      <div className="absolute inset-0 overflow-hidden">
+        <Meteors number={12} />
+      </div>
+
       <div className="relative max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
         {stats.map((stat) => (
           <StatItem key={stat.label} {...stat} />

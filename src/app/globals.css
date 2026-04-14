@@ -331,3 +331,54 @@
   border-top: 1px solid rgba(255, 255, 255, 0.35);
   box-shadow: 0 -6px 30px rgba(26, 29, 58, 0.12);
 }
+
+/* ========================================
+   21st.dev COMPONENT ANIMATIONS
+   ======================================== */
+
+@keyframes shimmer-slide {
+  to { transform: translateX(calc(100cqw - 100%)); }
+}
+
+@keyframes spin-around {
+  0% { transform: translateZ(0) rotate(0); }
+  15%, 35% { transform: translateZ(0) rotate(90deg); }
+  65%, 85% { transform: translateZ(0) rotate(270deg); }
+  100% { transform: translateZ(0) rotate(360deg); }
+}
+
+@keyframes border-beam {
+  100% { offset-distance: 100%; }
+}
+
+@keyframes spotlight {
+  0% { opacity: 0; transform: translate(-72%, -62%) scale(0.5); }
+  100% { opacity: 1; transform: translate(-50%, -40%) scale(1); }
+}
+
+@keyframes meteor-effect {
+  0% { transform: rotate(215deg) translateX(0); opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: rotate(215deg) translateX(-500px); opacity: 0; }
+}
+
+/* Tailwind v4 utility classes for animations */
+@utility animate-shimmer-slide {
+  animation: shimmer-slide 8s ease-in-out infinite alternate;
+}
+
+@utility animate-spin-around {
+  animation: spin-around calc(var(--speed) * 2) infinite linear;
+}
+
+@utility animate-border-beam {
+  animation: border-beam calc(var(--duration) * 1s) infinite linear;
+}
+
+@utility animate-spotlight {
+  animation: spotlight 2s ease 0.75s 1 forwards;
+}
+
+@utility animate-meteor-effect {
+  animation: meteor-effect 5s linear infinite;
+}
