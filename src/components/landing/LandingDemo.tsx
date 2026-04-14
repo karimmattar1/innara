@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { Bot, CheckCircle } from "lucide-react";
 import { Iphone15Pro } from "@/components/ui/iphone-15-pro";
 import { BorderBeam } from "@/components/ui/border-beam";
 
@@ -10,12 +11,9 @@ export function LandingDemo(): React.ReactElement {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="demo" className="relative px-6 py-24 overflow-hidden" ref={ref}>
+    <section id="demo" className="relative px-6 pt-24 pb-32" ref={ref}>
       {/* Background accent */}
-      <div
-        aria-hidden
-        className="absolute inset-0 pointer-events-none"
-      >
+      <div aria-hidden className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[radial-gradient(ellipse_at_center,_rgba(155,115,64,0.08)_0%,_transparent_70%)]" />
       </div>
 
@@ -41,18 +39,17 @@ export function LandingDemo(): React.ReactElement {
       </motion.div>
 
       {/* Floating phones */}
-      <div className="relative max-w-5xl mx-auto flex items-center justify-center">
+      <div className="relative max-w-5xl mx-auto flex items-center justify-center min-h-[700px] md:min-h-[750px]">
         {/* Left phone (tilted) */}
         <motion.div
-          initial={{ opacity: 0, x: -60, rotateY: 15 }}
-          animate={isInView ? { opacity: 0.6, x: 0, rotateY: 15 } : {}}
+          initial={{ opacity: 0, x: -60 }}
+          animate={isInView ? { opacity: 0.5, x: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="hidden md:block absolute -left-8 lg:left-8 -rotate-6 scale-75"
-          style={{ perspective: "1000px" }}
+          className="hidden md:block absolute left-4 lg:left-16 top-12 -rotate-6"
         >
           <Iphone15Pro
-            width={280}
-            height={570}
+            width={260}
+            height={530}
             src="/screenshots/guest-services.png"
             className="drop-shadow-[0_20px_60px_rgba(0,0,0,0.4)]"
           />
@@ -65,31 +62,33 @@ export function LandingDemo(): React.ReactElement {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="relative z-10"
         >
-          <div className="relative rounded-[40px] overflow-hidden">
+          <div className="relative">
             <Iphone15Pro
-              width={320}
-              height={652}
+              width={300}
+              height={612}
               src="/screenshots/guest-concierge.png"
               className="drop-shadow-[0_30px_80px_rgba(155,115,64,0.2)]"
             />
-            <BorderBeam
-              size={200}
-              duration={10}
-              colorFrom="#9B7340"
-              colorTo="#C4A265"
-              borderWidth={2}
-            />
+            <div className="absolute inset-0 rounded-[55px]">
+              <BorderBeam
+                size={200}
+                duration={10}
+                colorFrom="#9B7340"
+                colorTo="#C4A265"
+                borderWidth={2}
+              />
+            </div>
           </div>
 
-          {/* Floating badge */}
+          {/* Floating badge - right */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.5, delay: 0.8 }}
-            className="absolute -right-12 top-20 glass-card-dark px-4 py-3 flex items-center gap-3 rounded-xl"
+            className="absolute -right-16 top-24 glass-card-dark px-4 py-3 flex items-center gap-3 rounded-xl"
           >
             <div className="w-8 h-8 rounded-full bg-bronze/20 flex items-center justify-center border border-bronze/30">
-              <span className="text-sm">🤖</span>
+              <Bot className="w-4 h-4 text-bronze-light" />
             </div>
             <div>
               <p className="text-white text-xs font-semibold">AI Concierge</p>
@@ -97,15 +96,15 @@ export function LandingDemo(): React.ReactElement {
             </div>
           </motion.div>
 
-          {/* Floating badge left */}
+          {/* Floating badge - left */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.5, delay: 1 }}
-            className="absolute -left-16 bottom-32 glass-card-dark px-4 py-3 flex items-center gap-3 rounded-xl"
+            className="absolute -left-20 bottom-36 glass-card-dark px-4 py-3 flex items-center gap-3 rounded-xl"
           >
             <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center border border-green-400/30">
-              <span className="text-sm">✓</span>
+              <CheckCircle className="w-4 h-4 text-green-400" />
             </div>
             <div>
               <p className="text-white text-xs font-semibold">Request Fulfilled</p>
@@ -116,15 +115,14 @@ export function LandingDemo(): React.ReactElement {
 
         {/* Right phone (tilted) */}
         <motion.div
-          initial={{ opacity: 0, x: 60, rotateY: -15 }}
-          animate={isInView ? { opacity: 0.6, x: 0, rotateY: -15 } : {}}
+          initial={{ opacity: 0, x: 60 }}
+          animate={isInView ? { opacity: 0.5, x: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="hidden md:block absolute -right-8 lg:right-8 rotate-6 scale-75"
-          style={{ perspective: "1000px" }}
+          className="hidden md:block absolute right-4 lg:right-16 top-12 rotate-6"
         >
           <Iphone15Pro
-            width={280}
-            height={570}
+            width={260}
+            height={530}
             src="/screenshots/guest-roomservice.png"
             className="drop-shadow-[0_20px_60px_rgba(0,0,0,0.4)]"
           />

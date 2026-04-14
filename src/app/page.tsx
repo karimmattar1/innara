@@ -1,6 +1,7 @@
 import { LandingNav } from "@/components/landing/LandingNav";
 import { LandingHero } from "@/components/landing/LandingHero";
 import { LandingStats } from "@/components/landing/LandingStats";
+import { LandingServices } from "@/components/landing/LandingServices";
 import { LandingFeatures } from "@/components/landing/LandingFeatures";
 import { LandingDemo } from "@/components/landing/LandingDemo";
 import { LandingBrands } from "@/components/landing/LandingBrands";
@@ -9,10 +10,11 @@ import { LandingFooter } from "@/components/landing/LandingFooter";
 
 export default function LandingPage(): React.ReactElement {
   return (
-    <main className="min-h-screen bg-navy text-white overflow-hidden scroll-smooth">
+    <main className="min-h-screen bg-navy text-white scroll-smooth">
       <LandingNav />
       <LandingHero />
       <LandingStats />
+      <LandingServices />
       <section id="features">
         <LandingFeatures />
       </section>
