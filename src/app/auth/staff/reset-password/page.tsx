@@ -5,7 +5,9 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { InnaraLogo } from "@/components/innara/Logo";
-import { Button } from "@/components/ui/button";
+import { GlassButton } from "@/components/ui/glass-button";
+import { BorderBeam } from "@/components/ui/border-beam";
+import { Spotlight } from "@/components/ui/spotlight";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
@@ -54,7 +56,12 @@ export default function ResetPasswordPage(): React.ReactElement {
 
   return (
     <div className="dark">
-      <div className="relative flex min-h-screen flex-col items-center justify-center bg-background px-4 py-10 text-foreground">
+      <div className="relative flex min-h-screen flex-col items-center justify-center bg-background px-4 py-10 text-foreground overflow-hidden">
+        {/* Spotlight */}
+        <Spotlight
+          className="-top-40 left-0 md:left-60 md:-top-20"
+          fill="#9B7340"
+        />
         {/* Decorative background orbs */}
         <div
           className="pointer-events-none absolute top-24 right-[5%] h-72 w-72 rounded-full blur-3xl"
@@ -75,12 +82,13 @@ export default function ResetPasswordPage(): React.ReactElement {
 
           {/* Heading */}
           <div className="mb-8 text-center">
-            <h1 className="mb-2 text-3xl font-medium">Reset Password</h1>
+            <h1 className="mb-2 font-playfair text-3xl font-medium">Reset Password</h1>
             <p className="text-muted-foreground">Choose a new password for your account</p>
           </div>
 
           {/* Form card */}
-          <div className="glass-card-dark p-6 sm:p-8">
+          <div className="glass-card-dark relative p-6 sm:p-8">
+            <BorderBeam size={180} duration={12} />
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* New password */}
               <div className="space-y-2">
@@ -159,10 +167,11 @@ export default function ResetPasswordPage(): React.ReactElement {
                 </p>
               )}
 
-              <Button
+              <GlassButton
                 type="submit"
+                variant="solid"
                 disabled={isLoading}
-                className="h-11 w-full rounded-xl bg-bronze text-sm font-semibold text-navy hover:bg-bronze-light active:scale-[0.98]"
+                className="h-11 w-full rounded-xl"
               >
                 {isLoading ? (
                   <>
@@ -172,7 +181,7 @@ export default function ResetPasswordPage(): React.ReactElement {
                 ) : (
                   "Update Password"
                 )}
-              </Button>
+              </GlassButton>
             </form>
           </div>
 

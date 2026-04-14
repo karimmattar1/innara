@@ -22,6 +22,8 @@ import { PriorityBadge } from "@/components/innara/PriorityBadge";
 import { EmptyState } from "@/components/innara/EmptyState";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
+import { BorderBeam } from "@/components/ui/border-beam";
+import { AnimatedGroup } from "@/components/ui/animated-group";
 import { createClient } from "@/lib/supabase/client";
 import { getDashboardStats, type DashboardStats } from "@/app/actions/analytics";
 import { getStaffRequests } from "@/app/actions/staff";
@@ -196,7 +198,7 @@ export default function ManagerDashboard(): React.ReactElement {
         {/* ------------------------------------------------------------------ */}
         {/* KPI metric cards                                                    */}
         {/* ------------------------------------------------------------------ */}
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+        <AnimatedGroup preset="slide" className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
           <MetricCard
             title="Total Requests"
             value={stats.totalRequests}
@@ -233,7 +235,7 @@ export default function ManagerDashboard(): React.ReactElement {
             icon={DollarSign}
             variant="revenue"
           />
-        </div>
+        </AnimatedGroup>
 
         {/* ------------------------------------------------------------------ */}
         {/* Main content: recent requests + quick actions                       */}
@@ -288,7 +290,8 @@ export default function ManagerDashboard(): React.ReactElement {
             >
               Quick Actions
             </h2>
-            <div className="glass-card-dark rounded-2xl p-4 flex flex-col gap-3">
+            <div className="glass-card-dark relative rounded-2xl p-4 flex flex-col gap-3">
+              <BorderBeam size={140} duration={16} delay={3} />
               <Button
                 variant="outline"
                 className="w-full justify-between"

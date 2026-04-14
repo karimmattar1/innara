@@ -35,6 +35,7 @@ import {
   updateBranding,
   type HotelBranding,
 } from "@/app/actions/branding";
+import { BorderBeam } from "@/components/ui/border-beam";
 import { createClient } from "@/lib/supabase/client";
 
 // ---------------------------------------------------------------------------
@@ -86,7 +87,8 @@ interface SectionCardProps {
 
 function SectionCard({ icon: Icon, title, children }: SectionCardProps): React.ReactElement {
   return (
-    <div className="glass-card-dark rounded-2xl p-6">
+    <div className="glass-card-dark relative rounded-2xl p-6">
+      <BorderBeam size={160} duration={18} delay={2} />
       <div className="flex items-center gap-2 mb-5">
         <Icon className="w-4 h-4 text-[#9B7340]" aria-hidden="true" />
         <h2 className="text-sm font-semibold text-foreground">{title}</h2>

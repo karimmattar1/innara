@@ -17,6 +17,9 @@ import {
   getAdminTenants,
   type TenantListItem,
 } from "@/app/actions/admin-tenants";
+import { MagicCard } from "@/components/ui/magic-card";
+import { BorderBeam } from "@/components/ui/border-beam";
+import { AnimatedGroup } from "@/components/ui/animated-group";
 
 export default function AdminDashboard(): React.ReactElement {
   const router = useRouter();
@@ -51,8 +54,8 @@ export default function AdminDashboard(): React.ReactElement {
         />
 
         {/* KPI cards */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
-          <div className="glass-card-dark p-6 rounded-2xl">
+        <AnimatedGroup preset="slide" className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
+          <MagicCard className="p-6 rounded-2xl">
             <div className="flex items-center gap-2 mb-1">
               <Building2 className="w-4 h-4 text-[#9B7340]" />
               <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
@@ -69,8 +72,8 @@ export default function AdminDashboard(): React.ReactElement {
             <p className="text-xs text-muted-foreground/50 mt-1">
               of {tenants.length} total
             </p>
-          </div>
-          <div className="glass-card-dark p-6 rounded-2xl">
+          </MagicCard>
+          <MagicCard className="p-6 rounded-2xl">
             <div className="flex items-center gap-2 mb-1">
               <Users className="w-4 h-4 text-[#7e9ab8]" />
               <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
@@ -84,8 +87,8 @@ export default function AdminDashboard(): React.ReactElement {
                 totalStaff
               )}
             </p>
-          </div>
-          <div className="glass-card-dark p-6 rounded-2xl">
+          </MagicCard>
+          <MagicCard className="p-6 rounded-2xl">
             <div className="flex items-center gap-2 mb-1">
               <CreditCard className="w-4 h-4 text-emerald-400" />
               <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
@@ -99,8 +102,8 @@ export default function AdminDashboard(): React.ReactElement {
                 subscribedTenants
               )}
             </p>
-          </div>
-          <div className="glass-card-dark p-6 rounded-2xl">
+          </MagicCard>
+          <MagicCard className="p-6 rounded-2xl">
             <div className="flex items-center gap-2 mb-1">
               <Activity className="w-4 h-4 text-muted-foreground" />
               <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
@@ -108,14 +111,14 @@ export default function AdminDashboard(): React.ReactElement {
               </p>
             </div>
             <p className="text-3xl font-bold mt-1 font-serif text-emerald-400">OK</p>
-          </div>
-        </div>
+          </MagicCard>
+        </AnimatedGroup>
 
         {/* Quick actions */}
         <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
           Quick Actions
         </h2>
-        <div className="grid gap-3 md:grid-cols-3 mb-8">
+        <div className="grid gap-3 md:grid-cols-3 mb-8 relative">
           {[
             {
               label: "Manage Tenants",
@@ -167,7 +170,8 @@ export default function AdminDashboard(): React.ReactElement {
             <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
               Recent Tenants
             </h2>
-            <div className="glass-card-dark rounded-2xl overflow-hidden">
+            <div className="glass-card-dark relative rounded-2xl overflow-hidden">
+              <BorderBeam size={200} duration={18} delay={4} />
               {tenants.slice(0, 5).map((tenant, idx) => (
                 <button
                   key={tenant.id}

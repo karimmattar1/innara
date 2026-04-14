@@ -5,7 +5,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { InnaraLogo } from "@/components/innara/Logo";
-import { Button } from "@/components/ui/button";
+import { GlassButton } from "@/components/ui/glass-button";
+import { BorderBeam } from "@/components/ui/border-beam";
+import { Spotlight } from "@/components/ui/spotlight";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
@@ -94,28 +96,33 @@ function InviteAcceptContent(): React.ReactElement {
   if (hasMissingParams) {
     return (
       <div className="dark">
-        <div className="relative flex min-h-screen flex-col items-center justify-center bg-background px-4 py-10 text-foreground">
+        <div className="relative flex min-h-screen flex-col items-center justify-center bg-background px-4 py-10 text-foreground overflow-hidden">
+          <Spotlight
+            className="-top-40 left-0 md:left-60 md:-top-20"
+            fill="#9B7340"
+          />
           <div className="relative z-10 w-full max-w-sm">
             <div className="mb-8 flex justify-center">
               <InnaraLogo variant="light" size="md" />
             </div>
 
-            <div className="glass-card-dark p-6 text-center sm:p-8">
+            <div className="glass-card-dark relative p-6 text-center sm:p-8">
+              <BorderBeam size={180} duration={12} />
               <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-destructive/10">
                 <AlertCircle className="size-6 text-destructive" />
               </div>
-              <h1 className="mb-2 text-xl font-medium">Invalid Invite Link</h1>
+              <h1 className="mb-2 font-playfair text-xl font-medium">Invalid Invite Link</h1>
               <p className="mb-6 text-sm text-muted-foreground">
                 This invite link is invalid or has expired. Please check the link in your
                 email and try again, or contact your hotel administrator.
               </p>
               <Link href="/auth/staff/login">
-                <Button
-                  variant="outline"
+                <GlassButton
+                  variant="ghost"
                   className="h-11 w-full rounded-xl"
                 >
                   Go to Staff Login
-                </Button>
+                </GlassButton>
               </Link>
             </div>
           </div>
@@ -126,7 +133,12 @@ function InviteAcceptContent(): React.ReactElement {
 
   return (
     <div className="dark">
-      <div className="relative flex min-h-screen flex-col items-center justify-center bg-background px-4 py-10 text-foreground">
+      <div className="relative flex min-h-screen flex-col items-center justify-center bg-background px-4 py-10 text-foreground overflow-hidden">
+        {/* Spotlight */}
+        <Spotlight
+          className="-top-40 left-0 md:left-60 md:-top-20"
+          fill="#9B7340"
+        />
         {/* Decorative background orbs */}
         <div
           className="pointer-events-none absolute top-24 right-[5%] h-72 w-72 rounded-full blur-3xl"
@@ -147,12 +159,13 @@ function InviteAcceptContent(): React.ReactElement {
 
           {/* Heading */}
           <div className="mb-8 text-center">
-            <h1 className="mb-2 text-3xl font-medium">Accept Your Invitation</h1>
+            <h1 className="mb-2 font-playfair text-3xl font-medium">Accept Your Invitation</h1>
             <p className="text-muted-foreground">Set up your password to join the team</p>
           </div>
 
           {/* Form card */}
-          <div className="glass-card-dark p-6 sm:p-8">
+          <div className="glass-card-dark relative p-6 sm:p-8">
+            <BorderBeam size={180} duration={12} />
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Email (readonly) */}
               <div className="space-y-2">
@@ -245,10 +258,11 @@ function InviteAcceptContent(): React.ReactElement {
                 </p>
               )}
 
-              <Button
+              <GlassButton
                 type="submit"
+                variant="solid"
                 disabled={isLoading}
-                className="h-11 w-full rounded-xl bg-bronze text-sm font-semibold text-navy hover:bg-bronze-light active:scale-[0.98]"
+                className="h-11 w-full rounded-xl"
               >
                 {isLoading ? (
                   <>
@@ -258,7 +272,7 @@ function InviteAcceptContent(): React.ReactElement {
                 ) : (
                   "Activate Account"
                 )}
-              </Button>
+              </GlassButton>
             </form>
           </div>
 

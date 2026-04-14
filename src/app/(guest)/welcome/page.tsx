@@ -11,6 +11,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { GuestPageShell } from "@/components/innara/GuestPageShell";
+import { AnimatedGroup } from "@/components/ui/animated-group";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -100,30 +101,29 @@ export default function GuestWelcomePage(): React.ReactElement {
   return (
     <GuestPageShell>
       {/* Greeting */}
-      <section aria-labelledby="welcome-heading">
-        <h1
-          id="welcome-heading"
-          className="text-2xl font-semibold text-[var(--color-navy)] mb-0.5"
-        >
-          Welcome to your stay
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          How can we make your stay exceptional?
-        </p>
-      </section>
+      <AnimatedGroup preset="blur-slide">
+        <section aria-labelledby="welcome-heading">
+          <h1
+            id="welcome-heading"
+            className="font-playfair text-2xl font-semibold text-[var(--color-navy)] mb-0.5"
+          >
+            Welcome to your stay
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            How can we make your stay exceptional?
+          </p>
+        </section>
+      </AnimatedGroup>
 
       {/* Quick actions grid */}
       <section aria-label="Quick actions">
-        <div
-          className="grid grid-cols-3 gap-3"
-          role="list"
-        >
+        <AnimatedGroup preset="slide" className="grid grid-cols-3 gap-3" >
           {QUICK_ACTIONS.map((action) => (
             <div key={action.href} role="listitem">
               <ActionCard {...action} />
             </div>
           ))}
-        </div>
+        </AnimatedGroup>
       </section>
 
       {/* AI Concierge CTA */}

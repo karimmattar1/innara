@@ -28,6 +28,7 @@ import {
 } from "@/app/actions/shifts";
 import type { ShiftData, ScheduleDay, ActiveStaffMember } from "@/app/actions/shifts";
 import { DEPARTMENT_LABELS, DEPARTMENT_COLORS } from "@/constants/app";
+import { BorderBeam } from "@/components/ui/border-beam";
 import { cn } from "@/lib/utils";
 
 // ---------------------------------------------------------------------------
@@ -195,7 +196,7 @@ function TodayShiftCard({
   return (
     <div
       className={cn(
-        "glass-card-dark rounded-2xl p-6 border",
+        "glass-card-dark relative rounded-2xl p-6 border",
         shift.status === "active"
           ? "border-emerald-500/30 bg-emerald-500/5"
           : shift.status === "completed"
@@ -203,6 +204,7 @@ function TodayShiftCard({
             : "border-[#9B7340]/30 bg-[#9B7340]/5",
       )}
     >
+      <BorderBeam size={160} duration={14} />
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         {/* Left: shift info */}
         <div className="flex items-start gap-4">

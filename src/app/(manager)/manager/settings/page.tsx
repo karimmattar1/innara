@@ -26,6 +26,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { createClient } from "@/lib/supabase/client";
 import { getHotelSettings, updateHotelSettings } from "@/app/actions/branding";
+import { BorderBeam } from "@/components/ui/border-beam";
 import type { HotelSettings } from "@/app/actions/branding";
 
 // ---------------------------------------------------------------------------
@@ -235,8 +236,9 @@ function HotelSettingsTab({
       {/* General Info */}
       <section
         aria-labelledby="general-info-heading"
-        className="glass-card-dark rounded-2xl p-6"
+        className="glass-card-dark relative rounded-2xl p-6"
       >
+        <BorderBeam size={180} duration={16} />
         <h2
           id="general-info-heading"
           className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-5"

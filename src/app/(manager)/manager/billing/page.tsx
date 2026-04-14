@@ -34,6 +34,8 @@ import {
   cancelSubscription,
   type SubscriptionData,
 } from "@/app/actions/billing";
+import { BorderBeam } from "@/components/ui/border-beam";
+import { AnimatedGroup } from "@/components/ui/animated-group";
 import { createClient } from "@/lib/supabase/client";
 
 // ---------------------------------------------------------------------------
@@ -166,8 +168,9 @@ function CurrentPlanCard({
   return (
     <section
       aria-labelledby="current-plan-heading"
-      className="glass-card-dark rounded-2xl p-6"
+      className="glass-card-dark relative rounded-2xl p-6"
     >
+      <BorderBeam size={200} duration={14} />
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         {/* Plan info */}
         <div className="flex flex-col gap-3">
@@ -579,7 +582,7 @@ export default function ManagerBillingPage(): React.ReactElement {
             >
               Choose a Plan
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <AnimatedGroup preset="slide" className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {PLANS.map((plan) => (
                 <PlanCard
                   key={plan.key}
@@ -589,7 +592,7 @@ export default function ManagerBillingPage(): React.ReactElement {
                   upgradeLoading={upgradeLoading}
                 />
               ))}
-            </div>
+            </AnimatedGroup>
           </section>
         </PageContainer>
       </>
@@ -648,7 +651,7 @@ export default function ManagerBillingPage(): React.ReactElement {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <AnimatedGroup preset="slide" className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {PLANS.map((plan) => (
               <PlanCard
                 key={plan.key}
@@ -658,7 +661,7 @@ export default function ManagerBillingPage(): React.ReactElement {
                 upgradeLoading={upgradeLoading}
               />
             ))}
-          </div>
+          </AnimatedGroup>
         </section>
       </PageContainer>
 

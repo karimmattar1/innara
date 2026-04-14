@@ -77,6 +77,7 @@ import {
   type StaffInvitation,
 } from "@/app/actions/staff-management";
 import { createClient } from "@/lib/supabase/client";
+import { BorderBeam } from "@/components/ui/border-beam";
 import { DEPARTMENT_LABELS } from "@/constants/app";
 
 // ---------------------------------------------------------------------------
@@ -542,7 +543,8 @@ export default function ManagerStaffPage(): React.ReactElement {
               )}
             </div>
 
-            <div className="glass-card-dark rounded-2xl overflow-hidden">
+            <div className="glass-card-dark relative rounded-2xl overflow-hidden">
+              <BorderBeam size={200} duration={20} delay={4} />
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>

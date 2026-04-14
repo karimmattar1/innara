@@ -30,6 +30,9 @@ import {
   CATEGORY_COLORS,
 } from "@/constants/app";
 import { getTimeAgo, getInitials } from "@/lib/utils";
+import { MagicCard } from "@/components/ui/magic-card";
+import { BorderBeam } from "@/components/ui/border-beam";
+import { AnimatedGroup } from "@/components/ui/animated-group";
 import type { ShiftData, ActiveStaffMember } from "@/app/actions/shifts";
 
 // ---------------------------------------------------------------------------
@@ -291,7 +294,7 @@ export default function StaffDashboard(): React.ReactElement {
         {/* ------------------------------------------------------------------ */}
         {/* Metric cards                                                         */}
         {/* ------------------------------------------------------------------ */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <AnimatedGroup preset="slide" className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <MetricCard
             icon={<ClipboardList className="w-5 h-5" />}
             value={activeCount}
@@ -320,7 +323,7 @@ export default function StaffDashboard(): React.ReactElement {
             iconColor="text-[#c4a06a]"
             iconBg="bg-[#c4a06a]/10"
           />
-        </div>
+        </AnimatedGroup>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* ---------------------------------------------------------------- */}
@@ -445,7 +448,7 @@ function MetricCard({
   iconBg,
 }: MetricCardProps): React.ReactElement {
   return (
-    <div className="glass-card-dark p-5 rounded-2xl flex flex-col gap-3">
+    <MagicCard className="p-5 rounded-2xl flex flex-col gap-3">
       <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${iconBg} ${iconColor}`}>
         {icon}
       </div>
@@ -453,7 +456,7 @@ function MetricCard({
         <p className="text-2xl font-bold tabular-nums leading-tight">{value}</p>
         <p className="text-xs text-muted-foreground mt-0.5">{label}</p>
       </div>
-    </div>
+    </MagicCard>
   );
 }
 
@@ -498,8 +501,9 @@ function TodayShiftCard({ shift }: TodayShiftCardProps): React.ReactElement {
   return (
     <section
       aria-labelledby="today-shift-heading"
-      className="glass-card-dark rounded-2xl p-5"
+      className="glass-card-dark relative rounded-2xl p-5"
     >
+      <BorderBeam size={160} duration={14} delay={2} />
       <div className="flex items-center gap-2 mb-4">
         <CalendarDays className="w-4 h-4 text-[#9B7340]" />
         <h2 id="today-shift-heading" className="text-base font-semibold">

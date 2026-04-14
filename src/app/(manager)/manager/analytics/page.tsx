@@ -45,6 +45,8 @@ import {
   type RevenueAnalytics,
 } from "@/app/actions/analytics";
 import { createClient } from "@/lib/supabase/client";
+import { BorderBeam } from "@/components/ui/border-beam";
+import { AnimatedGroup } from "@/components/ui/animated-group";
 import { CATEGORY_LABELS, DEPARTMENT_LABELS, STATUS_CONFIG } from "@/constants/app";
 
 // ---------------------------------------------------------------------------
@@ -413,7 +415,8 @@ export default function ManagerAnalyticsPage(): React.ReactElement {
           {/* Section 1: Request Trends                                         */}
           {/* ---------------------------------------------------------------- */}
           <section aria-labelledby="request-trends-heading">
-            <div className="glass-card-dark rounded-2xl p-6">
+            <div className="glass-card-dark relative rounded-2xl p-6">
+              <BorderBeam size={200} duration={16} />
               <div className="flex items-center gap-2 mb-5">
                 <TrendingUp className="w-4 h-4 text-[#9B7340]" />
                 <h2 id="request-trends-heading" className="text-sm font-semibold">
@@ -471,7 +474,7 @@ export default function ManagerAnalyticsPage(): React.ReactElement {
               Request Breakdown
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <AnimatedGroup preset="slide" className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* By Status */}
               <div className="glass-card-dark rounded-2xl p-5">
                 <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">
@@ -573,14 +576,15 @@ export default function ManagerAnalyticsPage(): React.ReactElement {
 
               {/* SLA Compliance */}
               <SlaComplianceCard slaCompliance={requestAnalytics.slaCompliance} />
-            </div>
+            </AnimatedGroup>
           </section>
 
           {/* ---------------------------------------------------------------- */}
           {/* Section 3: Staff Performance                                      */}
           {/* ---------------------------------------------------------------- */}
           <section aria-labelledby="staff-performance-heading">
-            <div className="glass-card-dark rounded-2xl overflow-hidden">
+            <div className="glass-card-dark relative rounded-2xl overflow-hidden">
+              <BorderBeam size={200} duration={20} delay={5} />
               <div className="px-6 pt-5 pb-4 border-b border-white/5 flex items-center gap-2">
                 <Users className="w-4 h-4 text-[#9B7340]" />
                 <h2 id="staff-performance-heading" className="text-sm font-semibold">
@@ -645,7 +649,8 @@ export default function ManagerAnalyticsPage(): React.ReactElement {
           {/* Section 4: Revenue                                                */}
           {/* ---------------------------------------------------------------- */}
           <section aria-labelledby="revenue-heading">
-            <div className="glass-card-dark rounded-2xl p-6">
+            <div className="glass-card-dark relative rounded-2xl p-6">
+              <BorderBeam size={200} duration={18} delay={8} />
               <div className="flex items-center gap-2 mb-5">
                 <DollarSign className="w-4 h-4 text-[#9B7340]" />
                 <h2 id="revenue-heading" className="text-sm font-semibold">

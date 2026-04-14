@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { InnaraLogo } from "@/components/innara/Logo";
+import { AnimatedGroup } from "@/components/ui/animated-group";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -81,7 +82,7 @@ export default function GuestRegisterPage(): React.ReactElement {
               <div className="mx-auto w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
                 <Mail className="w-7 h-7 text-primary" />
               </div>
-              <h1 className="text-2xl font-medium">Check Your Email</h1>
+              <h1 className="font-playfair text-2xl font-medium">Check Your Email</h1>
               <p className="text-muted-foreground text-sm leading-relaxed">
                 We sent a confirmation link to{" "}
                 <span className="font-medium text-foreground">{email}</span>.
@@ -125,9 +126,10 @@ export default function GuestRegisterPage(): React.ReactElement {
       {/* Main content */}
       <main className="flex-1 flex items-center justify-center px-5 py-10 relative z-10">
         <div className="w-full max-w-sm">
+          <AnimatedGroup preset="blur-slide">
           {/* Heading */}
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-medium mb-2">Create Account</h1>
+            <h1 className="font-playfair text-3xl font-medium mb-2">Create Account</h1>
             <p className="text-muted-foreground">
               Join Innara for seamless hotel services
             </p>
@@ -261,6 +263,7 @@ export default function GuestRegisterPage(): React.ReactElement {
               Sign in
             </Link>
           </p>
+          </AnimatedGroup>
         </div>
       </main>
     </div>

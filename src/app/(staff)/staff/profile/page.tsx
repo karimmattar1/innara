@@ -20,6 +20,7 @@ import { PageContainer } from "@/components/innara/PageContainer";
 import { PageHeader } from "@/components/innara/PageHeader";
 import { getStaffProfile } from "@/app/actions/staff";
 import { createClient } from "@/lib/supabase/client";
+import { BorderBeam } from "@/components/ui/border-beam";
 import { DEPARTMENT_LABELS } from "@/constants/app";
 import { getInitials } from "@/lib/utils";
 
@@ -175,9 +176,10 @@ export default function StaffProfilePage(): React.ReactElement {
                 Profile header card
             ---------------------------------------------------------------- */}
             <section
-              className="glass-card-dark rounded-2xl p-6"
+              className="glass-card-dark relative rounded-2xl p-6"
               aria-label="Profile overview"
             >
+              <BorderBeam size={160} duration={16} />
               <div className="flex items-center gap-5">
                 {/* Avatar */}
                 <div className="relative shrink-0">

@@ -15,6 +15,7 @@ import {
 import { AdminHeader } from "@/components/innara/AdminHeader";
 import { PageContainer } from "@/components/innara/PageContainer";
 import { PageHeader } from "@/components/innara/PageHeader";
+import { BorderBeam } from "@/components/ui/border-beam";
 import { cn } from "@/lib/utils";
 
 // ---------------------------------------------------------------------------
@@ -175,10 +176,11 @@ export default function AdminHealthPage(): React.ReactElement {
         {/* Overall status */}
         <div
           className={cn(
-            "glass-card-dark p-6 rounded-2xl mb-6 flex items-center gap-4",
+            "glass-card-dark relative p-6 rounded-2xl mb-6 flex items-center gap-4",
             allHealthy ? "border border-emerald-500/20" : "border border-amber-500/20",
           )}
         >
+          <BorderBeam size={180} duration={14} colorFrom={allHealthy ? "#4ade80" : "#9B7340"} colorTo={allHealthy ? "#22c55e" : "#C4A265"} />
           {allHealthy ? (
             <CheckCircle2 className="w-8 h-8 text-emerald-400" />
           ) : (
