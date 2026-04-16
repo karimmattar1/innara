@@ -1,8 +1,8 @@
 # Innara -- Primer
 
 ## Current State
-- **Phase:** Phase 6: Testing & Launch — ALL 5 tickets DONE, pending phase review
-- **Last Updated:** 2026-04-13
+- **Phase:** Post-Phase 6 — premium landing + platform-wide UI unification (shipped to production)
+- **Last Updated:** 2026-04-14
 - **Notion:** INN project (migrated from Linear)
 
 ## What's Done
@@ -90,6 +90,52 @@ Manager portal E2E suite: 59 Playwright tests across 7 test groups — auth guar
 
 **Verification:** tsc 0 errors, build success, Vitest 133 passed, Playwright 634 passed (1.2m)
 
+## Post-Phase 6: Landing + Platform UI Unification (2026-04-13 → 2026-04-14)
+
+**Premium landing page rebuild (shipped to production https://innara-two.vercel.app):**
+- Public root `/` — no auth required (middleware updated to bypass for landing)
+- Composition: `LandingNav` → `LandingHero` → `LandingStats` → `LandingServices` → `LandingFeatures` → `LandingDemo` → `LandingBrands` → `LandingContact` → `LandingFooter`
+- Typography: Inter (body) + Playfair Display (headings) via `next/font/google`, CSS vars `--font-inter`, `--font-playfair`
+- Smooth-scroll nav with section anchors (#features, #demo, #brands, #contact)
+- Sliding service category chips marquee (AI Concierge, Room Service, Housekeeping, Valet, Spa & Wellness, etc.)
+- Floating iPhone 15 Pro demo section with three-phone composition and floating badges (Bot + CheckCircle Lucide icons, no emojis)
+- Dual-row testimonial marquee (forward + reverse) with MagicCard mouse-tracking glow
+- Contact CTA with ShimmerButton + BorderBeam
+
+**Component library (`src/components/ui/`, 13 new premium components):**
+- `glass-button.tsx` — CVA button (default, bronze, ghost, solid variants)
+- `shimmer-button.tsx` — animated shimmer sweep
+- `border-beam.tsx` — CSS offset-path orbiting border glow (bronze gradient)
+- `magic-card.tsx` — mouse-tracking radial gradient glow
+- `spotlight.tsx` — SVG ellipse illumination effect
+- `progressive-blur.tsx` — multi-layer gradient mask backdrop-blur
+- `number-ticker.tsx` — spring-animated counter via `useMotionValue` + `useSpring` + `useInView`
+- `marquee.tsx` — infinite horizontal/vertical scroll with pause-on-hover
+- `meteors.tsx` — particle shower decoration (bronze)
+- `text-generate-effect.tsx` — staggered blur-to-clear word animation
+- `animated-group.tsx` — staggered reveal wrapper (blur-slide, slide presets)
+- `iphone-15-pro.tsx` — SVG iPhone frame with `src` prop for screen content
+- `background-paths.tsx` — 36 animated SVG paths
+- `container-scroll.tsx` — scroll-driven perspective transform
+
+**Platform-wide rollout (2026-04-14, 20 files):**
+- **Auth pages** (staff login, forgot-password, reset-password, invite/accept, guest login, guest register) — Spotlight backgrounds, BorderBeam on form cards, GlassButton CTAs, Playfair headings
+- **Staff portal** (page, profile, shift) — MagicCard metric tiles, BorderBeam on shift/profile cards, AnimatedGroup staggered reveals
+- **Manager portal** (page, analytics, billing, branding, settings, staff) — BorderBeam on panels, AnimatedGroup on KPI grids, MagicCard KPIs
+- **Admin portal** (page, health) — MagicCard KPI cards, BorderBeam on recent tenants, dynamic color BorderBeam on health status
+- **Guest portal** (page, welcome) — AnimatedGroup entrance animations, Playfair headings
+
+**Key commits:**
+- `aa6bb9c` public landing root
+- `1f7e429` premium landing with glassmorphism + bento grid
+- `1f50f62` 21st.dev component library integration
+- `e834389` complete landing with fonts, demo, testimonials, contact
+- `7fb2357` fix phone clipping + emojis→icons + service chips
+- `4ac9313` platform-wide component rollout + phone mockup fix
+- `f8e2bb0` visual baseline lock (6 screenshots)
+
+**Verification:** tsc 0 errors, build success (all 55+ routes), Playwright 634/634 passed, visual baselines locked
+
 ## Key Technical Notes
 - **Next.js 16** (not 14) with React 19
 - **Tailwind CSS v4** with shadcn base-nova style (@base-ui/react — NO `asChild` prop)
@@ -121,6 +167,7 @@ Manager portal E2E suite: 59 Playwright tests across 7 test groups — auth guar
 - [x] Phase 4: Manager Portal + Billing (30 tickets — completed 2026-04-11, review passed 85/100)
 - [x] Phase 5: Admin + PWA + PMS (8 tickets — completed 2026-04-11, review passed)
 - [x] Phase 6: Testing & Launch (5 tickets — completed 2026-04-13, pending phase review)
+- [x] Post-Phase 6: Landing + Platform UI Unification (2026-04-14, shipped to production)
 
 ## Links
 - Notion: https://www.notion.so/338364b9014781ff92fdeba0e8cf7bbe (INN project, migrated from Linear)
