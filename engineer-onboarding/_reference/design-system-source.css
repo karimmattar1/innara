@@ -1,0 +1,1023 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Innara Design System - Premium AI Glassmorphism
+   Aesthetic: Navy-dark (#1a1d3a), Bronze accents (#9B7340), glassmorphism, depth
+*/
+
+@layer base {
+  :root {
+    /* Core palette - Navy Dark with Bronze accents */
+    /* Primary navy-dark: #1a1d3a = hsl(233, 41%, 16%) */
+    /* Bronze accent: #9B7340 = hsl(34, 42%, 43%) */
+    
+    --background: 233 24% 96%;
+    --foreground: 233 41% 16%;
+
+    /* Card surfaces - Glass effect */
+    --card: 0 0% 100%;
+    --card-foreground: 233 41% 16%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 233 41% 16%;
+
+    /* Primary - Navy Dark #1a1d3a */
+    --primary: 233 41% 16%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary - Light lavender glass */
+    --secondary: 233 40% 95%;
+    --secondary-foreground: 233 41% 16%;
+
+    /* Accent - Bronze #9B7340 */
+    --accent-gold: 34 42% 43%;
+    --accent-gold-light: 34 42% 55%;
+    --accent-gold-dark: 34 42% 35%;
+    --accent: 233 35% 93%;
+    --accent-foreground: 233 41% 16%;
+
+    /* Muted */
+    --muted: 233 25% 93%;
+    --muted-foreground: 233 20% 45%;
+
+    /* Status Colors - As specified */
+    /* Success: #4CAF50 = hsl(122, 39%, 49%) */
+    --success: 122 39% 49%;
+    --success-foreground: 0 0% 100%;
+    --success-light: 122 39% 95%;
+    
+    /* Warning/Pending: #FFC107 = hsl(45, 100%, 51%) */
+    --warning: 45 100% 51%;
+    --warning-foreground: 0 0% 100%;
+    --warning-light: 45 100% 95%;
+    
+    /* In Progress: #FF5722 = hsl(14, 100%, 57%) */
+    --pending: 14 100% 57%;
+    --pending-foreground: 0 0% 100%;
+    --pending-light: 14 100% 95%;
+    
+    /* Info */
+    --info: 233 60% 55%;
+    --info-foreground: 0 0% 100%;
+    --info-light: 233 50% 94%;
+
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* UI Elements */
+    --border: 233 30% 90%;
+    --input: 233 30% 90%;
+    --ring: 34 42% 43%;
+
+    --radius: 1rem;
+
+    /* Chat bubbles */
+    --chat-ai: 233 41% 16%;
+    --chat-ai-foreground: 0 0% 100%;
+    --chat-user: 233 41% 16%;
+    --chat-user-foreground: 0 0% 100%;
+
+    /* Sidebar - Navy Dark */
+    --sidebar-background: 233 41% 10%;
+    --sidebar-foreground: 233 20% 92%;
+    --sidebar-primary: 34 42% 55%;
+    --sidebar-primary-foreground: 233 41% 10%;
+    --sidebar-accent: 233 41% 20%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 233 35% 22%;
+    --sidebar-ring: 34 42% 43%;
+
+    /* Metric card colors */
+    --metric-happiness: 34 42% 43%;
+    --metric-revenue: 122 39% 49%;
+    --metric-time: 233 50% 55%;
+    --metric-requests: 260 50% 55%;
+    --metric-guests: 280 45% 55%;
+
+    /* App gradient (for dashboards) */
+    --gradient-start: 233 30% 97%;
+    --gradient-mid: 220 35% 95%;
+    --gradient-end: 215 40% 93%;
+  }
+
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    min-height: 100vh;
+    position: relative;
+    /* Premium gradient base — moderate blue tint */
+    background: linear-gradient(
+      180deg,
+      hsl(233 24% 96%) 0%,
+      hsl(238 22% 94.5%) 30%,
+      hsl(242 18% 93%) 60%,
+      hsl(233 22% 95.5%) 100%
+    );
+  }
+
+  /* Gradient orbs — compact, visible blue accents */
+  .gradient-bg {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* Top-left orb */
+  .gradient-bg::before {
+    content: '';
+    position: absolute;
+    width: 700px;
+    height: 700px;
+    top: -140px;
+    left: -100px;
+    background: radial-gradient(circle, hsl(216 82% 70% / 0.72) 0%, hsl(224 72% 76% / 0.44) 35%, transparent 65%);
+    filter: blur(40px);
+    animation: float-orb-1 25s ease-in-out infinite;
+  }
+
+  /* Bottom-right orb */
+  .gradient-bg::after {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    bottom: -80px;
+    right: -80px;
+    background: radial-gradient(circle, hsl(230 78% 70% / 0.66) 0%, hsl(238 65% 78% / 0.38) 35%, transparent 65%);
+    filter: blur(35px);
+    animation: float-orb-2 30s ease-in-out infinite;
+  }
+
+  /* Mid-left orb */
+  .gradient-orb-1 {
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    top: 40%;
+    left: 10%;
+    background: radial-gradient(circle, hsl(220 78% 70% / 0.62) 0%, hsl(228 65% 78% / 0.34) 40%, transparent 65%);
+    filter: blur(35px);
+    pointer-events: none;
+    z-index: -1;
+    animation: float-orb-3 20s ease-in-out infinite;
+  }
+
+  /* Center-right orb */
+  .gradient-orb-2 {
+    position: fixed;
+    width: 450px;
+    height: 450px;
+    top: 60%;
+    right: 20%;
+    background: radial-gradient(circle, hsl(224 75% 72% / 0.58) 0%, hsl(232 62% 80% / 0.30) 40%, transparent 65%);
+    filter: blur(32px);
+    pointer-events: none;
+    z-index: -1;
+    animation: float-orb-4 22s ease-in-out infinite reverse;
+  }
+
+  /* Top-right orb */
+  .gradient-orb-3 {
+    position: fixed;
+    width: 420px;
+    height: 420px;
+    top: 8%;
+    right: 12%;
+    background: radial-gradient(circle, hsl(213 80% 68% / 0.64) 0%, hsl(222 68% 76% / 0.34) 40%, transparent 65%);
+    filter: blur(32px);
+    pointer-events: none;
+    z-index: -1;
+    animation: float-orb-5 18s ease-in-out infinite;
+  }
+
+  /* Floating spinning logo */
+  .orb-3d {
+    position: absolute;
+    top: 10%;
+    right: 6%;
+    width: 140px;
+    height: 140px;
+    background: url('/innaralogo2.png') center/contain no-repeat;
+    transform-style: preserve-3d;
+    animation: orb-float 10s ease-in-out infinite, orb-spin 20s linear infinite;
+    filter: drop-shadow(0 12px 30px rgba(26,29,58,0.18));
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes orb-float {
+    0%, 100% { transform: translateY(0) translateX(0) rotateY(0deg); }
+    25% { transform: translateY(-12px) translateX(5px) rotateY(90deg); }
+    50% { transform: translateY(-20px) translateX(8px) rotateY(180deg); }
+    75% { transform: translateY(-12px) translateX(3px) rotateY(270deg); }
+    100% { transform: translateY(0) translateX(0) rotateY(360deg); }
+  }
+
+  @keyframes orb-spin {
+    0% { transform: rotateY(0deg) rotateX(8deg); }
+    100% { transform: rotateY(360deg) rotateX(8deg); }
+  }
+
+  .marquee {
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  }
+
+  .marquee-track {
+    display: inline-flex;
+    gap: 16px;
+    padding: 8px 0;
+    animation: marquee-scroll 24s linear infinite;
+  }
+
+  @keyframes marquee-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .phone-3d {
+    position: relative;
+    width: 280px;
+    aspect-ratio: 9 / 19.5;
+    transform-style: preserve-3d;
+    border-radius: 30px;
+    background: linear-gradient(145deg, #1f243a, #0f1224);
+    box-shadow: 0 40px 80px rgba(10, 12, 24, 0.55), inset 0 0 0 1px rgba(255,255,255,0.08);
+  }
+
+  .phone-3d::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border-radius: 24px;
+    background: #0b0e1b;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+    transform: translateZ(6px);
+  }
+
+  .phone-3d::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%) translateZ(10px);
+    width: 96px;
+    height: 14px;
+    border-radius: 14px;
+    background: #05070f;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+  }
+
+  .phone-screen {
+    position: absolute;
+    inset: 10px;
+    border-radius: 22px;
+    overflow: hidden;
+    transform: translateZ(12px);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
+    background: #0b0e1b;
+  }
+
+  .phone-screen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .phone-tilt {
+    animation: phone-tilt 10s ease-in-out infinite;
+    transform-style: preserve-3d;
+    transform: rotateZ(-8deg);
+  }
+
+  @keyframes phone-tilt {
+    0%, 100% { transform: rotateZ(-12deg) rotateX(12deg) rotateY(-22deg) translateY(0); }
+    50% { transform: rotateZ(-16deg) rotateX(20deg) rotateY(18deg) translateY(-10px); }
+  }
+
+  .demo-surface {
+    background: linear-gradient(
+      180deg,
+      hsl(var(--gradient-start)) 0%,
+      hsl(var(--gradient-mid)) 50%,
+      hsl(var(--gradient-end)) 100%
+    );
+  }
+
+  .landing-surface {
+    background: linear-gradient(
+      180deg,
+      hsl(233 30% 96%) 0%,
+      hsl(240 28% 94%) 30%,
+      hsl(245 25% 92%) 60%,
+      hsl(233 28% 95%) 100%
+    );
+  }
+
+  .demo-screen {
+    background:
+      radial-gradient(circle at 15% 10%, rgba(120, 160, 255, 0.35), transparent 55%),
+      radial-gradient(circle at 85% 25%, rgba(160, 190, 255, 0.3), transparent 60%),
+      linear-gradient(
+        180deg,
+        hsl(233 30% 96%) 0%,
+        hsl(240 28% 94%) 30%,
+        hsl(245 25% 92%) 60%,
+        hsl(233 28% 95%) 100%
+      );
+  }
+
+  @keyframes float-orb-1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -20px) scale(1.05); }
+    66% { transform: translate(-20px, 30px) scale(0.98); }
+  }
+
+  @keyframes float-orb-2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-40px, -30px) scale(1.08); }
+  }
+
+  @keyframes float-orb-3 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(25px, 35px) scale(1.03); }
+    66% { transform: translate(-35px, -15px) scale(0.97); }
+  }
+
+  @keyframes float-orb-4 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, 20px) scale(1.06); }
+  }
+
+  @keyframes float-orb-5 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(-20px, 25px) scale(1.02); }
+    66% { transform: translate(25px, -20px) scale(0.98); }
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer components {
+  /* ========================================
+     GLASSMORPHISM SYSTEM
+     ======================================== */
+  
+  /* Glass Panel - For containers/sections */
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Glass Card - For content blocks - Enhanced glassmorphism */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(24px) saturate(150%);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+    box-shadow:
+      0 8px 32px rgba(100, 120, 160, 0.12),
+      0 2px 8px rgba(255, 255, 255, 0.3) inset,
+      0 -1px 4px rgba(100, 120, 160, 0.08) inset;
+    transition: all 0.3s ease;
+  }
+
+  .glass-card:hover {
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    transform: translateY(-3px);
+    box-shadow:
+      0 16px 48px rgba(100, 120, 160, 0.18),
+      0 2px 8px rgba(255, 255, 255, 0.4) inset,
+      0 -1px 4px rgba(100, 120, 160, 0.1) inset;
+  }
+
+  /* Dark glass card - for dark themed sections */
+  .glass-card-dark {
+    background: rgba(26, 29, 58, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .glass-card-dark:hover {
+    background: rgba(26, 29, 58, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Ultra premium glass - Hero sections ONLY - Enhanced */
+  .glass-premium {
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    border-radius: 24px;
+    box-shadow:
+      0 12px 48px rgba(100, 120, 160, 0.15),
+      0 4px 12px rgba(255, 255, 255, 0.4) inset,
+      0 -2px 6px rgba(100, 120, 160, 0.08) inset;
+  }
+
+  /* ========================================
+     BUTTON SYSTEM
+     All buttons now use <Button> from components/ui/button.tsx
+     ======================================== */
+
+  /* ========================================
+     STATUS BADGES
+     ======================================== */
+  
+  /* Glass status badges — unified style, only dot color varies */
+  .status-completed,
+  .status-confirmed,
+  .status-in-progress,
+  .status-pending,
+  .status-new {
+    background: hsl(var(--secondary) / 0.5);
+    backdrop-filter: blur(4px);
+    border: 1px solid hsl(var(--border) / 0.3);
+    color: hsl(var(--foreground) / 0.7);
+    border-radius: 16px;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* NEW Tag - Gold accent */
+  .new-badge {
+    background: #9B7340;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ========================================
+     METRIC CARDS - Dashboard
+     ======================================== */
+  
+  .metric-card {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    background: rgba(155, 115, 64, 0.1);
+    border-radius: 50%;
+    transform: translate(30%, -30%);
+    opacity: 0.3;
+  }
+
+  .metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  }
+
+  .metric-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(155, 115, 64, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    color: #9B7340;
+  }
+
+  /* Metric variants — muted glass with subtle tints */
+  .metric-happiness {
+    background: linear-gradient(150deg, rgba(255, 255, 255, 0.7) 0%, rgba(155, 115, 64, 0.08) 100%);
+    border: 1px solid rgba(155, 115, 64, 0.15);
+  }
+
+  .metric-revenue {
+    background: linear-gradient(150deg, rgba(255, 255, 255, 0.7) 0%, rgba(122, 170, 138, 0.06) 100%);
+    border: 1px solid rgba(122, 170, 138, 0.15);
+  }
+
+  .metric-time {
+    background: linear-gradient(150deg, rgba(255, 255, 255, 0.7) 0%, rgba(126, 154, 184, 0.06) 100%);
+    border: 1px solid rgba(126, 154, 184, 0.15);
+  }
+
+  .metric-requests {
+    background: linear-gradient(150deg, rgba(255, 255, 255, 0.7) 0%, rgba(126, 154, 184, 0.06) 100%);
+    border: 1px solid rgba(126, 154, 184, 0.15);
+  }
+
+  .metric-guests {
+    background: linear-gradient(150deg, rgba(255, 255, 255, 0.7) 0%, rgba(155, 115, 64, 0.06) 100%);
+    border: 1px solid rgba(155, 115, 64, 0.12);
+  }
+
+  /* ========================================
+     NAVIGATION
+     ======================================== */
+  
+  /* Mobile header - Glassy transparent */
+  .mobile-header {
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+  }
+
+  /* Bottom navigation */
+  .bottom-nav {
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 -6px 30px rgba(26, 29, 58, 0.12);
+  }
+
+  /* Navigation active state */
+  .nav-active {
+    @apply font-semibold;
+    color: #1a1d3a;
+    position: relative;
+  }
+
+  .nav-active::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 2px;
+    background: #1a1d3a;
+    border-radius: 1px;
+  }
+
+  /* User Avatar */
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #9B7340;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ========================================
+     CHAT INTERFACE
+     ======================================== */
+  
+  /* AI Message Bubble */
+  .chat-bubble-ai {
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 20px 20px 20px 4px;
+    padding: 16px 20px;
+    max-width: 100%;
+    width: fit-content;
+    color: #1a1d3a;
+    position: relative;
+  }
+
+  /* User Message Bubble - Solid deep blue */
+  .chat-bubble-user {
+    background: #1a1d3a;
+    border: 1px solid rgba(26, 29, 58, 0.5);
+    border-radius: 20px 20px 4px 20px;
+    padding: 12px 20px;
+    max-width: 100%;
+    width: fit-content;
+    color: white;
+    margin-left: auto;
+    box-shadow: 0 2px 8px rgba(26, 29, 58, 0.3);
+  }
+
+  /* Confirmed Action Card */
+  .confirmed-card {
+    background: rgba(76, 175, 80, 0.15);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    border-radius: 16px;
+    padding: 16px;
+    margin-top: 8px;
+  }
+
+  /* Confirmed badge - Navy with green check */
+  .confirmed-badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold;
+    background: #1a1d3a;
+    color: white;
+    box-shadow: 0 2px 8px rgba(26, 29, 58, 0.3);
+  }
+
+  /* Chat Input Container */
+  .chat-input-container {
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Chat Input Field */
+  .chat-input {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 24px;
+    padding: 12px 52px 12px 16px;
+    color: #1a1d3a;
+    font-size: 15px;
+    width: 100%;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  }
+
+  .chat-input::placeholder {
+    color: rgba(31, 37, 64, 0.45);
+  }
+
+  .chat-input:focus {
+    outline: none;
+    border-color: rgba(31, 37, 64, 0.28);
+    box-shadow: 0 0 0 2px rgba(31, 37, 64, 0.1);
+    background: rgba(255, 255, 255, 0.82);
+  }
+
+  /* ========================================
+     MENU / SERVICE ORDERING
+     ======================================== */
+  
+  /* Category Pills */
+  .category-pill {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    white-space: nowrap;
+    transition: all 0.3s ease;
+  }
+
+  .category-pill:hover,
+  .category-pill.active {
+    background: rgba(26, 29, 58, 0.15);
+    border-color: #1a1d3a;
+    color: #1a1d3a;
+  }
+
+  /* Menu Item Card */
+  .menu-item-card {
+    @apply glass-card p-4 flex items-center gap-4 cursor-pointer;
+  }
+
+  .menu-item-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(26, 29, 58, 0.2);
+  }
+
+  /* Add Button - Navy on hover */
+  .add-button {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(26, 29, 58, 0.08);
+    border: 1px solid rgba(26, 29, 58, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    color: hsl(233 41% 16%);
+  }
+
+  .add-button:hover {
+    background: #1a1d3a;
+    border-color: #1a1d3a;
+    color: white;
+  }
+
+  /* Cart Footer */
+  .cart-footer {
+    background: rgba(26, 29, 58, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 20px;
+  }
+
+  /* Cart Button - Navy primary */
+  .cart-button {
+    background: #1a1d3a;
+    color: white;
+    border: none;
+    border-radius: 24px;
+    padding: 16px;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    box-shadow: 0 4px 16px rgba(26, 29, 58, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  .cart-button:hover {
+    background: #252a4a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(26, 29, 58, 0.4);
+  }
+
+  /* ========================================
+     REQUEST TABLE
+     ======================================== */
+  
+  .table-container {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .table-header {
+    background: rgba(255, 255, 255, 0.3);
+    padding: 16px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .table-header-text {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: rgba(26, 29, 58, 0.5);
+  }
+
+  .request-row {
+    @apply transition-all duration-200;
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .request-row:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  /* Room number badge */
+  .room-badge {
+    background: rgba(26, 29, 58, 0.08);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 13px;
+    color: rgba(26, 29, 58, 0.9);
+    display: inline-block;
+  }
+
+  /* Staff avatar */
+  .staff-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: hsl(var(--secondary) / 0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid hsl(var(--border) / 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+  }
+
+  /* ========================================
+     GOLD ACCENTS - For icons and text
+     Bronze accent: #9B7340
+     ======================================== */
+
+  .accent-color {
+    color: #9B7340;
+  }
+
+  .accent-text {
+    color: #9B7340;
+  }
+
+  .accent-icon {
+    color: #9B7340;
+    filter: drop-shadow(0 2px 8px rgba(155, 115, 64, 0.3));
+  }
+
+  .accent-border {
+    border-color: rgba(155, 115, 64, 0.25);
+  }
+
+  .accent-ring {
+    box-shadow: 0 0 0 1px rgba(155, 115, 64, 0.25);
+  }
+
+  /* ========================================
+     BRANDING
+     ======================================== */
+
+  /* Section header */
+  .section-header {
+    @apply text-2xl font-medium tracking-tight;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+  }
+
+  /* ETA badge - Gold accent for time indicators */
+  .eta-badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold;
+    border: 1.5px solid #9B7340;
+    color: #9B7340;
+    background: rgba(155, 115, 64, 0.08);
+  }
+
+  /* Upsell card - Subtle gold tint */
+  .upsell-card {
+    background: linear-gradient(150deg, rgba(155, 115, 64, 0.06) 0%, rgba(155, 115, 64, 0.03) 100%);
+    @apply rounded-2xl p-5;
+    border: 1px solid rgba(155, 115, 64, 0.15);
+    box-shadow: 0 4px 16px rgba(155, 115, 64, 0.06);
+  }
+
+  /* ========================================
+     ANIMATIONS
+     ======================================== */
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* Loading shimmer */
+  @keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+  }
+
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.02) 0%,
+      rgba(255, 255, 255, 0.08) 50%,
+      rgba(255, 255, 255, 0.02) 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+  }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+*:focus-visible {
+  outline: 2px solid #9B7340;
+  outline-offset: 2px;
+}
+
+/* ========================================
+   CUSTOM SCROLLBAR
+   ======================================== */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(26, 29, 58, 0.2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(26, 29, 58, 0.35);
+}
+
+/* ========================================
+   PHONE FRAME TOAST POSITIONING
+   Position toasts inside phone frame on desktop
+   ======================================== */
+
+/* On desktop (min-width 1024px), constrain toasts to phone frame */
+@media (min-width: 1024px) {
+  /* Find the sonner toaster and reposition it relative to the phone frame */
+  .phone-frame-container [data-sonner-toaster] {
+    position: absolute !important;
+    top: 60px !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    width: 90% !important;
+    max-width: 340px !important;
+  }
+
+  .phone-frame-container [data-sonner-toast] {
+    width: 100% !important;
+    font-size: 0.875rem !important;
+  }
+}
+
+/* Mobile - center toasts at top */
+@media (max-width: 1023px) {
+  [data-sonner-toaster] {
+    top: 50px !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    width: 90% !important;
+    max-width: 400px !important;
+  }
+}
