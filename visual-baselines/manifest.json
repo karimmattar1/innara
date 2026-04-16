@@ -1,0 +1,16 @@
+{
+  "locked_at": "2026-04-16T15:51:46Z",
+  "base_url": "http://localhost:3001",
+  "pages": [
+    "/",
+    "/login"
+  ],
+  "files": [
+    "home-mobile.png",
+    "home-tablet.png",
+    "login-tablet.png",
+    "login-desktop.png",
+    "login-mobile.png",
+    "home-desktop.png"
+  ]
+}
